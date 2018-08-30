@@ -1,0 +1,17 @@
+<h1>Driver Routes</h1>
+
+<div *ngIf = "allRoutes$" id="routesMenu">
+  <ul [@listStagger]="allRoutes$" style="list-style-type:none">
+    <div *ngFor="let route of allRoutes$.orderGroups" id="routesMenu">  
+      <ul style="list-style-type:none">
+        <li id="routesMenu">
+          <a routerLink="/route-Orders/{{route.Name}}">{{ route.Name }}
+          <p>&emsp;Delivery Date: {{route.DeliveryDate | date : "dd.MM.yyyy"}}</p>
+          </a>
+        </li>
+      </ul>
+  </div>
+        
+      
+  </ul>
+</div>

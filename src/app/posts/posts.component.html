@@ -1,0 +1,26 @@
+<div>
+  <ul>
+    <h2 class="pageHeader">News Agencies</h2>
+    
+
+  </ul>
+</div>
+
+
+<div *ngIf = "posts$">
+  <ul [@listStagger]="posts$">
+    
+      
+        <div *ngFor="let post of posts$.sources">  
+          <div *ngIf="post.name.includes('')">
+              <li>
+                <a href="{{ post.url }}">{{ post.name }} </a>
+                <p>{{ post.description }}</p>
+              </li>
+            </div>
+      </div>
+      
+    
+  </ul>
+</div>
+

@@ -1,0 +1,23 @@
+<h4>
+  Document ID: {{docID}}
+</h4>
+
+
+<div *ngIf = "allRoutes$" id="routesMenu">
+    <ul [@listStagger]="allRoutes$" style="list-style-type:none">
+      <div *ngFor="let orderGroup$ of allRoutes$.orderGroups" >  
+        <div *ngFor="let order of orderGroup$.Orders" >
+          <div *ngIf="orderGroup$.Name === globals.selectedRoute" >
+            <div *ngIf="order.DocumentId == docID">
+              <ul class="detail" id="detailList">
+                <a>
+                 <li>{{order.CustomerName}}</li>
+                 <li><b>Packing Slip:</b> {{order.PackingSlipNo}}</li>
+                </a>
+              </ul>
+            </div>            
+          </div>          
+        </div>
+      </div>
+    </ul>
+</div>
