@@ -1,6 +1,6 @@
 {
   "index": "/index.html",
-  
+
   "assetGroups": [
     {
       "name": "app",
@@ -8,10 +8,10 @@
       "resources": {
         "files": [
           "/favicon.ico",
-          "/index.html",
-          "/*.css",
-          "/*.scss",
-          "/*.js"
+        "/index.html",
+        "/**/*.css",
+        "/**/*.html",
+        "/*.js"
         ]
       }
     },
@@ -24,20 +24,33 @@
           "/assets/**"
         ]
       }
-    }], 
+    }],
     "dataGroups": [
     {
       "name": "posts",
       "urls": [
         "https://newsapi.org/v2/sources?apiKey=4b3758d2803a4ea8bb066ec648fd14ba"
       ],
- 
+
       "cacheConfig": {
         "maxSize": 5,
-        "maxAge": "10m", 
-        "timeout": "7s", 
-        "strategy": "freshness" 
+        "maxAge": "10m",
+        "timeout": "7s",
+        "strategy": "freshness"
+      }
+    },
+    {
+      "name": "orders",
+      "urls": [
+        "https://test1.zealsystems.co.nz/api/values/1"
+      ],
+      "cacheConfig": {
+        "maxSize": 5,
+        "maxAge": "6h",
+        "timeout": "10s",
+        "strategy": "performance"
       }
     }
+
   ]
 }
