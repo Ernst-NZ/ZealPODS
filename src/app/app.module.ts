@@ -16,6 +16,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { RouteOrdersComponent } from './route-orders/route-orders.component';
 import { MatButtonModule } from '@angular/material';
+import { MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
+import { MatListModule, MatToolbarModule, MatSidenavModule, MatIconModule } from '@angular/material';
+import { MatCheckboxModule, MatInputModule, MatSelectModule, } from '@angular/material';
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 
@@ -30,6 +34,7 @@ import { AuthenticationService } from './_services/authentication.service';
 import { FooterComponent } from './footer/footer.component';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignatureComponent } from './signature/signature.component';
+import { RejectproductsComponent } from './rejectproducts/rejectproducts.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +50,8 @@ import { SignatureComponent } from './signature/signature.component';
     LoginComponent,
     AlertComponent,
     FooterComponent,
-    SignatureComponent
+    SignatureComponent,
+    RejectproductsComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,9 +61,16 @@ import { SignatureComponent } from './signature/signature.component';
     BrowserAnimationsModule,
     FormsModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
-    MatButtonModule,
     NgbModule.forRoot(),
     SignaturePadModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
   ],
   providers: [
     Globals,

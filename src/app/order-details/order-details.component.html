@@ -1,13 +1,5 @@
 <h1>Order Details</h1>
-<!--
-<div *ngIf="orderDetails$" id="detailList">
-  <ul [@listStagger]="orderDetails$" style="list-style-type:none" *ngFor="let driver of orderDetail$.orderGroups">
-    <ul *ngFor="let order of driver.Orders">
-      1
-    </ul>
-  </ul>
-</div> -->
-<div id="main">
+<div class="theList">
   <ul *ngFor="let driver of orderDetail$.orderGroups">
     <ul *ngFor="let order of driver.Orders">
       <div class="blackFont fontSmall1 strong" *ngIf="order.DocumentId == docID">
@@ -20,9 +12,9 @@
         <p>Category1: {{ order.Category1 }}</p>
         <p>Category2: {{ order.Category2 }}</p>
 
-        <!-- <button mat-raised-button color="primary" (click)="toggleTable()" class="toggle-panel" *ngIf="show">Hide Products</button>
-        <button mat-raised-button color="primary" (click)="toggleTable()" class="toggle-panel" *ngIf="!show">View Products</button>
-        <br> <br> -->
+        <button color="primary" (click)="toggleTable()" class="toggle-panel" *ngIf="show">Hide Products</button>
+        <button color="primary" (click)="toggleTable()" class="toggle-panel" *ngIf="!show">View Products</button>
+        <br> <br>
         <table width="100%" class="table toggle-panel" [hidden]="hidden">
           <thead>
             <tr>
@@ -42,7 +34,7 @@
               <td>${{item.SellPrice}}</td>
               <td>{{item.QuantityOrdered}}</td>
               <td><a routerLink="/rejectproducts/{{docID}},{{i}}">0
-              </a></td>
+                </a></td>
               <!-- <td class="textCenter">
                 <mat-checkbox [checked]=true></mat-checkbox>
               </td> -->
@@ -69,16 +61,14 @@
           </mat-form-field>
         </div>
         <div class="strong halfWWidth">
-            <mat-form-field>
-                <input matInput placeholder="Amount">
-              </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Amount">
+          </mat-form-field>
         </div>
         <div class="textCenter halfWWidth">
           <button class="textCenter">Confirm Order</button>
           <br>
         </div>
-
-
       </div>
     </ul>
   </ul>

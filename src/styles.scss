@@ -1,49 +1,134 @@
 /* You can add global styles to this file, and also import other style files */
 
 body {
-    margin: 0;
-    //background: #F2F2F2;
-    background:rgb(179, 179, 179);
-    font-family: 'Montserrat', sans-serif;
-    height: 100%;
-    
-
+  margin: 0;
+  //background: #F2F2F2;
+  background: rgb(179, 179, 179);
+  font-family: "Montserrat", sans-serif;
+  height: 100%;
 }
 
 #container {
-    display: grid;
-    grid-template-columns: auto;
-    #content {
-        padding: 50px 20px;
-        ul {
-          list-style-type: none;
-          margin:0;padding:0;
-            li {
-                background: rgb(230, 230, 230);
-                border-radius: 8px;
-                margin-bottom: 8px;
-                a {
-                    font-size: 1.5em;
-                    text-decoration: none;
-                    font-weight: bold;
-                    color:#00A8FF;
-                }
-        
-                ul {
-                    margin-top: 0px;
-                    
-                    li {
-                        padding:0;
-        
-                        a {
-                            font-size: 1em;
-                            font-weight: 300;
-                        }
-                    }
-                }
-            }
+  display: grid;
+  grid-template-columns: auto;
+  #content {
+    padding: 50px 20px;
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      li {
+        background: rgb(230, 230, 230);
+        border-radius: 8px;
+        margin-bottom: 8px;
+        a {
+          font-size: 1.5em;
+          text-decoration: none;
+          font-weight: bold;
+          color: #00a8ff;
         }
+        a:hover {
+          background-color: #d4d4d4;
+          transition: 0.3s;
+          padding: 0px 5px 0px 30px;
+        }
+        p:not(.a) {
+          color: black;
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 12px;
+          font-weight: normal;
+          margin-bottom: 0px;
+          display: block;
+        }
+
+        ul {
+          margin-top: 0px;
+          div {
+            p {
+              font-size: 10px;
+              border-radius: 8px;
+              padding: 0px 20px 0px 20px;
+              color: rgb(68, 3, 3);
+              display: block;
+              line-height: 1em;
+            }
+          }
+
+          li {
+            padding: 0;
+
+            a {
+              font-size: 1em;
+              font-weight: 300;
+            }
+          }
+        }
+      }
     }
+  }
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: 'Roboto', sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+// .theList ul li {
+//   background-color: rgb(106, 107, 107);
+// }
+
+.content {
+  vertical-align: top;
+}
+
+// .theList ul li p:not(.a) {
+//   color: black;
+//   font-family: Arial, Helvetica, sans-serif;
+//   font-size: 12px;
+// }
+
+.theList {
+  ul {
+    li {
+      a {
+        font-size: 10px;
+        border-radius: 8px;
+        padding: 0px 20px 0px 20px;
+        color: white;
+        display: block;
+        line-height: 1em;
+      }
+      // a:hover {
+      //   background-color: #d4d4d4;
+      //   transition: 0.3s;
+      //   padding: 0px 5px 0px 30px;
+      // }
+      // p:not(.a) {
+      //   color: black;
+      //   font-family: Arial, Helvetica, sans-serif;
+      //   font-size: 12px;
+      //   font-weight: normal;
+      //   margin-bottom: 0px;
+      //   display: block;
+      // }
+      ul {
+        div{
+          // p {
+          //   font-size: 10px;
+          //   border-radius: 8px;
+          //   padding: 0px 20px 0px 20px;
+          //   color: white;
+          //   display: block;
+          //   line-height: 1em;
+          // }
+
+        }
+      }
+    }
+  }
+}
+
+

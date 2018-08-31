@@ -1,0 +1,63 @@
+<div *ngIf="productDetail$">
+  <!-- <div class="topBar">
+    <a routerLink="" class="floatLeft">
+      <i class="material-icons">
+        menu
+      </i>
+    </a>
+    <a class="Strong">Reject Products</a>
+    <a class="floatRight50">{{ productDetail$.User }}</a>
+  </div> -->
+  <div id="main">
+    <ul *ngFor="let driver of productDetail$.orderGroups">
+      <ul *ngFor="let order of driver.Orders">
+        <div class="blackFont fontSmall1 strong" *ngIf="order.DocumentId == docID">
+          <ul *ngFor="let item of order.Lines; index as i">
+            <div class="blackFont fontSmall1 strong" *ngIf="i == lineID">
+              <table width="100%" class="table toggle-panel">
+                <!-- <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th>Number</th>
+                  </tr>
+                </thead> -->
+                <tbody>
+                  <tr>
+                    <td>Product Code</td>
+                    <td>{{item.ProductCode}}</td>
+                  </tr>
+                  <tr>
+                    <td>Description</td>
+                    <td>{{item.Description}}</td>
+                  </tr>
+                  <tr>
+                    <td>QTY Ordered</td>
+                    <td>{{item.QuantityOrdered}}</td>
+                  </tr>
+                  <tr>
+                    <td>QTY Rejected</td>
+                    <td class="strong inPutBox">
+                        <mat-form-field  class="matInput">
+                            <input matInput placeholder="Number">
+                          </mat-form-field>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Reason</td>
+                    <td class="inPutBox"><mat-form-field class="matInput">
+                        <mat-select placeholder="Reason">
+                          <mat-option *ngFor="let reject of reject" [value]="reject.value">
+                            {{reject.viewValue}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ul>
+        </div>
+      </ul>
+    </ul>
+  </div>
+</div>

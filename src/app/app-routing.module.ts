@@ -10,38 +10,35 @@ import { TestapiComponent } from './testapi/testapi.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { SignatureComponent } from './signature/signature.component';
+import { RejectproductsComponent } from './rejectproducts/rejectproducts.component';
 
 const routes: Routes = [
   {path: '', component: DriverRoutesComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent },
   {path: 'users', component: UsersComponent, canActivate: [AuthGuard]},
-  {
-    path: 'details/:id',
+  {path: 'details/:id',
     component: DetailsComponent,
     },
-  {
-    path: 'posts',
+  {path: 'posts',
     component: PostsComponent,
     },
-  {
-    path: 'driver-routes',
+  {path: 'driver-routes',
     component: DriverRoutesComponent,
     canActivate: [AuthGuard]},
-  {
-    path: 'route-Orders/:routeName',
+  {path: 'route-Orders/:routeName',
     component: RouteOrdersComponent,
   },
-  {
-    path: 'order-details/:DocumentId',
+  {path: 'order-details/:DocumentId',
     component: OrderDetailsComponent,
   },
-  {
-    path: 'testapi',
+  {path: 'testapi',
     component: TestapiComponent,
   },
-  { path: '**', redirectTo: '' },
-  {
-    path: 'signature',
+  {path: 'rejectproducts/:LineId',
+  component: RejectproductsComponent
+},
+  // {path: '**', redirectTo: '' },
+  {path: 'signature',
     component: SignatureComponent
   },
 ];

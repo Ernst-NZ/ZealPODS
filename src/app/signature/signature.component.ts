@@ -1,5 +1,9 @@
 import { Component, ViewChild, OnInit, ElementRef, AfterViewInit } from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad/signature-pad';
+import { ActivatedRoute } from '@angular/router';
+import { DataService} from '../data.service';
+import {trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
+import { Globals } from '../globals';
 
 @Component({
   selector: 'app-signature',
