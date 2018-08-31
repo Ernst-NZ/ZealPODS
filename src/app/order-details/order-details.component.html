@@ -1,23 +1,85 @@
-<h4>
-  Document ID: {{docID}}
-</h4>
+<h1>Order Details</h1>
+<!--
+<div *ngIf="orderDetails$" id="detailList">
+  <ul [@listStagger]="orderDetails$" style="list-style-type:none" *ngFor="let driver of orderDetail$.orderGroups">
+    <ul *ngFor="let order of driver.Orders">
+      1
+    </ul>
+  </ul>
+</div> -->
+<div id="main">
+  <ul *ngFor="let driver of orderDetail$.orderGroups">
+    <ul *ngFor="let order of driver.Orders">
+      <div class="blackFont fontSmall1 strong" *ngIf="order.DocumentId == docID">
+        <span class="font15">Order Date: {{ order.DocumentDate | date:'dd/MMM/yyyy'}}</span>
+        <hr class="font2">
+        <p>Customer Code: {{ order.CustomerCode }}</p>
+        <p>Delivery Date: {{ order.DocumentDate | date:'dd/MMM/yyyy' }}</p>
+        <p>Packing Slip No: {{ order.PackingSlipNo }}</p>
+        <p>Order Id: {{ order.DocumentId }}</p>
+        <p>Category1: {{ order.Category1 }}</p>
+        <p>Category2: {{ order.Category2 }}</p>
 
-
-<div *ngIf = "allRoutes$" id="routesMenu">
-    <ul [@listStagger]="allRoutes$" style="list-style-type:none">
-      <div *ngFor="let orderGroup$ of allRoutes$.orderGroups" >  
-        <div *ngFor="let order of orderGroup$.Orders" >
-          <div *ngIf="orderGroup$.Name === globals.selectedRoute" >
-            <div *ngIf="order.DocumentId == docID">
-              <ul class="detail" id="detailList">
-                <a>
-                 <li>{{order.CustomerName}}</li>
-                 <li><b>Packing Slip:</b> {{order.PackingSlipNo}}</li>
-                </a>
-              </ul>
-            </div>            
-          </div>          
+        <!-- <button mat-raised-button color="primary" (click)="toggleTable()" class="toggle-panel" *ngIf="show">Hide Products</button>
+        <button mat-raised-button color="primary" (click)="toggleTable()" class="toggle-panel" *ngIf="!show">View Products</button>
+        <br> <br> -->
+        <table width="100%" class="table toggle-panel" [hidden]="hidden">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Qty<br>Ordered</th>
+              <th>Price</th>
+              <th>Qty<br>Accepted</th>
+              <th>Qty<br>Rejected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of order.Lines; index as i">
+              <td>{{item.Description}}<br>
+                <span class="font75">{{item.ProductCode}}</span>
+              </td>
+              <td>{{item.QuantityOrdered}}</td>
+              <td>${{item.SellPrice}}</td>
+              <td>{{item.QuantityOrdered}}</td>
+              <td><a routerLink="/rejectproducts/{{docID}},{{i}}">0
+              </a></td>
+              <!-- <td class="textCenter">
+                <mat-checkbox [checked]=true></mat-checkbox>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <hr>
+          <app-signature></app-signature>
+          <hr>
         </div>
+        <div>
+          <mat-form-field class="strong halfWWidth">
+            <input matInput placeholder="Name">
+          </mat-form-field>
+        </div>
+        <div class="strong halfWWidth">
+          <mat-form-field>
+            <mat-select placeholder="Payment">
+              <mat-option *ngFor="let pay of pay" [value]="pay.value">
+                {{pay.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="strong halfWWidth">
+            <mat-form-field>
+                <input matInput placeholder="Amount">
+              </mat-form-field>
+        </div>
+        <div class="textCenter halfWWidth">
+          <button class="textCenter">Confirm Order</button>
+          <br>
+        </div>
+
+
       </div>
     </ul>
+  </ul>
 </div>

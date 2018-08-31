@@ -12,10 +12,8 @@ import { Globals } from '../globals';
 export class NavbarComponent implements OnInit {
 
   currentUrl: String;
-  
-  constructor(private router: Router, public globals: Globals) { 
-    router.events.subscribe((_: NavigationEnd) => this.currentUrl = _.url)
-
+  constructor(private router: Router, public globals: Globals) {
+    router.events.subscribe((_: NavigationEnd) => this.currentUrl = _.url);
   }
 
   ngOnInit() {

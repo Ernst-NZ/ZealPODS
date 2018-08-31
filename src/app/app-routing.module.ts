@@ -9,7 +9,7 @@ import { OrderDetailsComponent } from './order-details/order-details.component';
 import { TestapiComponent } from './testapi/testapi.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_guards/auth.guard';
-
+import { SignatureComponent } from './signature/signature.component';
 
 const routes: Routes = [
   {path: '', component: DriverRoutesComponent, canActivate: [AuthGuard]},
@@ -17,38 +17,37 @@ const routes: Routes = [
   {path: 'users', component: UsersComponent, canActivate: [AuthGuard]},
   {
     path: 'details/:id',
-    component: DetailsComponent,    
+    component: DetailsComponent,
     },
-
   {
     path: 'posts',
-    component: PostsComponent,    
+    component: PostsComponent,
     },
-
   {
     path: 'driver-routes',
-    component: DriverRoutesComponent,    
+    component: DriverRoutesComponent,
     canActivate: [AuthGuard]},
-   
   {
     path: 'route-Orders/:routeName',
-    component: RouteOrdersComponent,    
+    component: RouteOrdersComponent,
   },
   {
     path: 'order-details/:DocumentId',
-    component: OrderDetailsComponent,    
+    component: OrderDetailsComponent,
   },
   {
     path: 'testapi',
-    component: TestapiComponent,    
+    component: TestapiComponent,
   },
-
-  { path: '**', redirectTo: '' }
-  
+  { path: '**', redirectTo: '' },
+  {
+    path: 'signature',
+    component: SignatureComponent
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { display = true;}
+export class AppRoutingModule { display = true; }

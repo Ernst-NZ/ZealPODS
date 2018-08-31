@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { DriverRoutesComponent } from './driver-routes/driver-routes.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PostsComponent } from './posts/posts.component';
-import { ReactiveFormsModule, FormsModule }    from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { UsersComponent } from './users/users.component';
 import { DetailsComponent } from './details/details.component';
 
@@ -28,8 +28,8 @@ import { AlertComponent } from './alert/alert.component';
 import { AlertService } from './_services/alert.service';
 import { AuthenticationService } from './_services/authentication.service';
 import { FooterComponent } from './footer/footer.component';
-
-
+import { SignaturePadModule } from 'angular2-signaturepad';
+import { SignatureComponent } from './signature/signature.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,8 @@ import { FooterComponent } from './footer/footer.component';
     TestapiComponent,
     LoginComponent,
     AlertComponent,
-    FooterComponent
+    FooterComponent,
+    SignatureComponent
   ],
   imports: [
     BrowserModule,
@@ -55,16 +56,15 @@ import { FooterComponent } from './footer/footer.component';
     FormsModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     MatButtonModule,
-    
-    NgbModule.forRoot()
-
+    NgbModule.forRoot(),
+    SignaturePadModule,
   ],
-  providers: [ 
+  providers: [
     Globals,
     AlertService,
     AuthenticationService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }, 
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
