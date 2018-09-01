@@ -1,5 +1,5 @@
 <h1>Order Details</h1>
-<div class="theList">
+<div class="theList"  *ngIf = "orderDetail$">
   <ul *ngFor="let driver of orderDetail$.orderGroups">
     <ul *ngFor="let order of driver.Orders">
       <div class="justP strong" *ngIf="order.DocumentId == docID">
