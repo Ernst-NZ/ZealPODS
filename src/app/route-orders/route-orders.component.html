@@ -1,24 +1,23 @@
 <h1>Orders</h1>
 
-<div *ngIf = "allRoutes$" id="routesMenu">
+<div class="theList" *ngIf = "allRoutes$">
     <ul [@listStagger]="allRoutes$" style="list-style-type:none">
-      <div *ngFor="let orderGroup$ of allRoutes$.orderGroups" >  
+      <div *ngFor="let orderGroup$ of allRoutes$.orderGroups" >
         <div *ngFor="let order of orderGroup$.Orders" >
           <div *ngIf="orderGroup$.Name === selectedRoute" >
-            <li id="routesMenu">
+            <li>
               <ul style="list-style-type:none">
                 <a routerLink="/order-details/{{order.DocumentId}}">{{order.CustomerName}}
-                               
                 <p>&emsp;{{order.DeliveryAddress1}}, {{order.DeliveryAddress2}}, {{order.DeliveryAddress3}}, {{order.PostCode}}</p>
-                <p style="float:right; font-size:12px; padding-right:0px">{{order.selectedRoute}}</p>    
-                <p>&emsp;PH: {{order.PhoneNo}}</p> 
+                <p style="float:right; font-size:12px; padding-right:0px">{{order.selectedRoute}}</p>
+                <p>&emsp;PH: {{order.PhoneNo}}</p>
                 <div *ngIf = order.Subtitle>
                   <p><strong>&emsp;{{order.Subtitle}}</strong></p>
                 </div>
                 </a>
               </ul>
-            </li>    
-          </div>          
+            </li>
+          </div>
         </div>
       </div>
     </ul>

@@ -2,9 +2,9 @@
 <div class="theList">
   <ul *ngFor="let driver of orderDetail$.orderGroups">
     <ul *ngFor="let order of driver.Orders">
-      <div class="blackFont fontSmall1 strong" *ngIf="order.DocumentId == docID">
-        <span class="font15">Order Date: {{ order.DocumentDate | date:'dd/MMM/yyyy'}}</span>
-        <hr class="font2">
+      <div class="justP strong" *ngIf="order.DocumentId == docID">
+        <span>Order Date: {{ order.DocumentDate | date:'dd/MMM/yyyy'}}</span>
+        <hr>
         <p>Customer Code: {{ order.CustomerCode }}</p>
         <p>Delivery Date: {{ order.DocumentDate | date:'dd/MMM/yyyy' }}</p>
         <p>Packing Slip No: {{ order.PackingSlipNo }}</p>
@@ -41,17 +41,17 @@
             </tr>
           </tbody>
         </table>
-        <div>
+        <div class="block">
           <hr>
           <app-signature></app-signature>
           <hr>
         </div>
         <div>
-          <mat-form-field class="strong halfWWidth">
+          <mat-form-field>
             <input matInput placeholder="Name">
           </mat-form-field>
         </div>
-        <div class="strong halfWWidth">
+        <div>
           <mat-form-field>
             <mat-select placeholder="Payment">
               <mat-option *ngFor="let pay of pay" [value]="pay.value">
@@ -60,13 +60,13 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="strong halfWWidth">
+        <div>
           <mat-form-field>
             <input matInput placeholder="Amount">
           </mat-form-field>
         </div>
-        <div class="textCenter halfWWidth">
-          <button class="textCenter">Confirm Order</button>
+        <div>
+          <button>Confirm Order</button>
           <br>
         </div>
       </div>
