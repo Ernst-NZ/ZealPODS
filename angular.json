@@ -28,9 +28,6 @@
               "src/manifest.json"
             ],
             "styles": [
-              {
-                "input": "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
-              },
               "src/styles-app-loading.scss",
               "src/styles.scss",
               {

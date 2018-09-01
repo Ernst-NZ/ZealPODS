@@ -35,6 +35,7 @@ import { FooterComponent } from './footer/footer.component';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignatureComponent } from './signature/signature.component';
 import { RejectproductsComponent } from './rejectproducts/rejectproducts.component';
+import { DeliveryComponent } from './delivery/delivery.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { RejectproductsComponent } from './rejectproducts/rejectproducts.compone
     FooterComponent,
     SignatureComponent,
     RejectproductsComponent,
+    DeliveryComponent,
   ],
   imports: [
     BrowserModule,
