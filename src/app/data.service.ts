@@ -11,11 +11,11 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   getUser(userId) {
-    return this.http.get('http://jsonplaceholder.typicode.com/users/' + userId);
+    return this.http.get('https://jsonplaceholder.typicode.com/users/' + userId);
   }
 
   getUsers() {
-    return this.http.get('http://jsonplaceholder.typicode.com/users' );
+    return this.http.get('https://jsonplaceholder.typicode.com/users' );
   }
 
   getPosts() {
@@ -27,7 +27,7 @@ export class DataService {
   }
 
   getTestApiResult() {
-    return this.http.get('http://localhost:5000/api/genras/');
+    return this.http.get('https://localhost:5000/api/genras/');
   }
 
 }
