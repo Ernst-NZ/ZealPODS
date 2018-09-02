@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "DesignCourse": {
+    "ZealPODS": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/DesignCourse",
+            "outputPath": "dist/ZealPODS",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -63,18 +63,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "DesignCourse:build"
+            "browserTarget": "ZealPODS:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "DesignCourse:build:production"
+              "browserTarget": "ZealPODS:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "DesignCourse:build"
+            "browserTarget": "ZealPODS:build"
           }
         },
         "test": {
@@ -112,7 +112,7 @@
         }
       }
     },
-    "DesignCourse-e2e": {
+    "ZealPODS-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -120,11 +120,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "DesignCourse:serve"
+            "devServerTarget": "ZealPODS:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "DesignCourse:serve:production"
+              "devServerTarget": "ZealPODS:serve:production"
             }
           }
         },
@@ -140,5 +140,5 @@
       }
     }
   },
-  "defaultProject": "DesignCourse"
+  "defaultProject": "ZealPODS"
 }
