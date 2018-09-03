@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService} from '../data.service';
 import {trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
-import { Globals } from '../globals';
+
+import { DeliveryService } from '../_services/delivery.service';
+import { Delivery, IStudent, IDelivery, Deliveryz } from '../_models/delivery';
+
+
 export interface Payment {
   value: string;
   viewValue: string;
@@ -12,6 +16,7 @@ export interface Payment {
   selector: 'app-order-details',
   templateUrl: './order-details.component.html',
   styleUrls: ['./order-details.component.scss'],
+  providers: [DeliveryService],
   animations: [
     trigger('listStagger', [
       transition('* <=> *', [
@@ -28,6 +33,10 @@ export interface Payment {
   ]
 })
 export class OrderDetailsComponent implements OnInit {
+
+  private service: DeliveryService;
+  newDelivery: IDelivery = new Deliveryz();
+  deliveries: Array<IDelivery> = [];
   pay: Payment[] = [
     {value: 'nopay-0', viewValue: 'No Payment'},
     {value: 'cash-1', viewValue: 'Cash'},
@@ -42,8 +51,9 @@ export class OrderDetailsComponent implements OnInit {
     this.hidden = !this.hidden;
   }
 
-  constructor(private route: ActivatedRoute, private data: DataService) {
+  constructor(private route: ActivatedRoute, private data: DataService, service: DeliveryService) {
     this.route.params.subscribe( params => this.orderDetail$ = params.DocumentId );
+    this.service = service;
  }
 
   ngOnInit() {
@@ -52,5 +62,26 @@ export class OrderDetailsComponent implements OnInit {
     );
     const getOrder = (this.route.snapshot.paramMap.get('DocumentId'));
     this.docID = getOrder;
+
+    this.service.myTest();
+
+  //   this.service.addDelivery(this.newDelivery).
+  //   then((addedDelivery: IDelivery[]) => {
+  //     if (addedDelivery.length > 0) {
+  //       this.deliveries.push(addedDelivery[0]);
+  //  //     this.clearNewStudent();
+  //       alert('Successfully added');
+  //     }
+  //   }).catch(error => {
+  //     console.error(error);
+  //     alert(error.message);
+  //   });
   }
+
+  xxx() {
+    // this.service.myTest();
+    this.service.myTest();
+    alert('test1')
+  }
+
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
-import { IStudent } from '../_models/delivery';
+import { IStudent, IDelivery } from '../_models/delivery';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,9 @@ export class DeliveryService extends BaseService {
       from: 'Students'
     });
   }
-
+ 
   addStudent(student: IStudent) {
+    alert(student)
     return this.connection.insert<IStudent>({
       into: 'Students',
       return: true, // as id is autoincrement, so we would like to get the inserted value
@@ -52,5 +53,20 @@ export class DeliveryService extends BaseService {
       }
     });
   }
+//### DeliveryStuff
+  myTest() {
+    alert('test')
+    };
 
-}
+    addDelivery(delivery: IDelivery) {
+      return this.connection.insert<IDelivery>({
+        into: 'Deliveries',
+        return: true, // as id is autoincrement, so we would like to get the inserted value
+        values: [delivery]
+      });
+    }
+    
+//### End
+
+  }
+

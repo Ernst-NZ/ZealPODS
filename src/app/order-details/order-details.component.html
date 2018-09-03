@@ -28,13 +28,13 @@
           <tbody>
             <tr *ngFor="let item of order.Lines; index as i">
               <td>{{item.Description}}<br>
-                <span class="font75">{{item.ProductCode}}</span>
+                <span>{{item.ProductCode}}</span>
               </td>
               <td>{{item.QuantityOrdered}}</td>
               <td>${{item.SellPrice}}</td>
               <td>{{item.QuantityOrdered}}</td>
               <td><a routerLink="/rejectproducts/{{docID}},{{i}}">0
-                </a></td>
+                </a></td>                
               <!-- <td class="textCenter">
                 <mat-checkbox [checked]=true></mat-checkbox>
               </td> -->
@@ -66,7 +66,7 @@
           </mat-form-field>
         </div>
         <div>
-          <button>Confirm Order</button>
+          <button color="primary" (click)="xxx()">Confirm Order</button>
           <br>
         </div>
       </div>

@@ -13,3 +13,29 @@ export class Delivery implements IStudent {
   country = '';
   city = '';
 }
+
+//## Delivery Stuff
+export class IDelivery {
+  id?: number;
+  orderID: number;
+  delivered: boolean;
+  deliveryTime: string;
+  signature: string;
+  lineID: number;
+  rejectReason: string;
+  quantityRejected: number;
+  updated: boolean;
+}
+
+export class Deliveryz implements IDelivery {
+  id = 0;
+  orderID: 0;
+  delivered: false;
+  deliveryTime: '';
+  signature: '';
+  lineID: 0;
+  rejectReason: '';
+  quantityRejected: 0;
+  updated: false;
+}
+//## End 
