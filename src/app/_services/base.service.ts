@@ -1,7 +1,9 @@
 import { IdbService } from '../_services/idb.service';
 import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
+
  export class BaseService {
   dbname = 'Delivery_db';
+  dbJson = 'JSON_db';
   dbDelivery = 'dbDelivery';
   constructor() {
    // turn on jsstore log status - help you to debug
@@ -24,7 +26,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
     // this will be fired when indexedDB is not supported.
     alert(err.message);
    });
-   // DeliveryTest
+   //## DeliveryTest
    this.connection.isDbExist(this.dbDelivery).then(isExist => {
     if (isExist) {
      this.connection.openDb(this.dbDelivery);
@@ -36,7 +38,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
     // this will be fired when indexedDB is not supported.
     alert(err.message);
    });
-   // end
+   //## end
   }
  private getDatabase() {
    const tblStudent: ITable = {

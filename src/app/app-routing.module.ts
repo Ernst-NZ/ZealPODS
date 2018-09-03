@@ -54,7 +54,7 @@ const routes: Routes = [
     path: 'signature',
     component: SignatureComponent
   },
-  { path: '**', redirectTo: '' }
+   { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
