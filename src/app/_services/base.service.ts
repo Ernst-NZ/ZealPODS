@@ -11,6 +11,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
    this.connection.setLogStatus(true);
    this.initJsStore();
   }
+
  get connection() {
    return IdbService.idbCon;
   }
