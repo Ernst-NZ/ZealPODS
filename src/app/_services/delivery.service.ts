@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
 import { IStudent, IDelivery } from '../_models/delivery';
+import { DataService} from '../data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeliveryService extends BaseService {
-
-  constructor() {
-    super();
+  orderDetail$: Object;
+  constructor(private data: DataService) {
+    super();   
   }
 
   getStudents() {
@@ -16,7 +17,7 @@ export class DeliveryService extends BaseService {
       from: 'Students'
     });
   }
- 
+
   addStudent(student: IStudent) {
     alert(student)
     return this.connection.insert<IStudent>({
@@ -53,20 +54,59 @@ export class DeliveryService extends BaseService {
       }
     });
   }
-//### DeliveryStuff
+  //### DeliveryStuff
   myTest() {
     alert('test')
+  };
+
+  addDelivery(delivery: IDelivery) {
+    return this.connection.insert<IDelivery>({
+      into: 'Deliveries',
+      return: true, // as id is autoincrement, so we would like to get the inserted value
+      values: [delivery]
+    });
+  }
+
+  
+  db1Test(name, gender, country, city) {
+    var open = indexedDB.open("Delivery_db", 1);
+
+    open.onupgradeneeded = function () {
+      var db = open.result;
+      var store = db.createObjectStore("DeliveryStore", { keyPath: "id" });
+      // var index = store.createIndex("LineIndex", ["lineID"]);
     };
 
-    addDelivery(delivery: IDelivery) {
-      return this.connection.insert<IDelivery>({
-        into: 'Deliveries',
-        return: true, // as id is autoincrement, so we would like to get the inserted value
-        values: [delivery]
-      });
+    open.onsuccess = function () {
+      // Start a new transaction
+      var db = open.result;
+      var tx = db.transaction("DeliveryStore", "readwrite");
+      var store = tx.objectStore("DeliveryStore");
+  //    var index = store.index("NameIndex");
+        
+     store.put({ id: 55, gender: gender, name: name, country: country, city: city});
+//    store.put({ id: 67890, name: { first: "Bob", last: "Smith" }, age: 35 });
+
+    // Close the db when the transaction is done
+      tx.oncomplete = function () {
+        db.close();
+      };
     }
-    
-//### End
 
   }
+
+  AddDelivery() {    
+
+    this.data.getAllRoutes().subscribe(
+      data => this.orderDetail$ = data
+    );
+    this.orderDetail$.toString;
+
+    this.db1Test("from TS","M","USA","NY")
+
+  }
+
+  //### End
+
+}
 

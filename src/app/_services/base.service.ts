@@ -4,7 +4,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
  export class BaseService {
   dbname = 'Delivery_db';
   dbJson = 'JSON_db';
-  dbDelivery = 'dbDelivery';
+  db1 = 'db1';
   constructor() {
    // turn on jsstore log status - help you to debug
    // turn off it in production or when you dont need
@@ -28,9 +28,22 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
     alert(err.message);
    });
    //## DeliveryTest
-   this.connection.isDbExist(this.dbDelivery).then(isExist => {
+  //  this.connection.isDbExist(this.dbDelivery).then(isExist => {
+  //   if (isExist) {
+  //    this.connection.openDb(this.dbDelivery);
+  //   } else {
+  //    const dataBase = this.getDatabase();
+  //    this.connection.createDb(dataBase);
+  //   }
+  //  }).catch(err => {
+  //   // this will be fired when indexedDB is not supported.
+  //   alert(err.message);
+  //  });
+
+   //#### 
+   this.connection.isDbExist(this.db1).then(isExist => {
     if (isExist) {
-     this.connection.openDb(this.dbDelivery);
+     this.connection.openDb(this.db1);
     } else {
      const dataBase = this.getDatabase();
      this.connection.createDb(dataBase);
@@ -39,6 +52,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
     // this will be fired when indexedDB is not supported.
     alert(err.message);
    });
+
    //## end
   }
   

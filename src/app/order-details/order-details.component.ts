@@ -62,26 +62,9 @@ export class OrderDetailsComponent implements OnInit {
     );
     const getOrder = (this.route.snapshot.paramMap.get('DocumentId'));
     this.docID = getOrder;
-
-    this.service.myTest();
-
-  //   this.service.addDelivery(this.newDelivery).
-  //   then((addedDelivery: IDelivery[]) => {
-  //     if (addedDelivery.length > 0) {
-  //       this.deliveries.push(addedDelivery[0]);
-  //  //     this.clearNewStudent();
-  //       alert('Successfully added');
-  //     }
-  //   }).catch(error => {
-  //     console.error(error);
-  //     alert(error.message);
-  //   });
-  }
-
-  xxx() {
-    // this.service.myTest();
-    this.service.myTest();
-    alert('test1')
+   
+    this.service.AddDelivery();
+    
   }
 
   }
