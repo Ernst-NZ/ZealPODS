@@ -15,12 +15,11 @@
         <button color="primary" (click)="toggleTable()" class="toggle-panel" *ngIf="show">Hide Products</button>
         <button color="primary" (click)="toggleTable()" class="toggle-panel" *ngIf="!show">View Products</button>
         <br> <br>
-        <table width="100%" class="table toggle-panel" [hidden]="hidden">
+        <table width="80%" class="table toggle-panel" [hidden]="hidden">
           <thead>
             <tr>
               <th>Product</th>
               <th>Qty<br>Ordered</th>
-              <th>Price</th>
               <th>Qty<br>Accepted</th>
               <th>Qty<br>Rejected</th>
             </tr>
@@ -30,10 +29,11 @@
               <td>{{item.Description}}<br>
                 <span>{{item.ProductCode}}</span>
               </td>
+              <td>{{item.QuantityOrdered}}
+                <br>${{item.SellPrice}}
+              </td>
               <td>{{item.QuantityOrdered}}</td>
-              <td>${{item.SellPrice}}</td>
-              <td>{{item.QuantityOrdered}}</td>
-              <td><a routerLink="/rejectproducts/{{docID}},{{i}}">0
+              <td><a routerLink="/rejectproducts/{{docID}},{{i}}"><button style="width: 100%" color="primary">0</button>
                 </a></td>                                
               <!-- <td class="textCenter">
                 <mat-checkbox [checked]=true></mat-checkbox>
@@ -43,9 +43,9 @@
         </table>
         <div class="block">
           <hr>
-          <app-signature></app-signature>
-          <hr>
+          <app-signature></app-signature>         
         </div>
+        <div class=""></div>
         <div>
           <mat-form-field>
             <input matInput placeholder="Name">

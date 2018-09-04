@@ -1,13 +1,4 @@
 <div *ngIf="productDetail$">
-  <!-- <div class="topBar">
-    <a routerLink="" class="floatLeft">
-      <i class="material-icons">
-        menu
-      </i>
-    </a>
-    <a class="Strong">Reject Products</a>
-    <a class="floatRight50">{{ productDetail$.User }}</a>
-  </div> -->
   <div id="main">
     <ul *ngFor="let driver of productDetail$.orderGroups">
       <ul *ngFor="let order of driver.Orders">
@@ -15,12 +6,6 @@
           <ul *ngFor="let item of order.Lines; index as i">
             <div class="blackFont fontSmall1 strong" *ngIf="i == lineID">
               <table width="100%" class="table toggle-panel">
-                <!-- <thead>
-                  <tr>
-                    <th>Description</th>
-                    <th>Number</th>
-                  </tr>
-                </thead> -->
                 <tbody>
                   <tr>
                     <td>Product Code</td>
@@ -54,6 +39,9 @@
                   </tr>
                 </tbody>
               </table>
+              <a routerLink="/order-details/{{docID}}">
+                <button mat-button color="accent">Add Rejected</button>
+              </a>
             </div>
           </ul>
         </div>
