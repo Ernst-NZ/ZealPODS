@@ -9,7 +9,7 @@ import { DataService} from '../data.service';
 export class DeliveryService extends BaseService {
   orderDetail$: Object;
   constructor(private data: DataService) {
-    super();   
+    super();
   }
 
   getStudents() {
@@ -19,7 +19,6 @@ export class DeliveryService extends BaseService {
   }
 
   addStudent(student: IStudent) {
-    alert(student)
     return this.connection.insert<IStudent>({
       into: 'Students',
       return: true, // as id is autoincrement, so we would like to get the inserted value
@@ -54,10 +53,10 @@ export class DeliveryService extends BaseService {
       }
     });
   }
-  //### DeliveryStuff
+  // ### DeliveryStuff
   myTest() {
-    alert('test')
-  };
+    alert('test');
+  }
 
   addDelivery(delivery: IDelivery) {
     return this.connection.insert<IDelivery>({
@@ -67,23 +66,22 @@ export class DeliveryService extends BaseService {
     });
   }
 
-  
   db1Test(name, gender, country, city) {
-    var open = indexedDB.open("Delivery_db", 1);
+    const open = indexedDB.open('Delivery_db', 1);
 
     open.onupgradeneeded = function () {
-      var db = open.result;
-      var store = db.createObjectStore("DeliveryStore", { keyPath: "id" });
+      const db = open.result;
+      const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
       // var index = store.createIndex("LineIndex", ["lineID"]);
     };
 
     open.onsuccess = function () {
       // Start a new transaction
-      var db = open.result;
-      var tx = db.transaction("DeliveryStore", "readwrite");
-      var store = tx.objectStore("DeliveryStore");
+      const db = open.result;
+      const tx = db.transaction('DeliveryStore', 'readwrite');
+      const store = tx.objectStore('DeliveryStore');
   //    var index = store.index("NameIndex");
-        
+
      store.put({ id: 55, gender: gender, name: name, country: country, city: city});
 //    store.put({ id: 67890, name: { first: "Bob", last: "Smith" }, age: 35 });
 
@@ -91,22 +89,21 @@ export class DeliveryService extends BaseService {
       tx.oncomplete = function () {
         db.close();
       };
-    }
+    };
 
   }
 
-  AddDelivery() {    
+  AddDelivery() {
 
     this.data.getAllRoutes().subscribe(
       data => this.orderDetail$ = data
     );
-    this.orderDetail$.toString;
 
-    this.db1Test("from TS","M","USA","NY")
+    this.db1Test('from TS', 'M', 'USA', 'NY');
 
   }
 
-  //### End
+  // ### End
 
 }
 
