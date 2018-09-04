@@ -34,6 +34,8 @@ export interface Payment {
 })
 export class OrderDetailsComponent implements OnInit {
 
+  ordergroups = [];
+
   private service: DeliveryService;
   newDelivery: IDelivery = new Deliveryz();
   deliveries: Array<IDelivery> = [];
@@ -58,13 +60,30 @@ export class OrderDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.data.getAllRoutes().subscribe(
-      data => this.orderDetail$ = data
+      data => this.orderDetail$ = data,
     );
+//    this.ordergroups = this.orderDetail$.ordergroups;
     const getOrder = (this.route.snapshot.paramMap.get('DocumentId'));
     this.docID = getOrder;
-   
+
+    // console.log('xxxxxxxxxx');
+    // console.log(this.ordergroups);
+
+
     this.service.AddDelivery();
-    
+
+  }
+
+  xxx() {
+    alert('xxx');
+    const pets = new Set(['Cat', 'Dog', 'Hamster']);
+pets['species'] = 'mammals';
+
+const array = [1, 2, 3];
+for (let i = 0; i < array.length; i++) {
+  console.log(array[i]);
+}
+
   }
 
   }
