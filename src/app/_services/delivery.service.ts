@@ -66,7 +66,7 @@ export class DeliveryService extends BaseService {
     });
   }
 
-  db1Test(name, gender, country, city) {
+  db1Test(id, name, gender, country, city) {
     const open = indexedDB.open('Delivery_db', 1);
 
     open.onupgradeneeded = function () {
@@ -82,7 +82,7 @@ export class DeliveryService extends BaseService {
       const store = tx.objectStore('DeliveryStore');
   //    var index = store.index("NameIndex");
 
-     store.put({ id: 55, gender: gender, name: name, country: country, city: city});
+     store.put({ id, gender: gender, name: name, country: country, city: city});
 //    store.put({ id: 67890, name: { first: "Bob", last: "Smith" }, age: 35 });
 
     // Close the db when the transaction is done
@@ -99,7 +99,7 @@ export class DeliveryService extends BaseService {
       data => this.orderDetail$ = data
     );
 
-    this.db1Test('from TS', 'M', 'USA', 'NY');
+    this.db1Test("777",'from TS', 'M', 'USA', 'NY');
 
   }
 
