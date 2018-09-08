@@ -93,29 +93,36 @@ export class DeliveryService extends BaseService {
 
   }
 
-  AddDelivery() {
+  AddStudentTest() {
 
-    this.data.getAllRoutes().subscribe(
-      data => this.orderDetail$ = data
-    );
-
-    this.db1Test('777', 'from TS', 'M', 'USA', 'NY');
+    this.db1Test('7', 'from TS', 'M', 'USA', 'NY');
 
   }
 
-  test1(user, lastSync, DriverList) {
-    console.log('## In Service ****');
-    console.log('User: ' + user);
-    console.log('lastSync: ' + lastSync);
-    const driverList = [DriverList.Orders];
-    for (let i = 0; i < driverList.length; i++) {
-      for (let j = 0; j < driverList[i][j].length; j++ ) {
-        console.log ('DocID: ' + driverList[i][j]);
-        for (let k = 0; k < driverList[i][j][k].length; k++ ) {
-          console.log ( driverList[i][j][k]);
+ AddDelivery(lastSync, user, documentID, lineID, qtyOrdered) {
+
+ }
+
+  getData(dataList) {
+    // this.data.getAllRoutes().subscribe(
+    //   data => this.orderDetail$ = data
+    // );
+
+    const user = dataList.User;
+    const lastSync = dataList.LastSyncronisation;
+    const drivers = dataList.orderGroups;
+      for (let d = 0; d < drivers.length; d++) {
+        const orderList = drivers[d]['Orders'];
+         for (let o = 0; o < orderList[o].length; o++ ) {
+           const products = orderList[o]['Lines'];
+           const DocumentId = orderList[o].DocumentId;
+           for (let p = 0; p < products[p].length; p++ ) {
+            const LineId = products[p].LineId;
+            const QTYOrdered = products[p].QTYOrdered;
+            this.AddDelivery(lastSync, user, DocumentId, LineId, QTYOrdered);
+            }
            }
-         }
-    }
+        }
 
   }
 

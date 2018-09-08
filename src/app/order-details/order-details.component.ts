@@ -67,25 +67,13 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 
   ngAfterContentChecked() {
        if (this.orderDetail$ !== this.docID && this.addDB === false) {
-      const user = this.orderDetail$;
-      const lastSync = this.orderDetail$;
-      const driver = [this.orderDetail$]['orderGroups'];
-      this.addDB = true;
-      for (let i = 0; i < driver.length; i++) {
-         for (let j = 0; j < driver[i].length; j++ ) {
-           const driverList = (driver[i][j]);
-             this.service.test1(user, lastSync, driverList);
+           this.service.getData(this.orderDetail$);
            }
         }
-      }
-    }
-
 
 
   xxx() {
-    this.service.AddDelivery();
-
-    const myArray = [4, 5, 6];
+    this.service.AddStudentTest();
 
   }
 }

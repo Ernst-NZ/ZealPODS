@@ -4,7 +4,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
  export class BaseService {
   dbname = 'Delivery_db';
   dbJson = 'JSON_db';
-  db1 = 'db1';
+  dbName = 'db1';
   constructor() {
    // turn on jsstore log status - help you to debug
    // turn off it in production or when you dont need
@@ -27,7 +27,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
     // this will be fired when indexedDB is not supported.
     alert(err.message);
    });
-   //## DeliveryTest
+   // ## DeliveryTest
   //  this.connection.isDbExist(this.dbDelivery).then(isExist => {
   //   if (isExist) {
   //    this.connection.openDb(this.dbDelivery);
@@ -40,10 +40,10 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
   //   alert(err.message);
   //  });
 
-   //#### 
-   this.connection.isDbExist(this.db1).then(isExist => {
+   // ####
+   this.connection.isDbExist(this.dbName).then(isExist => {
     if (isExist) {
-     this.connection.openDb(this.db1);
+     this.connection.openDb(this.dbName);
     } else {
      const dataBase = this.getDatabase();
      this.connection.createDb(dataBase);
@@ -53,10 +53,10 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
     alert(err.message);
    });
 
-   //## end
+   // ## end
   }
-  
-  //### Delivery get table
+
+  // ### Delivery get table
   private getDelivberyDB() {
     const tblDelivery: ITable = {
      name: 'Deliveries',
@@ -112,7 +112,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
     };
     return dataBase;
    }
-   //## end
+   // ## end
 
  private getDatabase() {
    const tblStudent: ITable = {

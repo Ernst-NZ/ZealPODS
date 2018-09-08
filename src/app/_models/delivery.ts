@@ -14,28 +14,34 @@ export class Delivery implements IStudent {
   city = '';
 }
 
-//## Delivery Stuff
+// ## Delivery Stuff
 export class IDelivery {
-  id?: number;
-  orderID: number;
+  lastSync: string;
+  name: string;
+  documentId: number;
+  lineId: number;
+  qtyOrdered: number;
+  qtyRejected: number;
+  rejectReason: string;
+  cash: number;
   delivered: boolean;
   deliveryTime: string;
   signature: string;
-  lineID: number;
-  rejectReason: string;
-  quantityRejected: number;
   updated: boolean;
 }
 
 export class Deliveryz implements IDelivery {
-  id = 0;
-  orderID: 0;
+  lastSync: '';
+  name: '';
+  documentId: 0;
+  lineId: 0;
+  qtyOrdered: 0;
+  qtyRejected: 0;
+  rejectReason: '';
+  cash: 0;
   delivered: false;
   deliveryTime: '';
   signature: '';
-  lineID: 0;
-  rejectReason: '';
-  quantityRejected: 0;
   updated: false;
 }
-//## End 
+// ## End
