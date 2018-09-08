@@ -66,10 +66,10 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   }
 
   ngAfterContentChecked() {
-       if (this.orderDetail$ !== this.docID && this.addDB === false) {
-           this.service.getData(this.orderDetail$);
-           }
-        }
+      //  if (this.orderDetail$ !== this.docID && this.addDB === false) {
+      //      this.service.getData(this.orderDetail$);
+      //      }
+         }
 
 
   xxx() {
