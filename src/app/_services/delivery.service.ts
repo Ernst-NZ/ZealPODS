@@ -99,7 +99,23 @@ export class DeliveryService extends BaseService {
       data => this.orderDetail$ = data
     );
 
-    this.db1Test("777",'from TS', 'M', 'USA', 'NY');
+    this.db1Test('777', 'from TS', 'M', 'USA', 'NY');
+
+  }
+
+  test1(user, lastSync, DriverList) {
+    console.log('## In Service ****');
+    console.log('User: ' + user);
+    console.log('lastSync: ' + lastSync);
+    const driverList = [DriverList.Orders];
+    for (let i = 0; i < driverList.length; i++) {
+      for (let j = 0; j < driverList[i][j].length; j++ ) {
+        console.log ('DocID: ' + driverList[i][j]);
+        for (let k = 0; k < driverList[i][j][k].length; k++ ) {
+          console.log ( driverList[i][j][k]);
+           }
+         }
+    }
 
   }
 

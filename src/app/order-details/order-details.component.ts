@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit, AfterViewInit, AfterContentChecked, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../data.service';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
@@ -32,15 +32,6 @@ export interface Payment {
     ])
   ],
 
-  //  template: `
-  //   <ul *ngFor="let driver of orderDetail$.orderGroups">
-  //   <ul *ngFor="let order of driver.Orders">
-  //   <div class="justP strong" *ngIf="order.DocumentId == docID">
-  //         <span>Order Date: {{ order.DocumentDate | date:'dd/MMM/yyyy'}}</span>
-  //   </div>      
-  //   </ul>
-  // </ul>
-  //   `,
 })
 export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 
@@ -52,9 +43,10 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   ];
   orderDetail$: Object;
   public docID;
-  public zzz;
   show = false;
   hidden = true;
+  addDB = false;
+
   toggleTable() {
     this.show = !this.show;
     this.hidden = !this.hidden;
@@ -71,31 +63,30 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     );
     const getOrder = (this.route.snapshot.paramMap.get('DocumentId'));
     this.docID = getOrder;
-  };
-  
-  ngAfterContentChecked() {
-    console.log('### After ContentChecked ########');
-    console.log(this.orderDetail$);
   }
-  
+
+  ngAfterContentChecked() {
+       if (this.orderDetail$ !== this.docID && this.addDB === false) {
+      const user = this.orderDetail$;
+      const lastSync = this.orderDetail$;
+      const driver = [this.orderDetail$]['orderGroups'];
+      this.addDB = true;
+      for (let i = 0; i < driver.length; i++) {
+         for (let j = 0; j < driver[i].length; j++ ) {
+           const driverList = (driver[i][j]);
+             this.service.test1(user, lastSync, driverList);
+           }
+        }
+      }
+    }
+
 
 
   xxx() {
-    alert('xxx');
-    const pets = new Set(['Cat', 'Dog', 'Hamster']);
-    pets['species'] = 'mammals';
-
-    const array = [1, 2, 3];
-    for (let i = 0; i < array.length; i++) {
-      console.log(array[i]);
-    }
-
-    console.log(this.orderDetail$);
-
-    // Adding a student
     this.service.AddDelivery();
 
+    const myArray = [4, 5, 6];
 
   }
-
 }
+
