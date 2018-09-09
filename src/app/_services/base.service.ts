@@ -3,7 +3,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
  export class BaseService {
   dbname = 'Student_db';
   dbDelivery = 'dbDelivery';
-  dnName = 'Delivery_db';
+  dbName = 'Delivery_db';
   constructor() {
    // turn on jsstore log status - help you to debug
    // turn off it in production or when you dont need
@@ -25,19 +25,19 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
     // this will be fired when indexedDB is not supported.
     alert(err.message);
    });
-   // DeliveryTest
-   this.connection.isDbExist(this.dbDelivery).then(isExist => {
+   // ###DeliveryTest
+   this.connection.isDbExist(this.dbName).then(isExist => {
     if (isExist) {
-     this.connection.openDb(this.dbDelivery);
+     this.connection.openDb(this.dbName);
     } else {
-     const dataBase = this.getDatabase();
-     this.connection.createDb(dataBase);
+     const dataBaseDel = this.getDeliveryDb();
+     this.connection.createDb(dataBaseDel);
     }
    }).catch(err => {
     // this will be fired when indexedDB is not supported.
     alert(err.message);
    });
-   // end
+   // ####end
   }
  private getDatabase() {
    const tblStudent: ITable = {
@@ -75,4 +75,77 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
    };
    return dataBase;
   }
+  //  #### Get Deliveries
+  private getDeliveryDb() {
+    const tblDelivery: ITable = {
+     name: 'Deliveries',
+     columns: [{
+       name: 'id',
+       primaryKey: true,
+       autoIncrement: true
+      },
+      {
+       name: 'lastSync',
+       notNull: true,
+       dataType: DATA_TYPE.String
+      },
+      {
+       name: 'name',
+       dataType: DATA_TYPE.String,
+      },
+      {
+       name: 'documentId',
+       notNull: true,
+       dataType: DATA_TYPE.Number
+      },
+      {
+       name: 'lineId',
+       dataType: DATA_TYPE.Number,
+       notNull: true
+      },
+      {
+       name: 'qtyOrdered',
+       dataType: DATA_TYPE.Number
+      },
+      {
+       name: 'qtyRejected',
+       dataType: DATA_TYPE.Number
+      },
+      {
+       name: 'rejectReason',
+       dataType: DATA_TYPE.String,
+       notNull: true
+      },
+      {
+       name: 'cash',
+       dataType: DATA_TYPE.Number
+      },
+      {
+       name: 'delivered',
+       dataType: DATA_TYPE.Boolean,
+       notNull: true,
+       default: false,
+      },
+      {
+       name: 'deliveryTime',
+       dataType: DATA_TYPE.String
+      },
+      {
+       name: 'signature',
+       dataType: DATA_TYPE.String
+      },
+      {
+       name: 'updated',
+       dataType: DATA_TYPE.String,
+       notNull: true,
+       default: false
+      }
+     ]
+    };
+    const dataBaseDel: IDataBase = {
+     name: this.dbName,
+     tables: [tblDelivery]
+    };
+    return dataBaseDel;
+   }
  }

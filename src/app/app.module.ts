@@ -36,7 +36,6 @@ import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignatureComponent } from './signature/signature.component';
 import { RejectproductsComponent } from './rejectproducts/rejectproducts.component';
 import { DeliveryComponent } from './delivery/delivery.component';
-import { AaaComponent } from './aaa/aaa.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +54,6 @@ import { AaaComponent } from './aaa/aaa.component';
     SignatureComponent,
     RejectproductsComponent,
     DeliveryComponent,
-    AaaComponent,
   ],
   imports: [
     BrowserModule,

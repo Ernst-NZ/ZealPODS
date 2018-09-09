@@ -6,7 +6,7 @@ export class IStudent {
   city: string;
 }
 
-export class Delivery implements IStudent {
+export class Student implements IStudent {
   id = 0;
   name = '';
   gender = 'm';
@@ -16,6 +16,7 @@ export class Delivery implements IStudent {
 
 // ## Delivery Stuff
 export class IDelivery {
+  id?: number;
   lastSync: string;
   name: string;
   documentId: number;
@@ -31,6 +32,7 @@ export class IDelivery {
 }
 
 export class Deliveryz implements IDelivery {
+  id: 0;
   lastSync: '';
   name: '';
   documentId: 0;

@@ -62,3 +62,75 @@
     </td>
   </tr>
 </table>
+<hr>
+<table>
+  <tr>
+    <th>Last Sync</th>
+    <th>name</th>
+    <th>documentId</th>
+    <th>lineId</th>
+    <th>qtyOrdered</th>
+    <th>qtyRejected</th>
+    <th>rejectReason</th>
+    <th>cash</th>
+    <th>delivered</th>
+    <th>deliveryTime</th>
+    <th>signature</th>
+    <th>updated</th>
+    <th></th>
+  </tr>
+
+  <tr *ngFor="let delivery of deliveries" [attr.data-id]="delivery.id">
+    <td>
+      <span>{{delivery.lastSync}}</span>
+    </td>
+    <td>
+      <span>{{delivery.name}}</span>
+    </td>
+    <td>
+      <span>{{delivery.documentId}}</span>
+    </td>
+    <td>
+      <span>{{delivery.lineId}}</span>
+    </td>
+    <td>
+      <span>{{delivery.qtyOrdered}}</span>
+    </td>
+    <td>
+      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.qtyRejected" />
+      <span *ngIf="!delivery.editing">{{delivery.qtyRejected}}</span>
+    </td>
+     <td>
+      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.rejectReason" />
+      <span *ngIf="!delivery.editing">{{delivery.rejectReason}}</span>
+    </td>
+    <td>
+      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.cash" />
+      <span *ngIf="!delivery.editing">{{delivery.cash}}</span>
+    </td>
+    <td>
+      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.delivered" />
+      <span *ngIf="!delivery.editing">{{delivery.delivered}}</span>
+    </td>
+    <td>
+      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.deliveryTime" />
+      <span *ngIf="!delivery.editing">{{delivery.deliveryTime}}</span>
+    </td>
+    <td>
+      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.signature" />
+      <span *ngIf="!delivery.editing">{{delivery.signature}}</span>
+    </td>
+    <td>
+      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.updated" />
+      <span *ngIf="!delivery.editing">{{delivery.updated}}</span>
+    </td>
+    <td>
+      <button *ngIf="delivery.editing" (click)="updateDelivery();delivery.editing=false">Update</button>
+      <button *ngIf="!delivery.editing" (click)="delivery.editing=true;getDelivery(delivery.id);">Edit</button>
+    </td>
+    <td>
+      <button *ngIf="delivery.editing" (click)="delivery.editing=false">Cancel</button>
+    </td>
+  </tr>
+</table>
+
