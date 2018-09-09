@@ -2,6 +2,7 @@ import { IdbService } from '../_services/idb.service';
 import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
  export class BaseService {
   dbname = 'Student_db';
+//  dbname = 'Delivery_db';
   dbDelivery = 'dbDelivery';
   dbName = 'Delivery_db';
   constructor() {
@@ -18,25 +19,26 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
     if (isExist) {
      this.connection.openDb(this.dbname);
     } else {
-     const dataBase = this.getDatabase();
+      const dataBase = this.getDatabase();
+   //  const dataBase = this.getDeliveryDb();
      this.connection.createDb(dataBase);
     }
    }).catch(err => {
     // this will be fired when indexedDB is not supported.
     alert(err.message);
    });
-   // ###DeliveryTest
-   this.connection.isDbExist(this.dbName).then(isExist => {
-    if (isExist) {
-     this.connection.openDb(this.dbName);
-    } else {
-     const dataBaseDel = this.getDeliveryDb();
-     this.connection.createDb(dataBaseDel);
-    }
-   }).catch(err => {
-    // this will be fired when indexedDB is not supported.
-    alert(err.message);
-   });
+ //  ###DeliveryTest
+  //  this.connection.isDbExist(this.dbName).then(isExist => {
+  //   if (isExist) {
+  //    this.connection.openDb(this.dbName);
+  //   } else {
+  //    const dataBaseDel = this.getDeliveryDb();
+  //    this.connection.createDb(dataBaseDel);
+  //   }
+  //  }).catch(err => {
+  //   // this will be fired when indexedDB is not supported.
+  //   alert(err.message);
+  //  });
    // ####end
   }
  private getDatabase() {
