@@ -82,19 +82,24 @@
 
   <tr *ngFor="let delivery of deliveries" [attr.data-id]="delivery.id">
     <td>
-      <span>{{delivery.lastSync}}</span>
+      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.lastSync" />
+      <span *ngIf="!delivery.editing" >{{delivery.lastSync}}</span>
     </td>
     <td>
-      <span>{{delivery.name}}</span>
+        <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.name" />
+      <span *ngIf="!delivery.editing">{{delivery.name}}</span>
     </td>
     <td>
-      <span>{{delivery.documentId}}</span>
+      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.documentId" />
+      <span *ngIf="!delivery.editing">{{delivery.documentId}}</span>
     </td>
     <td>
-      <span>{{delivery.lineId}}</span>
+       <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.lineID" />
+      <span *ngIf="!delivery.editing">{{delivery.lineId}}</span>
     </td>
     <td>
-      <span>{{delivery.qtyOrdered}}</span>
+      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.qtyOrdered" />
+      <span *ngIf="!delivery.editing">{{delivery.qtyOrdered}}</span>
     </td>
     <td>
       <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.qtyRejected" />

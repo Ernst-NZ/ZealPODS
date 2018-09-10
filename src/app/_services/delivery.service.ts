@@ -83,7 +83,7 @@ export class DeliveryService extends BaseService {
   }
 
   // ## Get Delivery
-  getDelicery(deliveryId: number) {
+  getDelivery(deliveryId: number) {
     return this.connection.select<IDelivery>({
       from: 'Deliveries',
       where: {
@@ -97,29 +97,29 @@ export class DeliveryService extends BaseService {
 
     db1Test(id, name, gender, country, city) {
       // const open = indexedDB.open('Student_db', 1);
-      const open = indexedDB.open('Student_db', 1);
+      const open = indexedDB.open('Delivery_db', 1);
 
       open.onupgradeneeded = function () {
         const db = open.result;
-        // const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
-        const store = db.createObjectStore('Students', { keyPath: 'id' });
+         const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
+       // const store = db.createObjectStore('Students', { keyPath: 'id' });
         // var index = store.createIndex("LineIndex", ["lineID"]);
       };
 
       open.onsuccess = function () {
         // Start a new transaction
         const db = open.result;
-        // const tx = db.transaction('DeliveryStore', 'readwrite');
-        // const store = tx.objectStore('DeliveryStore');
-        const tx = db.transaction('Students', 'readwrite');
-        const store = tx.objectStore('Students');
+         const tx = db.transaction('Deliveries', 'readwrite');
+         const store = tx.objectStore('Deliveries');
+     //   const tx = db.transaction('Students', 'readwrite');
+     //   const store = tx.objectStore('Students');
     //    var index = store.index("NameIndex");
 
-      store.put({ id, gender: gender, name: name, country: country, city: city});
-  //       store.put({id, lastSync: 'lastSync', name: 'Name', DocumentId: 123,
-  //               lineId: 456, qtyOrdered: 10, qtyRejected: 5,
-  //               cirejectReason: 'Damaged', cash: 4, delivered: true,
-  //             deliveryTime: '10:00', signature: 'Ernst', updated: false });
+ //     store.put({ id, gender: gender, name: name, country: country, city: city});
+        store.put({id, lastSync: 'lastSync', name: 'Name', documentId: 123,
+                lineId: 456, qtyOrdered: 10, qtyRejected: 5,
+                rejectReason: 'Damaged', cash: 4, delivered: 'true',
+              deliveryTime: '10:00', signature: 'Ernst', updated: '0' });
   // // // // //    store.put({ id: 67890, name: { first: "Bob", last: "Smith" }, age: 35 });
 
       // Close the db when the transaction is done
@@ -132,7 +132,7 @@ export class DeliveryService extends BaseService {
 
     AddStudentTest() {
 
-      this.db1Test(33, 'from TS', 'M', 'USA', 'NY');
+      this.db1Test(456, 'from TS', 'M', 'USA', 'NY');
 
     }
 

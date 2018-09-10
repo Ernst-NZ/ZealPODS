@@ -24,8 +24,8 @@ export class DeliveryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getStudents();
- //   this.getDeliveries();
+ //   this.getStudents();
+    this.getDeliveries();
   }
 
   getStudents() {
@@ -95,6 +95,19 @@ export class DeliveryComponent implements OnInit {
       then(students => {
         if (students.length > 0) {
           this.oldStudent = students[0];
+        }
+      }).catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
+  }
+
+  // Get Delivery
+  getDelivery(deliveryId) {
+    this.service.getDelivery(deliveryId).
+      then(deliveries => {
+        if (deliveries.length > 0) {
+          this.oldDelivery = deliveries[0];
         }
       }).catch(error => {
         console.error(error);

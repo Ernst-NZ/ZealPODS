@@ -1,8 +1,8 @@
 import { IdbService } from '../_services/idb.service';
 import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
  export class BaseService {
-  dbname = 'Student_db';
-//  dbname = 'Delivery_db';
+//  dbname = 'Student_db';
+  dbname = 'Delivery_db';
   dbDelivery = 'dbDelivery';
   dbName = 'Delivery_db';
   constructor() {
@@ -19,8 +19,8 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
     if (isExist) {
      this.connection.openDb(this.dbname);
     } else {
-      const dataBase = this.getDatabase();
-   //  const dataBase = this.getDeliveryDb();
+   //   const dataBase = this.getDatabase();
+     const dataBase = this.getDeliveryDb();
      this.connection.createDb(dataBase);
     }
    }).catch(err => {
@@ -124,9 +124,9 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
       },
       {
        name: 'delivered',
-       dataType: DATA_TYPE.Boolean,
+       dataType: DATA_TYPE.String,
        notNull: true,
-       default: false,
+       default: 'false',
       },
       {
        name: 'deliveryTime',
@@ -140,7 +140,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
        name: 'updated',
        dataType: DATA_TYPE.String,
        notNull: true,
-       default: false
+       default: 'false'
       }
      ]
     };

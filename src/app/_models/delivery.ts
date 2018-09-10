@@ -25,10 +25,10 @@ export class IDelivery {
   qtyRejected: number;
   rejectReason: string;
   cash: number;
-  delivered: boolean;
+  delivered: string;
   deliveryTime: string;
   signature: string;
-  updated: boolean;
+  updated: string;
 }
 
 export class Deliveryz implements IDelivery {
@@ -41,9 +41,9 @@ export class Deliveryz implements IDelivery {
   qtyRejected: 0;
   rejectReason: '';
   cash: 0;
-  delivered: false;
+  delivered: '';
   deliveryTime: '';
   signature: '';
-  updated: false;
+  updated: '';
 }
 // ## End
