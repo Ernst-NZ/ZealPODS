@@ -115,7 +115,7 @@ export class DeliveryService extends BaseService {
         const store = tx.objectStore('Deliveries');
     //    var index = store.index("NameIndex");
 
-       store.put({ id, gender: gender, name: name, country: country, city: city});
+      store.put({ id, gender: gender, name: name, country: country, city: city});
     //   store.put({ lastSync: 'lastSync', name: 'Name', DocumentId: 123,
   //             lineId: 456, qtyOrdered: 10, qtyRejected: 5,
   //             cirejectReason: 'Damaged', cash: 4, delivered: true,
@@ -132,7 +132,7 @@ export class DeliveryService extends BaseService {
 
     AddStudentTest() {
 
-      this.db1Test('78', 'from TS', 'M', 'USA', 'NY');
+      this.db1Test('77', 'from TS', 'M', 'USA', 'NY');
 
     }
 
