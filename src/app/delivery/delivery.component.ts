@@ -166,21 +166,6 @@ export class DeliveryComponent implements OnInit {
         alert(error.message);
       });
   }
-
-
-  AddTest() {
-      this.service.addStudent(this.newStudent).
-        then((addedStudents: IStudent[]) => {
-          if (addedStudents.length > 0) {
-            this.students.push(addedStudents[0]);
-            this.clearNewStudent();
-            alert('Successfully added');
-          }
-        }).catch(error => {
-          console.error(error);
-          alert(error.message);
-        });
-    }
   }
 
 

@@ -65,44 +65,20 @@
 <hr>
 <table>
   <tr>
-    <th>Last Sync</th>
-    <th>name</th>
-    <th>documentId</th>
-    <th>lineId</th>
-    <th>qtyOrdered</th>
-    <th>qtyRejected</th>
-    <th>rejectReason</th>
-    <th>cash</th>
-    <th>delivered</th>
-    <th>deliveryTime</th>
-    <th>signature</th>
-    <th>updated</th>
+    <th>QTY Ordered</th>
+    <th>QTY Rejected</th>
+    <th>Reason</th>
+    <th>Cash</th>
     <th></th>
   </tr>
 
   <tr *ngFor="let delivery of deliveries" [attr.data-id]="delivery.id">
     <td>
-      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.lastSync" />
-      <span *ngIf="!delivery.editing" >{{delivery.lastSync}}</span>
+      <input type="hidden" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.qtyOrdered" />
+      <span >{{delivery.qtyOrdered}}</span>
     </td>
     <td>
-        <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.name" />
-      <span *ngIf="!delivery.editing">{{delivery.name}}</span>
-    </td>
-    <td>
-      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.documentId" />
-      <span *ngIf="!delivery.editing">{{delivery.documentId}}</span>
-    </td>
-    <td>
-       <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.lineID" />
-      <span *ngIf="!delivery.editing">{{delivery.lineId}}</span>
-    </td>
-    <td>
-      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.qtyOrdered" />
-      <span *ngIf="!delivery.editing">{{delivery.qtyOrdered}}</span>
-    </td>
-    <td>
-      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.qtyRejected" />
+      <input type="number" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.qtyRejected" />
       <span *ngIf="!delivery.editing">{{delivery.qtyRejected}}</span>
     </td>
      <td>
@@ -110,24 +86,8 @@
       <span *ngIf="!delivery.editing">{{delivery.rejectReason}}</span>
     </td>
     <td>
-      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.cash" />
+      <input type="number" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.cash" />
       <span *ngIf="!delivery.editing">{{delivery.cash}}</span>
-    </td>
-    <td>
-      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.delivered" />
-      <span *ngIf="!delivery.editing">{{delivery.delivered}}</span>
-    </td>
-    <td>
-      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.deliveryTime" />
-      <span *ngIf="!delivery.editing">{{delivery.deliveryTime}}</span>
-    </td>
-    <td>
-      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.signature" />
-      <span *ngIf="!delivery.editing">{{delivery.signature}}</span>
-    </td>
-    <td>
-      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.updated" />
-      <span *ngIf="!delivery.editing">{{delivery.updated}}</span>
     </td>
     <td>
       <button *ngIf="delivery.editing" (click)="updateDelivery();delivery.editing=false">Update</button>
