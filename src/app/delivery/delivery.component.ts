@@ -24,8 +24,8 @@ export class DeliveryComponent implements OnInit {
   }
 
   ngOnInit() {
- //   this.getStudents();
-    this.getDeliveries();
+    this.getStudents();
+ //   this.getDeliveries();
   }
 
   getStudents() {
