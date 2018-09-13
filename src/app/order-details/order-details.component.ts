@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../data.service';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 
-import { DeliveryService } from '../_services/delivery.service';
+// import { DeliveryService } from '../_services/delivery.service';
 // import { Delivery, IStudent, IDelivery, Deliveryz } from '../_models/delivery';
 
 
@@ -16,7 +16,7 @@ export interface Payment {
   selector: 'app-order-details',
   templateUrl: './order-details.component.html',
   styleUrls: ['./order-details.component.scss'],
-  providers: [DeliveryService],
+ // providers: [DeliveryService],
   animations: [
     trigger('listStagger', [
       transition('* <=> *', [
@@ -35,7 +35,7 @@ export interface Payment {
 })
 export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 
-  private service: DeliveryService;
+ // private service: DeliveryService;
   pay: Payment[] = [
     { value: 'nopay-0', viewValue: 'No Payment' },
     { value: 'cash-1', viewValue: 'Cash' },
@@ -52,9 +52,9 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     this.hidden = !this.hidden;
   }
 
-  constructor(private route: ActivatedRoute, private data: DataService, service: DeliveryService) {
+  constructor(private route: ActivatedRoute, private data: DataService) {
     this.route.params.subscribe(params => this.orderDetail$ = params.DocumentId);
-    this.service = service;
+  //  this.service = service;
   }
 
   ngOnInit() {
@@ -72,9 +72,9 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
          }
 
 
-  xxx() {
-    this.service.AddStudentTest();
+  // xxx() {
+  //   this.service.AddStudentTest();
 
-  }
+  // }
 }
 

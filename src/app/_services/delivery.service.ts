@@ -95,7 +95,7 @@ export class DeliveryService extends BaseService {
     // ### Test Stuff
 
 
-    db1Test(id, name, gender, country, city) {
+    db1Test(id, lastSync, user, documentID, lineID, qtyOrdered) {
       // const open = indexedDB.open('Student_db', 1);
       const open = indexedDB.open('Delivery_db', 1);
 
@@ -116,10 +116,9 @@ export class DeliveryService extends BaseService {
     //    var index = store.index("NameIndex");
 
  //     store.put({ id, gender: gender, name: name, country: country, city: city});
-        store.put({id, lastSync: 'lastSync', name: 'Name', documentId: 123,
-                lineId: 456, qtyOrdered: 10, qtyRejected: 5,
-                rejectReason: 'Damaged', cash: 4, delivered: 'true',
-              deliveryTime: '10:00', signature: 'Ernst', updated: '0' });
+        store.put({id, lastSync: lastSync, name: user, documentId: documentID,
+                lineId: lineID, qtyOrdered: qtyOrdered, qtyRejected: 0,
+                delivered: 'false', updated: 'false' });
   // // // // //    store.put({ id: 67890, name: { first: "Bob", last: "Smith" }, age: 35 });
 
       // Close the db when the transaction is done
@@ -132,7 +131,7 @@ export class DeliveryService extends BaseService {
 
     AddStudentTest() {
 
-      this.db1Test(456, 'from TS', 'M', 'USA', 'NY');
+      this.db1Test(456, 888, 'from TS', 'M', 'USA', 'NY');
 
     }
 
@@ -145,18 +144,19 @@ export class DeliveryService extends BaseService {
       //   data => this.orderDetail$ = data
       // );
 
-      const user = dataList.User;
+
       const lastSync = dataList.LastSyncronisation;
       const drivers = dataList.orderGroups;
         for (let d = 0; d < drivers.length; d++) {
+          const user = drivers.Name;
           const orderList = drivers[d]['Orders'];
-           for (let o = 0; o < orderList[o].length; o++ ) {
+           for (let o = 0; o < orderList.length; o++ ) {
              const products = orderList[o]['Lines'];
              const DocumentId = orderList[o].DocumentId;
-             for (let p = 0; p < products[p].length; p++ ) {
+             for (let p = 0; p < products.length; p++ ) {
               const LineId = products[p].LineId;
               const QTYOrdered = products[p].QTYOrdered;
-            //  this.AddDelivery(lastSync, user, DocumentId, LineId, QTYOrdered);
+              this.db1Test(LineId, lastSync, user, DocumentId, LineId, QTYOrdered);
               }
              }
           }
