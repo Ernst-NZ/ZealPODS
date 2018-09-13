@@ -4,7 +4,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
 //  dbname = 'Student_db';
   dbname = 'Delivery_db';
   dbDelivery = 'dbDelivery';
-  dbName = 'Delivery_db';
+ // dbName = 'Delivery_db';
   constructor() {
    // turn on jsstore log status - help you to debug
    // turn off it in production or when you dont need
@@ -19,7 +19,6 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
     if (isExist) {
      this.connection.openDb(this.dbname);
     } else {
-   //   const dataBase = this.getDatabase();
      const dataBase = this.getDeliveryDb();
      this.connection.createDb(dataBase);
     }
@@ -27,56 +26,8 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
     // this will be fired when indexedDB is not supported.
     alert(err.message);
    });
- //  ###DeliveryTest
-  //  this.connection.isDbExist(this.dbName).then(isExist => {
-  //   if (isExist) {
-  //    this.connection.openDb(this.dbName);
-  //   } else {
-  //    const dataBaseDel = this.getDeliveryDb();
-  //    this.connection.createDb(dataBaseDel);
-  //   }
-  //  }).catch(err => {
-  //   // this will be fired when indexedDB is not supported.
-  //   alert(err.message);
-  //  });
-   // ####end
   }
- private getDatabase() {
-   const tblStudent: ITable = {
-    name: 'Students',
-    columns: [{
-      name: 'id',
-      primaryKey: true,
-      autoIncrement: true
-     },
-     {
-      name: 'name',
-      notNull: true,
-      dataType: DATA_TYPE.String
-     },
-     {
-      name: 'gender',
-      dataType: DATA_TYPE.String,
-      default: 'male'
-     },
-     {
-      name: 'country',
-      notNull: true,
-      dataType: DATA_TYPE.String
-     },
-     {
-      name: 'city',
-      dataType: DATA_TYPE.String,
-      notNull: true
-     }
-    ]
-   };
-   const dataBase: IDataBase = {
-    name: this.dbname,
-    tables: [tblStudent]
-   };
-   return dataBase;
-  }
+
   //  #### Get Deliveries
   private getDeliveryDb() {
     const tblDelivery: ITable = {
@@ -144,10 +95,10 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
       }
      ]
     };
-    const dataBaseDel: IDataBase = {
-     name: this.dbName,
+    const dataBase: IDataBase = {
+     name: this.dbname,
      tables: [tblDelivery]
     };
-    return dataBaseDel;
+    return dataBase;
    }
  }

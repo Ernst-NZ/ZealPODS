@@ -1,18 +1,18 @@
-export class IStudent {
-  id?: number;
-  name: string;
-  gender: string;
-  country: string;
-  city: string;
-}
+// export class IStudent {
+//   id?: number;
+//   name: string;
+//   gender: string;
+//   country: string;
+//   city: string;
+// }
 
-export class Student implements IStudent {
-  id = 0;
-  name = '';
-  gender = 'm';
-  country = '';
-  city = '';
-}
+// export class Student implements IStudent {
+//   id = 0;
+//   name = '';
+//   gender = 'm';
+//   country = '';
+//   city = '';
+// }
 
 // ## Delivery Stuff
 export class IDelivery {
@@ -31,7 +31,7 @@ export class IDelivery {
   updated: string;
 }
 
-export class Deliveryz implements IDelivery {
+export class Delivery implements IDelivery {
   id: 0;
   lastSync: '';
   name: '';

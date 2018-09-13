@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
-import { IStudent, IDelivery } from '../_models/delivery';
-import { DataService} from '../data.service';
+import { IDelivery } from '../_models/delivery';
+import { DataService } from '../data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,14 +9,14 @@ import { DataService} from '../data.service';
 export class DeliveryService extends BaseService {
   orderDetail$: Object;
   constructor(private data: DataService) {
-      super();
+    super();
   }
 
-  getStudents() {
-    return this.connection.select<IStudent>({
-      from: 'Students'
-    });
-  }
+  // getStudents() {
+  //   return this.connection.select<IStudent>({
+  //     from: 'Students'
+  //   });
+  // }
 
   // ## Get Deliveries
   getDeliveries() {
@@ -25,13 +25,13 @@ export class DeliveryService extends BaseService {
     });
   }
 
-  addStudent(student: IStudent) {
-    return this.connection.insert<IStudent>({
-      into: 'Students',
-      return: true, // as id is autoincrement, so we would like to get the inserted value
-      values: [student]
-    });
-  }
+  // addStudent(student: IStudent) {
+  //   return this.connection.insert<IStudent>({
+  //     into: 'Students',
+  //     return: true, // as id is autoincrement, so we would like to get the inserted value
+  //     values: [student]
+  //   });
+  // }
 
   // #### Add Delivery
   addDelivery(delivery: IDelivery) {
@@ -42,25 +42,25 @@ export class DeliveryService extends BaseService {
     });
   }
 
-  deleteStudent(studentId: number) {
-    return this.connection.remove({
-      from: 'Students',
-      where: {
-        id: studentId
-      }
-    });
-  }
+  // deleteStudent(studentId: number) {
+  //   return this.connection.remove({
+  //     from: 'Students',
+  //     where: {
+  //       id: studentId
+  //     }
+  //   });
+  // }
   //  ## Not going to enable Delete for Deliveries
 
-  updateStudent(studentId: number, updateValue: IStudent) {
-    return this.connection.update({
-      in: 'Students',
-      where: {
-        id: studentId
-      },
-      set: updateValue
-    });
-  }
+  // updateStudent(studentId: number, updateValue: IStudent) {
+  //   return this.connection.update({
+  //     in: 'Students',
+  //     where: {
+  //       id: studentId
+  //     },
+  //     set: updateValue
+  //   });
+  // }
 
   // ## update Product for Edit purposes
   updateDelivery(lineId: number, updateValue: IDelivery) {
@@ -73,14 +73,14 @@ export class DeliveryService extends BaseService {
     });
   }
 
-  getStudent(studentId: number) {
-    return this.connection.select<IStudent>({
-      from: 'Students',
-      where: {
-        id: studentId
-      }
-    });
-  }
+  // getStudent(studentId: number) {
+  //   return this.connection.select<IStudent>({
+  //     from: 'Students',
+  //     where: {
+  //       id: studentId
+  //     }
+  //   });
+  // }
 
   // ## Get Delivery
   getDelivery(deliveryId: number) {
@@ -92,78 +92,93 @@ export class DeliveryService extends BaseService {
     });
   }
 
-    // ### Test Stuff
+  getOrder(documentId: number) {
+    return this.connection.select<IDelivery>({
+      from: 'Deliveries',
+      where: {
+        documentId: documentId
+      }
+    });
+  }
 
+  // ### Test Stuff
 
-    db1Test(id, lastSync, user, documentID, lineID, qtyOrdered) {
-      // const open = indexedDB.open('Student_db', 1);
-      const open = indexedDB.open('Delivery_db', 1);
+  db1Test(id, lastSync, user, documentID, lineID, qtyOrdered) {
+    // const open = indexedDB.open('Student_db', 1);
+    const open = indexedDB.open('Delivery_db', 1);
 
-      open.onupgradeneeded = function () {
-        const db = open.result;
-         const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
-       // const store = db.createObjectStore('Students', { keyPath: 'id' });
-        // var index = store.createIndex("LineIndex", ["lineID"]);
-      };
+    open.onupgradeneeded = function() {
+      const db = open.result;
+      const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
+      // const store = db.createObjectStore('Students', { keyPath: 'id' });
+      // var index = store.createIndex('LineIndex', ['lineID']);
+    };
 
-      open.onsuccess = function () {
-        // Start a new transaction
-        const db = open.result;
-         const tx = db.transaction('Deliveries', 'readwrite');
-         const store = tx.objectStore('Deliveries');
-     //   const tx = db.transaction('Students', 'readwrite');
-     //   const store = tx.objectStore('Students');
-    //    var index = store.index("NameIndex");
+    open.onsuccess = function() {
+      // Start a new transaction
+      const db = open.result;
+      const tx = db.transaction('Deliveries', 'readwrite');
+      const store = tx.objectStore('Deliveries');
+      //   const tx = db.transaction('Students', 'readwrite');
+      //   const store = tx.objectStore('Students');
+      //    var index = store.index('NameIndex');
 
- //     store.put({ id, gender: gender, name: name, country: country, city: city});
-        store.put({id, lastSync: lastSync, name: user, documentId: documentID,
-                lineId: lineID, qtyOrdered: qtyOrdered, qtyRejected: 0,
-                delivered: 'false', updated: 'false' });
-  // // // // //    store.put({ id: 67890, name: { first: "Bob", last: "Smith" }, age: 35 });
+      //     store.put({ id, gender: gender, name: name, country: country, city: city});
+      store.put({
+        id,
+        lastSync: lastSync,
+        name: user,
+        documentId: documentID,
+        lineId: lineID,
+        qtyOrdered: qtyOrdered,
+        qtyRejected: 0,
+        delivered: 'false',
+        updated: 'false'
+      });
+      // // // // //    store.put({ id: 67890, name: { first: 'Bob', last: 'Smith' }, age: 35 });
 
       // Close the db when the transaction is done
-        tx.oncomplete = function () {
-          db.close();
-        };
+      tx.oncomplete = function() {
+        db.close();
       };
+    };
+  }
 
-    }
+  AddStudentTest() {
+    this.db1Test(456, 888, 'from TS', 'M', 'USA', 'NY');
+  }
 
-    AddStudentTest() {
+  AddDeliveryx(lastSync, user, documentID, lineID, qtyOrdered) {}
 
-      this.db1Test(456, 888, 'from TS', 'M', 'USA', 'NY');
-
-    }
-
-   AddDeliveryx(lastSync, user, documentID, lineID, qtyOrdered) {
-
-   }
-
-    getData(dataList) {
-      // this.data.getAllRoutes().subscribe(
-      //   data => this.orderDetail$ = data
-      // );
-
-
-      const lastSync = dataList.LastSyncronisation;
-      const drivers = dataList.orderGroups;
-        for (let d = 0; d < drivers.length; d++) {
-          const user = drivers.Name;
-          const orderList = drivers[d]['Orders'];
-           for (let o = 0; o < orderList.length; o++ ) {
-             const products = orderList[o]['Lines'];
-             const DocumentId = orderList[o].DocumentId;
-             for (let p = 0; p < products.length; p++ ) {
-              const LineId = products[p].LineId;
-              const QTYOrdered = products[p].QTYOrdered;
-              this.db1Test(LineId, lastSync, user, DocumentId, LineId, QTYOrdered);
-              }
-             }
+  getData(dataList, driverName) {
+    // this.data.getAllRoutes().subscribe(
+    //   data => this.orderDetail$ = data
+    // );
+    const lastSync = dataList.LastSyncronisation;
+    const drivers = dataList.orderGroups;
+    for (let d = 0; d < drivers.length; d++) {
+      if (drivers[d].Name === driverName) {
+        const user = drivers[d].Name;
+        const orderList = drivers[d]['Orders'];
+        for (let o = 0; o < orderList.length; o++) {
+          const products = orderList[o]['Lines'];
+          const DocumentId = orderList[o].DocumentId;
+          for (let p = 0; p < products.length; p++) {
+            const LineId = products[p].LineId;
+            const QTYOrdered = products[p].QuantityOrdered;
+            this.db1Test(
+              LineId,
+              lastSync,
+              user,
+              DocumentId,
+              LineId,
+              QTYOrdered
+            );
           }
-
+        }
+      }
     }
+  }
 
-    // ### End
-
-
+  // ### End
 }

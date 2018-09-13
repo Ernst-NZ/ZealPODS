@@ -69,13 +69,12 @@
     <th>QTY Rejected</th>
     <th>Reason</th>
     <th>Cash</th>
-    <th></th>
   </tr>
 
   <tr *ngFor="let delivery of deliveries" [attr.data-id]="delivery.id">
     <td>
       <input type="hidden" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.qtyOrdered" />
-      <span >{{delivery.qtyOrdered}}</span>
+      <span>{{delivery.qtyOrdered}}</span>
     </td>
     <td>
       <input type="number" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.qtyRejected" />
@@ -92,10 +91,9 @@
     <td>
       <button *ngIf="delivery.editing" (click)="updateDelivery();delivery.editing=false">Update</button>
       <button *ngIf="!delivery.editing" (click)="delivery.editing=true;getDelivery(delivery.id);">Edit</button>
-    </td>
-    <td>
       <button *ngIf="delivery.editing" (click)="delivery.editing=false">Cancel</button>
     </td>
+
   </tr>
 </table>
 

@@ -32,6 +32,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   allRoutes$: object;
   public selectedRoute: string;
   private service: DeliveryService;
+  addDB = false;
 
   constructor(private route: ActivatedRoute, private data: DataService, private globals: Globals, service: DeliveryService) {
     this.route.params.subscribe( params => this.allRoutes$ = data);
@@ -48,11 +49,11 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   }
 
   ngAfterContentChecked() {
-    console.log('xxxx');
-    console.log(this.allRoutes$['orderGroups']);
-//    console.log(getMapKeyValue(o,"key1");
-    //  if (this.orderDetail$ !== this.docID && this.addDB === false) {
-    //      this.service.getData(this.orderDetail$);
-    //      }
+    if (typeof this.allRoutes$['orderGroups'] !== 'undefined' && this.addDB === false)  {
+      console.log('xxxx');
+      this.addDB = true;
+      console.log(this.allRoutes$['orderGroups']);
+      this.service.getData(this.allRoutes$, this.allRoutes$['orderGroups'][0].Name);
+    }
        }
 }
