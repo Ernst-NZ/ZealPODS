@@ -1,4 +1,5 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-sm">
+    <i class="fa fa-truck" aria-hidden="true"></i>
   <a routerLink="" class="navbar-brand">ZealPODS</a>
   <div class="navbar mr-auto" id="navbarFixed">
       <ul class="navbar-nav">
@@ -7,11 +8,11 @@
           <!--<a class="nav-link" routerLink="route-Orders/{{globals.selectedRoute}}" [class.activated]="currentUrl == '/route-Orders/'+globals.selectedRoute">{{globals.selectedRoute}}</a>-->
         </li>
       </ul>
-    </div>   
+    </div>
   <button class="navbar-toggler">
     <span class="navbar-toggler-icon" data-toggle="collapse" data-target="#navbarMenu"></span>
   </button>
- 
+
   <div class="collapse navbar-collapse" id="navbarMenu">
     <ul class="navbar-nav  ml-auto">
       <li class="nav-item"><a class="nav-link" routerLink="driver-routes" [class.activated]="currentUrl == '/driver-routes'" [class.activated]="currentUrl == '/'">Routes</a></li>
@@ -19,8 +20,8 @@
       <li><a class="nav-link" routerLink="users" [class.activated]="currentUrl == '/users'">Users</a></li>
       <li><a class="nav-link" routerLink="posts" [class.activated]="currentUrl == '/posts'">News</a></li>
       <li><a class="nav-link" routerLink="login" [class.activated]="currentUrl == '/login'">Login...</a></li>       -->
-      <li><a class="nav-link" [routerLink]="['/login']">Logout...</a></li> 
-      
+      <li><a class="nav-link" [routerLink]="['/login']">Logout...</a></li>
+
     </ul>
   </div>
 </nav>

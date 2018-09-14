@@ -4,7 +4,7 @@
       <ul *ngFor="let order of driver.Orders">
         <div class="blackFont fontSmall1 strong" *ngIf="order.DocumentId == docID">
           <ul *ngFor="let item of order.Lines; index as i">
-            <div class="blackFont fontSmall1 strong" *ngIf="i == lineID">
+            <div class="blackFont fontSmall1 strong" *ngIf="item.LineId == lineID">
               <table width="100%" class="table toggle-panel">
                 <tbody>
                   <tr>
@@ -23,14 +23,14 @@
                     <td>QTY Rejected</td>
                     <td class="strong inPutBox">
                         <mat-form-field  class="matInput">
-                            <input matInput placeholder="Number">
+                            <input type="number" matInput placeholder="Number" [(ngModel)]="oldDelivery.qtyRejected">
                           </mat-form-field>
                     </td>
                   </tr>
                   <tr>
                     <td>Reason</td>
                     <td class="inPutBox"><mat-form-field class="matInput">
-                        <mat-select placeholder="Reason">
+                        <mat-select placeholder="Reason"  [(ngModel)]="oldDelivery.rejectReason">
                           <mat-option *ngFor="let reject of reject" [value]="reject.value">
                             {{reject.viewValue}}
                           </mat-option>
@@ -39,8 +39,9 @@
                   </tr>
                 </tbody>
               </table>
+              <button mat-button color="accent" (click)="updateDelivery()">Add Rejected</button>
               <a routerLink="/order-details/{{docID}}">
-                <button mat-button color="accent">Add Rejected</button>
+                <button mat-button color="primary">Back to Order</button>
               </a>
             </div>
           </ul>

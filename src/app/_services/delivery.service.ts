@@ -83,7 +83,7 @@ export class DeliveryService extends BaseService {
   // }
 
   // ## Get Delivery
-  getDelivery(deliveryId: number) {
+    getDelivery(deliveryId: number) {
     return this.connection.select<IDelivery>({
       from: 'Deliveries',
       where: {
@@ -92,7 +92,7 @@ export class DeliveryService extends BaseService {
     });
   }
 
-  getOrder(documentId: number) {
+   getOrder(documentId: number) {
     return this.connection.select<IDelivery>({
       from: 'Deliveries',
       where: {

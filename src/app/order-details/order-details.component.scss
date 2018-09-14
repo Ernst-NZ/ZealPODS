@@ -1,19 +1,19 @@
-  table {
-    /* table-layout: fixed; */
-    width: 80% auto;
-    max-width: 300px;
-    border: 1px solid black;
-    font-size: 0.8em;
-    font-weight: bold;
-  }
-
-  td, th {
-    border: 1px solid rgb(1, 1, 17);
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  // .block {
-  //   border: 1px, dotted, black;
+  // table {
+  //   /* table-layout: fixed; */
+  //   width: 80% auto;
+  //   max-width: 300px;
+  //   border: 1px solid black;
+  //   // font-size: 0.8em;
+  //   font-weight: bold;
   // }
+
+  // td, th {
+  //   border: 1px solid rgb(1, 1, 17);
+  //   overflow: hidden;
+  //   white-space: nowrap;
+  //   text-overflow: ellipsis;
+  // }
+
+  // // .block {
+  // //   border: 1px, dotted, black;
+  // // }

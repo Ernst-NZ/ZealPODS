@@ -126,7 +126,6 @@ export class DeliveryComponent implements OnInit {
       });
   }
 
-
   // updateStudent() {
   //   const updatedValue: IStudent = {
   //     name: this.oldStudent.name,
