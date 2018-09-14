@@ -18,10 +18,9 @@ export class SignatureComponent implements OnInit {
    constructor() {}
 
    public signaturePadOptions:Object =  {// passed through to szimek/signature_pad constructor
-'minWidth':0.5, 
+     'minWidth':0.5, 
      'canvasWidth':700, 
-     'canvasHeight':100,
-    'signaturePad.penColor' : "rgb(66, 133, 244)"
+     'canvasHeight':100
    }; 
     public signatureImage:string; 
 
