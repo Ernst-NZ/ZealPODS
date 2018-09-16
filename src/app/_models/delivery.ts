@@ -23,11 +23,13 @@ export class IDelivery {
   lineId: number;
   qtyOrdered: number;
   qtyRejected: number;
-  rejectReason: string;
-  cash: number;
+  rejectReason: string;  
   delivered: string;
   deliveryTime: string;
   signature: string;
+  deliveredTo: string;
+  paymentMethod: string;
+  paymentAmount: number;
   updated: string;
 }
 
@@ -40,10 +42,12 @@ export class Delivery implements IDelivery {
   qtyOrdered: 0;
   qtyRejected: 0;
   rejectReason: '';
-  cash: 0;
   delivered: '';
-  deliveryTime: '';
+  deliveryTime: '';  
   signature: '';
+  deliveredTo: '';
+  paymentMethod: '';
+  paymentAmount: 0;
   updated: '';
 }
 // ## End

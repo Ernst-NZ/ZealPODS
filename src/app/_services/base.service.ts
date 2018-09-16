@@ -70,10 +70,6 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
        notNull: true
       },
       {
-       name: 'cash',
-       dataType: DATA_TYPE.Number
-      },
-      {
        name: 'delivered',
        dataType: DATA_TYPE.String,
        notNull: true,
@@ -82,10 +78,22 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
       {
        name: 'deliveryTime',
        dataType: DATA_TYPE.String
-      },
+      },      
       {
        name: 'signature',
        dataType: DATA_TYPE.String
+      },
+      {
+       name: 'deliveredTo',
+       dataType: DATA_TYPE.String
+      },
+      {
+       name: 'paymentType',
+       dataType: DATA_TYPE.String
+      },
+      {
+       name: 'paymentAmount',
+       dataType: DATA_TYPE.Number
       },
       {
        name: 'updated',

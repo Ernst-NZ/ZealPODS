@@ -158,10 +158,12 @@ export class DeliveryComponent implements OnInit {
       qtyOrdered: this.oldDelivery.qtyOrdered,
       qtyRejected: this.oldDelivery.qtyRejected,
       rejectReason: this.oldDelivery.rejectReason,
-      cash: this.oldDelivery.cash,
       delivered: this.oldDelivery.delivered,
       deliveryTime: this.oldDelivery.deliveryTime,
       signature: this.oldDelivery.signature,
+      deliveredTo: this.oldDelivery.deliveredTo,
+      paymentMethod: this.oldDelivery.paymentMethod,
+      paymentAmount: this.oldDelivery.paymentAmount,
       updated: this.oldDelivery.updated
     };
     this.service.updateDelivery(this.oldDelivery.id, updatedValue).
