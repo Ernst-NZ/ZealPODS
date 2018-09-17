@@ -12,9 +12,6 @@ import { Delivery, IDelivery } from '../_models/delivery';
 export class DeliveryComponent implements OnInit {
 
   private service: DeliveryService;
-  // students: Array<IStudent> = [];
-  // newStudent: IStudent = new Student();
-  // oldStudent: IStudent = new Student();
   deliveries: Array<IDelivery> = [];
   newDelivery: IDelivery = new Delivery();
   oldDelivery: IDelivery = new Delivery();
@@ -24,7 +21,6 @@ export class DeliveryComponent implements OnInit {
   }
 
   ngOnInit() {
- //   this.getStudents();
     this.getDeliveries();
     this.getOrder(402);
   }
@@ -39,15 +35,6 @@ export class DeliveryComponent implements OnInit {
       alert(error.message);
     });
 }
-  // getStudents() {
-  //   this.service.getStudents().
-  //     then(students => {
-  //       this.students = students;
-  //     }).catch(error => {
-  //       console.error(error);
-  //       alert(error.message);
-  //     });
-  // }
 
   // ## Get Deliveries
   getDeliveries() {
@@ -59,20 +46,6 @@ export class DeliveryComponent implements OnInit {
         alert(error.message);
       });
   }
-
-  // addStudent() {
-  //   this.service.addStudent(this.newStudent).
-  //     then((addedStudents: IStudent[]) => {
-  //       if (addedStudents.length > 0) {
-  //         this.students.push(addedStudents[0]);
-  //         this.clearNewStudent();
-  //         alert('Successfully added');
-  //       }
-  //     }).catch(error => {
-  //       console.error(error);
-  //       alert(error.message);
-  //     });
-  // }
 
   // clearNewStudent() {
   //   this.newStudent = new Student();
@@ -92,26 +65,10 @@ export class DeliveryComponent implements OnInit {
   //     });
   // }
 
-  // clearOldStudent() {
-  //   this.oldStudent = new Student();
-  // }
-
   // ## Clear Old Delivery
   clearOldDelivery() {
     this.oldDelivery = new Delivery();
   }
-
-  // getStudent(studentId) {
-  //   this.service.getStudent(studentId).
-  //     then(students => {
-  //       if (students.length > 0) {
-  //         this.oldStudent = students[0];
-  //       }
-  //     }).catch(error => {
-  //       console.error(error);
-  //       alert(error.message);
-  //     });
-  // }
 
   // Get Delivery
   getDelivery(deliveryId) {
@@ -125,27 +82,6 @@ export class DeliveryComponent implements OnInit {
         alert(error.message);
       });
   }
-
-  // updateStudent() {
-  //   const updatedValue: IStudent = {
-  //     name: this.oldStudent.name,
-  //     gender: this.oldStudent.gender,
-  //     country: this.oldStudent.country,
-  //     city: this.oldStudent.city
-  //   };
-  //   this.service.updateStudent(this.oldStudent.id, updatedValue).
-  //     then(rowsUpdated => {
-  //       if (rowsUpdated > 0) {
-  //         const index = this.students.findIndex(student => student.id === this.oldStudent.id);
-  //         this.students[index] = this.oldStudent;
-  //         this.clearOldStudent();
-  //         alert('Successfully updated');
-  //       }
-  //     }).catch(error => {
-  //       console.error(error);
-  //       alert(error.message);
-  //     });
-  // }
 
   // ## Update Delivery
 

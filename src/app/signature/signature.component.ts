@@ -33,7 +33,7 @@ export class SignatureComponent implements OnInit {
     //  console.log(this.signatureImage);
 
     const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
-  //  console.log(atob(dataSvg.split(',')[0]));
+     console.log(atob(dataSvg.split(',')[1]));
    this.download(dataSvg, 'signature.svg');
 
    const dataJpeg = this.signaturePad.toDataURL('image/jpeg');

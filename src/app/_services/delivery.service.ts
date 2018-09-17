@@ -72,13 +72,13 @@ export class DeliveryService extends BaseService {
 
   db1Test(id, lastSync, user, documentID, lineID, description, productCode, sellPrice, qtyOrdered) {
     // const open = indexedDB.open('Student_db', 1);
-    const open = indexedDB.open('Deliveryx_db', 1);
+    const open = indexedDB.open('Delivery_db', 1);
 
     open.onupgradeneeded = function () {
       const db = open.result;
       const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
       // const store = db.createObjectStore('Students', { keyPath: 'id' });
-      const index = store.createIndex('LineIndex', ['lineID']);
+     // const index = store.createIndex('LineIndex', ['lineID']);
     };
 
     open.onsuccess = function () {

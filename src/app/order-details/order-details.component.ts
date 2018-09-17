@@ -44,9 +44,9 @@ export class OrderDetailsComponent implements OnInit {
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
   private service: DeliveryService;
   pay: Payment[] = [
-    { value: 'nopay-0', viewValue: 'No Payment' },
-    { value: 'cash-1', viewValue: 'Cash' },
-    { value: 'cheque', viewValue: 'Cheque' }
+    { value: 'No Payment', viewValue: 'No Payment' },
+    { value: 'Cash', viewValue: 'Cash' },
+    { value: 'Cheque', viewValue: 'Cheque' }
   ];
   orderDetail$: Object;
   deliveries: Array<IDelivery> = [];
@@ -75,7 +75,8 @@ export class OrderDetailsComponent implements OnInit {
   public signaturePadOptions: Object = {// passed through to szimek/signature_pad constructor
     'minWidth': 0.5,
     'canvasWidth': 700,
-    'canvasHeight': 100
+    'canvasHeight': 100,
+    'canvasBackgroundcolor': 'white'
   };
   public signatureImage: string;
 
@@ -89,11 +90,11 @@ export class OrderDetailsComponent implements OnInit {
 
   getOrder(documentId) {
     this.service.getOrder(documentId).then(deliveries => {
-        this.deliveries = deliveries;
+      this.deliveries = deliveries;
       if (deliveries.length > 0) {
         this.oldDelivery = deliveries[0];
       }
-      })
+    })
       .catch(error => {
         console.error(error);
         alert(error.message);
@@ -101,32 +102,41 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   xxx() {
+
+    const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
+    console.log(atob(dataSvg.split(',')[1]));
+    this.download(dataSvg, 'signature.svg');
+
     if (this.signaturePad.isEmpty()) {
       return alert('Please provide a signature first.');
     }
     if (this.oldDelivery.deliveredTo == null) {
       return alert('Please provide a Name.');
     }
-    this.updateDelivery();
+    var signatureData = atob(dataSvg.split(',')[1]);
+    var displayTime = new Date().toLocaleTimeString();
+    var displayDate = new Date().toLocaleDateString();
+    var newDate = displayDate.concat(displayTime);
+    var deliveredTo = this.oldDelivery.deliveredTo;
+    var paymentType = this.oldDelivery.paymentType;
+    var paymentAmount = this.oldDelivery.paymentAmount;
+
+    try {
+      for (let d = 0; d < this.deliveries.length; d++) {
+        this.oldDelivery = this.deliveries[d];
+        this.updateDelivery(signatureData, newDate, deliveredTo, paymentType, paymentAmount);        
+      }
+      alert('Delivery Successfully updated');
+    } catch (error) {
+      alert(error);
+    }
   }
 
   clearOldDelivery() {
     this.oldDelivery = new Delivery();
   }
 
-  updateDelivery() {
-    if (this.signaturePad.isEmpty()) {
-      return alert('Please provide a signature first.');
-    }
-    if (this.oldDelivery.deliveredTo == null) {
-      return alert('Please provide a reason for rejection.');
-    }  
-    var signatureData = 'sig data'; //atob(dataSvg.split(',')[0]);
-    var displayTime = new Date().toLocaleTimeString();
-    var displayDate = new Date().toLocaleDateString();
-    var newDate = displayDate.concat(displayTime);
-
-
+  updateDelivery(signatureData, newDate, deliveredTo, paymentType, paymentAmount) {
     const updatedValue: IDelivery = {
       lastSync: this.oldDelivery.lastSync,
       name: this.oldDelivery.name,
@@ -138,9 +148,9 @@ export class OrderDetailsComponent implements OnInit {
       delivered: 'true',
       deliveryTime: newDate,
       signature: signatureData,
-      deliveredTo: this.oldDelivery.deliveredTo,
-      paymentType: this.oldDelivery.paymentType,
-      paymentAmount: this.oldDelivery.paymentAmount,
+      deliveredTo: deliveredTo,
+      paymentType: paymentType,
+      paymentAmount: paymentAmount,
       updated: this.oldDelivery.updated
     };
     this.service
@@ -152,7 +162,7 @@ export class OrderDetailsComponent implements OnInit {
           );
           this.deliveries[index] = this.oldDelivery;
           this.clearOldDelivery();
-          alert('Delivery Successfully updated');
+          // alert('Delivery Successfully updated');
         }
       })
       .catch(error => {
@@ -160,4 +170,40 @@ export class OrderDetailsComponent implements OnInit {
         alert(error.message);
       });
   }
+
+/// Signature Stuff
+
+  download(dataURL, filename) {
+    const blob = this.dataURLToBlob(dataURL);
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    // a.style = 'display: none';
+    a.href = url;
+    a.download = filename;
+
+    document.body.appendChild(a);
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+
+  dataURLToBlob(dataURL) {
+    // Code taken from https://github.com/ebidel/filer.js
+    const parts = dataURL.split(';base64,');
+    const contentType = parts[0].split(':')[1];
+    const raw = window.atob(parts[1]);
+    const rawLength = raw.length;
+    const uInt8Array = new Uint8Array(rawLength);
+
+    for (let i = 0; i < rawLength; ++i) {
+      uInt8Array[i] = raw.charCodeAt(i);
+    }
+
+    return new Blob([uInt8Array], { type: contentType });
+  }
+
+
+/////
+
 }

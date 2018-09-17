@@ -1,0 +1,254 @@
+{
+  "User": "sample string 1",
+  "LastSyncronisation": "2018-09-18T08:37:31.9505983+12:00",
+  "orderGroups": [
+    {
+      "Name": "sample string 1",
+      "DeliveryDate": "2018-09-18T08:37:31.9505983+12:00",
+      "Orders": [
+        {
+          "DocumentId": 1,
+          "CustomerCode": "sample string 2",
+          "CustomerName": "sample string 3",
+          "DeliveryAddress1": "sample string 4",
+          "DeliveryAddress2": "sample string 5",
+          "DeliveryAddress3": "sample string 6",
+          "DeliveryAddress4": "sample string 7",
+          "PostCode": "sample string 8",
+          "PhoneNo": "sample string 9",
+          "Subtitle": "sample string 10",
+          "PackingSlipNo": "sample string 11",
+          "OrderNo": "sample string 12",
+          "DocumentDate": "2018-09-18T08:37:31.9505983+12:00",
+          "Category1": "sample string 14",
+          "Category2": "sample string 15",
+          "Lines": [
+            {
+              "LineId": 1,
+              "ProductCode": "sample string 2",
+              "Description": "sample string 3",
+              "CostPrice": 4.1,
+              "SellPrice": 5.1,
+              "QuantityOrdered": 6.1,
+              "Accepted": true,
+              "RejectionReason": "sample string 8",
+              "QuantityRejected": 9.1
+            },
+            {
+              "LineId": 1,
+              "ProductCode": "sample string 2",
+              "Description": "sample string 3",
+              "CostPrice": 4.1,
+              "SellPrice": 5.1,
+              "QuantityOrdered": 6.1,
+              "Accepted": true,
+              "RejectionReason": "sample string 8",
+              "QuantityRejected": 9.1
+            }
+          ],
+          "ExclusiveAmount": 16.1,
+          "SignatureSVG": [
+            {
+              "lx": 1,
+              "ly": 2,
+              "mx": 3,
+              "my": 4
+            },
+            {
+              "lx": 1,
+              "ly": 2,
+              "mx": 3,
+              "my": 4
+            }
+          ],
+          "Delivered": true,
+          "DeliveryTime": "2018-09-18T08:37:31.9505983+12:00",
+          "Updated": true
+        },
+        {
+          "DocumentId": 1,
+          "CustomerCode": "sample string 2",
+          "CustomerName": "sample string 3",
+          "DeliveryAddress1": "sample string 4",
+          "DeliveryAddress2": "sample string 5",
+          "DeliveryAddress3": "sample string 6",
+          "DeliveryAddress4": "sample string 7",
+          "PostCode": "sample string 8",
+          "PhoneNo": "sample string 9",
+          "Subtitle": "sample string 10",
+          "PackingSlipNo": "sample string 11",
+          "OrderNo": "sample string 12",
+          "DocumentDate": "2018-09-18T08:37:31.9505983+12:00",
+          "Category1": "sample string 14",
+          "Category2": "sample string 15",
+          "Lines": [
+            {
+              "LineId": 1,
+              "ProductCode": "sample string 2",
+              "Description": "sample string 3",
+              "CostPrice": 4.1,
+              "SellPrice": 5.1,
+              "QuantityOrdered": 6.1,
+              "Accepted": true,
+              "RejectionReason": "sample string 8",
+              "QuantityRejected": 9.1
+            },
+            {
+              "LineId": 1,
+              "ProductCode": "sample string 2",
+              "Description": "sample string 3",
+              "CostPrice": 4.1,
+              "SellPrice": 5.1,
+              "QuantityOrdered": 6.1,
+              "Accepted": true,
+              "RejectionReason": "sample string 8",
+              "QuantityRejected": 9.1
+            }
+          ],
+          "ExclusiveAmount": 16.1,
+          "SignatureSVG": [
+            {
+              "lx": 1,
+              "ly": 2,
+              "mx": 3,
+              "my": 4
+            },
+            {
+              "lx": 1,
+              "ly": 2,
+              "mx": 3,
+              "my": 4
+            }
+          ],
+          "Delivered": true,
+          "DeliveryTime": "2018-09-18T08:37:31.9505983+12:00",
+          "Updated": true
+        }
+      ]
+    },
+    {
+      "Name": "sample string 1",
+      "DeliveryDate": "2018-09-18T08:37:31.9505983+12:00",
+      "Orders": [
+        {
+          "DocumentId": 1,
+          "CustomerCode": "sample string 2",
+          "CustomerName": "sample string 3",
+          "DeliveryAddress1": "sample string 4",
+          "DeliveryAddress2": "sample string 5",
+          "DeliveryAddress3": "sample string 6",
+          "DeliveryAddress4": "sample string 7",
+          "PostCode": "sample string 8",
+          "PhoneNo": "sample string 9",
+          "Subtitle": "sample string 10",
+          "PackingSlipNo": "sample string 11",
+          "OrderNo": "sample string 12",
+          "DocumentDate": "2018-09-18T08:37:31.9505983+12:00",
+          "Category1": "sample string 14",
+          "Category2": "sample string 15",
+          "Lines": [
+            {
+              "LineId": 1,
+              "ProductCode": "sample string 2",
+              "Description": "sample string 3",
+              "CostPrice": 4.1,
+              "SellPrice": 5.1,
+              "QuantityOrdered": 6.1,
+              "Accepted": true,
+              "RejectionReason": "sample string 8",
+              "QuantityRejected": 9.1
+            },
+            {
+              "LineId": 1,
+              "ProductCode": "sample string 2",
+              "Description": "sample string 3",
+              "CostPrice": 4.1,
+              "SellPrice": 5.1,
+              "QuantityOrdered": 6.1,
+              "Accepted": true,
+              "RejectionReason": "sample string 8",
+              "QuantityRejected": 9.1
+            }
+          ],
+          "ExclusiveAmount": 16.1,
+          "SignatureSVG": [
+            {
+              "lx": 1,
+              "ly": 2,
+              "mx": 3,
+              "my": 4
+            },
+            {
+              "lx": 1,
+              "ly": 2,
+              "mx": 3,
+              "my": 4
+            }
+          ],
+          "Delivered": true,
+          "DeliveryTime": "2018-09-18T08:37:31.9505983+12:00",
+          "Updated": true
+        },
+        {
+          "DocumentId": 1,
+          "CustomerCode": "sample string 2",
+          "CustomerName": "sample string 3",
+          "DeliveryAddress1": "sample string 4",
+          "DeliveryAddress2": "sample string 5",
+          "DeliveryAddress3": "sample string 6",
+          "DeliveryAddress4": "sample string 7",
+          "PostCode": "sample string 8",
+          "PhoneNo": "sample string 9",
+          "Subtitle": "sample string 10",
+          "PackingSlipNo": "sample string 11",
+          "OrderNo": "sample string 12",
+          "DocumentDate": "2018-09-18T08:37:31.9505983+12:00",
+          "Category1": "sample string 14",
+          "Category2": "sample string 15",
+          "Lines": [
+            {
+              "LineId": 1,
+              "ProductCode": "sample string 2",
+              "Description": "sample string 3",
+              "CostPrice": 4.1,
+              "SellPrice": 5.1,
+              "QuantityOrdered": 6.1,
+              "Accepted": true,
+              "RejectionReason": "sample string 8",
+              "QuantityRejected": 9.1
+            },
+            {
+              "LineId": 1,
+              "ProductCode": "sample string 2",
+              "Description": "sample string 3",
+              "CostPrice": 4.1,
+              "SellPrice": 5.1,
+              "QuantityOrdered": 6.1,
+              "Accepted": true,
+              "RejectionReason": "sample string 8",
+              "QuantityRejected": 9.1
+            }
+          ],
+          "ExclusiveAmount": 16.1,
+          "SignatureSVG": [
+            {
+              "lx": 1,
+              "ly": 2,
+              "mx": 3,
+              "my": 4
+            },
+            {
+              "lx": 1,
+              "ly": 2,
+              "mx": 3,
+              "my": 4
+            }
+          ],
+          "Delivered": true,
+          "DeliveryTime": "2018-09-18T08:37:31.9505983+12:00",
+          "Updated": true
+        }
+      ]
+    }
+  ]
+}

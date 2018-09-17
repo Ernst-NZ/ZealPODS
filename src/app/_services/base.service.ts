@@ -1,12 +1,12 @@
 import { IdbService } from '../_services/idb.service';
 import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
  export class BaseService {
-  dbname = 'Deliveryx_db';
+  dbname = 'Delivery_db';
   dbDelivery = 'dbDelivery';
   constructor() {
    // turn on jsstore log status - help you to debug
    // turn off it in production or when you dont need
-   this.connection.setLogStatus(true);
+   this.connection.setLogStatus(false);
    this.initJsStore();
   }
  get connection() {
@@ -65,7 +65,6 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
       {
        name: 'rejectReason',
        dataType: DATA_TYPE.String,
-       notNull: true
       },
       {
        name: 'delivered',
