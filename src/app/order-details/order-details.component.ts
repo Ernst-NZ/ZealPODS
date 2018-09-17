@@ -39,9 +39,9 @@ export class OrderDetailsComponent implements OnInit {
 
  
   pay: Payment[] = [
-    { value: 'nopay-0', viewValue: 'No Payment' },
-    { value: 'cash-1', viewValue: 'Cash' },
-    { value: 'cheque', viewValue: 'Cheque' }
+    { value: 'No Payment', viewValue: 'No Payment' },
+    { value: 'Cash', viewValue: 'Cash' },
+    { value: 'Cheque', viewValue: 'Cheque' }
   ];
   private service: DeliveryService;
   deliveries: Array<IDelivery> = [];

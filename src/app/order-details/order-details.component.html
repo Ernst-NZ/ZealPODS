@@ -48,27 +48,18 @@
           <hr>
           <span style="font-weight: bolder; text-decoration: underline;">
             Signature</span>
-          <div id="myCanvas">
-            <signature-pad>
-            </signature-pad>
-          </div>
-          <hr>
-          <div class="row">
-            <br>
-            <button mat-raised-button color="warm" (click)="drawClear()">Clear</button>
-            <button mat-raised-button color="warm" (click)="drawComplete()">Test Signature</button>
-          </div>
+          <app-signature></app-signature>
         </div>
         <div class=""></div>
         <div>
           <mat-form-field style="width: 100%;">
-            <input type='text' matInput placeholder="Name" [(ngModel)]="oldDelivery.deliveredTo">
+            <input matInput placeholder="Name">
           </mat-form-field>
         </div>
         <div>
           <mat-form-field style="width: 100%;">
             <mat-select placeholder="Payment">
-              <mat-option *ngFor="let pay of pay" [value]="pay.value" [(ngModel)]="oldDelivery.paymentType">
+              <mat-option *ngFor="let pay of pay" [value]="pay.value">
                 {{pay.viewValue}}
               </mat-option>
             </mat-select>
@@ -76,7 +67,7 @@
         </div>
         <div>
           <mat-form-field style="width: 100%;">
-            <input type="number" matInput placeholder="Amount" [(ngModel)]="oldDelivery.paymentAmount">
+            <input type="number" matInput placeholder="Amount">
           </mat-form-field>
         </div>
         <div>
