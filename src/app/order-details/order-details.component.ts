@@ -34,7 +34,7 @@ export interface Payment {
   ],
 
 })
-export class OrderDetailsComponent implements OnInit, AfterContentChecked {
+export class OrderDetailsComponent implements OnInit {
   @ViewChild(SignaturePad)signaturePad: SignaturePad;
 
  
@@ -65,7 +65,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   public signaturePadOptions: Object =  {// passed through to szimek/signature_pad constructor
     'minWidth': 0.5,
     'canvasWidth': 700,
-    'canvasHeight': 100
+    'canvasHeight': 100,
+    'canvasBackgroundColor': 'rgb(255,255,255)'
   };
    public signatureImage: string;
 
@@ -75,13 +76,21 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     );
     const getOrder = (this.route.snapshot.paramMap.get('DocumentId'));
     this.docID = getOrder;
+    this.getOrder(Number(this.docID));
   }
 
-  ngAfterContentChecked() {
-      //  if (this.orderDetail$ !== this.docID && this.addDB === false) {
-      //      this.service.getData(this.orderDetail$);
-      //      }
-         }
+  // Get Product
+  getOrder(documentId) {
+    this.service.getOrder(documentId).
+      then(deliveries => {
+        if (deliveries.length > 0) {
+          this.oldDelivery = deliveries[0];
+        }
+      }).catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
+  }
 
 
    xxx() {
@@ -89,7 +98,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       return alert('Please provide a signature first.');
     }  
     if (this.oldDelivery.deliveredTo == null ) {
-      return alert('Please provide a reason for rejection.'); 
+      return alert('Please provide a name.'); 
      }  
      this.updateDelivery();
    }
@@ -104,11 +113,12 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 
    updateDelivery() {
     const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
-    const signatureData = atob(dataSvg.split(',')[0]);
+    console.log((dataSvg.split(',')[0]));
+    const signatureData = 'sig data'; //atob(dataSvg.split(',')[0]);
 
     var displayTime = new Date().toLocaleTimeString();
     var displayDate = new Date().toLocaleDateString();
-    var newdate = displayDate.concat( displayTime ); 
+    var newDate = displayDate.concat( displayTime ); 
   
     const updatedValue: IDelivery = {
       lastSync: this.oldDelivery.lastSync,
@@ -118,11 +128,11 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       qtyOrdered: this.oldDelivery.qtyOrdered,
       qtyRejected: this.oldDelivery.qtyRejected,
       rejectReason: this.oldDelivery.rejectReason,
-      delivered: this.oldDelivery.delivered,
-      deliveryTime: newdate,
+      delivered: 'true',
+      deliveryTime: newDate,
       signature: signatureData,
       deliveredTo: this.oldDelivery.deliveredTo,
-      paymentMethod: this.oldDelivery.paymentMethod,
+      paymentType: this.oldDelivery.paymentType,
       paymentAmount: this.oldDelivery.paymentAmount,
       updated: this.oldDelivery.updated
     };
@@ -145,8 +155,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     if (this.signaturePad.isEmpty()) {
       return alert('Please provide a signature first.');
     }
-
-      this.signatureImage = this.signaturePad.toDataURL();
+    
+   this.signatureImage = this.signaturePad.toDataURL();
     //  console.log(this.signatureImage);
 
     const dataSvg = this.signaturePad.toDataURL('image/svg+xml');

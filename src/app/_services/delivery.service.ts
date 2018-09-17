@@ -12,26 +12,12 @@ export class DeliveryService extends BaseService {
     super();
   }
 
-  // getStudents() {
-  //   return this.connection.select<IStudent>({
-  //     from: 'Students'
-  //   });
-  // }
-
   // ## Get Deliveries
   getDeliveries() {
     return this.connection.select<IDelivery>({
       from: 'Deliveries'
     });
   }
-
-  // addStudent(student: IStudent) {
-  //   return this.connection.insert<IStudent>({
-  //     into: 'Students',
-  //     return: true, // as id is autoincrement, so we would like to get the inserted value
-  //     values: [student]
-  //   });
-  // }
 
   // #### Add Delivery
   addDelivery(delivery: IDelivery) {
@@ -52,16 +38,6 @@ export class DeliveryService extends BaseService {
   // }
   //  ## Not going to enable Delete for Deliveries
 
-  // updateStudent(studentId: number, updateValue: IStudent) {
-  //   return this.connection.update({
-  //     in: 'Students',
-  //     where: {
-  //       id: studentId
-  //     },
-  //     set: updateValue
-  //   });
-  // }
-
   // ## update Product for Edit purposes
   updateDelivery(lineId: number, updateValue: IDelivery) {
     return this.connection.update({
@@ -73,17 +49,8 @@ export class DeliveryService extends BaseService {
     });
   }
 
-  // getStudent(studentId: number) {
-  //   return this.connection.select<IStudent>({
-  //     from: 'Students',
-  //     where: {
-  //       id: studentId
-  //     }
-  //   });
-  // }
-
   // ## Get Delivery
-    getDelivery(deliveryId: number) {
+  getDelivery(deliveryId: number) {
     return this.connection.select<IDelivery>({
       from: 'Deliveries',
       where: {
@@ -92,7 +59,7 @@ export class DeliveryService extends BaseService {
     });
   }
 
-   getOrder(documentId: number) {
+  getOrder(documentId: number) {
     return this.connection.select<IDelivery>({
       from: 'Deliveries',
       where: {
@@ -103,18 +70,18 @@ export class DeliveryService extends BaseService {
 
   // ### Test Stuff
 
-  db1Test(id, lastSync, user, documentID, lineID, qtyOrdered) {
+  db1Test(id, lastSync, user, documentID, lineID, description, productCode, sellPrice, qtyOrdered) {
     // const open = indexedDB.open('Student_db', 1);
-    const open = indexedDB.open('Delivery_db', 1);
+    const open = indexedDB.open('Deliveryx_db', 1);
 
-    open.onupgradeneeded = function() {
+    open.onupgradeneeded = function () {
       const db = open.result;
       const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
       // const store = db.createObjectStore('Students', { keyPath: 'id' });
-      // var index = store.createIndex('LineIndex', ['lineID']);
+      const index = store.createIndex('LineIndex', ['lineID']);
     };
 
-    open.onsuccess = function() {
+    open.onsuccess = function () {
       // Start a new transaction
       const db = open.result;
       const tx = db.transaction('Deliveries', 'readwrite');
@@ -130,6 +97,9 @@ export class DeliveryService extends BaseService {
         name: user,
         documentId: documentID,
         lineId: lineID,
+        description: description,
+        productCode: productCode,
+        sellPrice: sellPrice,
         qtyOrdered: qtyOrdered,
         qtyRejected: 0,
         delivered: 'false',
@@ -138,17 +108,11 @@ export class DeliveryService extends BaseService {
       // // // // //    store.put({ id: 67890, name: { first: 'Bob', last: 'Smith' }, age: 35 });
 
       // Close the db when the transaction is done
-      tx.oncomplete = function() {
+      tx.oncomplete = function () {
         db.close();
       };
     };
   }
-
-  AddStudentTest() {
-    this.db1Test(456, 888, 'from TS', 'M', 'USA', 'NY');
-  }
-
-  AddDeliveryx(lastSync, user, documentID, lineID, qtyOrdered) {}
 
   getData(dataList, driverName) {
     // this.data.getAllRoutes().subscribe(
@@ -163,22 +127,33 @@ export class DeliveryService extends BaseService {
         for (let o = 0; o < orderList.length; o++) {
           const products = orderList[o]['Lines'];
           const DocumentId = orderList[o].DocumentId;
-          for (let p = 0; p < products.length; p++) {
-            const LineId = products[p].LineId;
-            const QTYOrdered = products[p].QuantityOrdered;
-            this.db1Test(
-              LineId,
-              lastSync,
-              user,
-              DocumentId,
-              LineId,
-              QTYOrdered
-            );
-          }
+          // Check for existing document ID
+          this.getOrder(DocumentId).then(deliveries => {
+            if (deliveries.length < 1) {
+              for (let p = 0; p < products.length; p++) {
+                const LineId = products[p].LineId;
+                const QTYOrdered = products[p].QuantityOrdered;
+                const description = products[p].Description;
+                const productCode = products[p].ProductCode;
+                const sellPrice = products[p].SellPrice;
+                this.db1Test(
+                  LineId,
+                  lastSync,
+                  user,
+                  DocumentId,
+                  LineId,
+                  description,
+                  productCode,
+                  sellPrice,
+                  QTYOrdered
+                );
+              }
+            }
+
+          })
         }
       }
     }
   }
-
   // ### End
 }

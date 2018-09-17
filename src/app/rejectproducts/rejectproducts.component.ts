@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router  } from '@angular/router';
 import { DataService } from '../data.service';
 import { DeliveryService } from '../_services/delivery.service';
 import { Delivery, IDelivery } from '../_models/delivery';
@@ -21,18 +21,19 @@ export class RejectproductsComponent implements OnInit {
   oldDelivery: IDelivery = new Delivery();
 
   reject: Reason[] = [
-    {value: 'nopay-0', viewValue: 'Damaged'},
-    {value: 'cash-1', viewValue: 'Wrong Product'},
-    {value: 'cheque', viewValue: 'Spoiled'}
+    {value: 'Damaged', viewValue: 'Damaged'},
+    {value: 'Wrong Product', viewValue: 'Wrong Product'},
+    {value: 'Spoiled', viewValue: 'Spoiled'}
   ];
   productDetail$: Object;
   public lineID: number;
   public docID;
   public i: number;
 
-    constructor(private route: ActivatedRoute, private data: DataService, service: DeliveryService) {
+  constructor(private route: ActivatedRoute, private data: DataService, service: DeliveryService, private router: Router) {
     this.route.params.subscribe( params => this.productDetail$ = params.DocumentId );
     this.service = service;
+    
  }
 
  ngOnInit() {
@@ -79,7 +80,7 @@ updateDelivery() {
     deliveryTime: this.oldDelivery.deliveryTime,
     signature: this.oldDelivery.signature,
     deliveredTo: this.oldDelivery.deliveredTo,
-    paymentMethod: this.oldDelivery.paymentMethod,
+    paymentType: this.oldDelivery.paymentType,
     paymentAmount: this.oldDelivery.paymentAmount,
     updated: this.oldDelivery.updated
   };
@@ -90,6 +91,7 @@ updateDelivery() {
         this.deliveries[index] = this.oldDelivery;
         this.clearOldDelivery();
         alert('Delivery Successfully updated');
+        this.router.navigate(['/order-details/', this.docID]);
       }
     }).catch(error => {
       console.error(error);

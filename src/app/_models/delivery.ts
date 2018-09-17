@@ -1,20 +1,3 @@
-// export class IStudent {
-//   id?: number;
-//   name: string;
-//   gender: string;
-//   country: string;
-//   city: string;
-// }
-
-// export class Student implements IStudent {
-//   id = 0;
-//   name = '';
-//   gender = 'm';
-//   country = '';
-//   city = '';
-// }
-
-// ## Delivery Stuff
 export class IDelivery {
   id?: number;
   lastSync: string;
@@ -28,7 +11,7 @@ export class IDelivery {
   deliveryTime: string;
   signature: string;
   deliveredTo: string;
-  paymentMethod: string;
+  paymentType: string;
   paymentAmount: number;
   updated: string;
 }
@@ -46,7 +29,7 @@ export class Delivery implements IDelivery {
   deliveryTime: '';  
   signature: '';
   deliveredTo: '';
-  paymentMethod: '';
+  paymentType: '';
   paymentAmount: 0;
   updated: '';
 }

@@ -162,7 +162,7 @@ export class DeliveryComponent implements OnInit {
       deliveryTime: this.oldDelivery.deliveryTime,
       signature: this.oldDelivery.signature,
       deliveredTo: this.oldDelivery.deliveredTo,
-      paymentMethod: this.oldDelivery.paymentMethod,
+      paymentType: this.oldDelivery.paymentType,
       paymentAmount: this.oldDelivery.paymentAmount,
       updated: this.oldDelivery.updated
     };
