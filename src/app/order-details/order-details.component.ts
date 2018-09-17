@@ -1,9 +1,10 @@
-import { Component, OnInit, AfterContentChecked, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentChecked, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../data.service';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 import { DeliveryService } from '../_services/delivery.service';
 import { Delivery, IDelivery } from '../_models/delivery';
+import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 
 export interface Payment {
   value: string;
@@ -40,6 +41,7 @@ export interface Payment {
   ]
 })
 export class OrderDetailsComponent implements OnInit {
+  @ViewChild(SignaturePad) signaturePad: SignaturePad;
   private service: DeliveryService;
   pay: Payment[] = [
     { value: 'nopay-0', viewValue: 'No Payment' },
@@ -70,6 +72,14 @@ export class OrderDetailsComponent implements OnInit {
     this.service = service;
   }
 
+  public signaturePadOptions: Object = {// passed through to szimek/signature_pad constructor
+    'minWidth': 0.5,
+    'canvasWidth': 700,
+    'canvasHeight': 100
+  };
+  public signatureImage: string;
+
+
   ngOnInit() {
     this.data.getAllRoutes().subscribe(data => (this.orderDetail$ = data));
     const getOrder = this.route.snapshot.paramMap.get('DocumentId');
@@ -78,10 +88,11 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   getOrder(documentId) {
-    this.service
-      .getOrder(documentId)
-      .then(deliveries => {
+    this.service.getOrder(documentId).then(deliveries => {
         this.deliveries = deliveries;
+      if (deliveries.length > 0) {
+        this.oldDelivery = deliveries[0];
+      }
       })
       .catch(error => {
         console.error(error);
@@ -89,23 +100,32 @@ export class OrderDetailsComponent implements OnInit {
       });
   }
 
+  xxx() {
+    if (this.signaturePad.isEmpty()) {
+      return alert('Please provide a signature first.');
+    }
+    if (this.oldDelivery.deliveredTo == null) {
+      return alert('Please provide a Name.');
+    }
+    this.updateDelivery();
+  }
+
   clearOldDelivery() {
     this.oldDelivery = new Delivery();
   }
 
   updateDelivery() {
-    if (this.oldDelivery.rejectReason == null) {
+    if (this.signaturePad.isEmpty()) {
+      return alert('Please provide a signature first.');
+    }
+    if (this.oldDelivery.deliveredTo == null) {
       return alert('Please provide a reason for rejection.');
-    }
+    }  
+    var signatureData = 'sig data'; //atob(dataSvg.split(',')[0]);
+    var displayTime = new Date().toLocaleTimeString();
+    var displayDate = new Date().toLocaleDateString();
+    var newDate = displayDate.concat(displayTime);
 
-    if (this.oldDelivery.qtyRejected > this.oldDelivery.qtyOrdered) {
-      return alert('Quantity Rejected can not be more than Quantity Ordered!');
-      var signatureData = 'sig data'; //atob(dataSvg.split(',')[0]);
-      var displayTime = new Date().toLocaleTimeString();
-      var displayDate = new Date().toLocaleDateString();
-      var newDate = displayDate.concat(displayTime); 
- 
-    }
 
     const updatedValue: IDelivery = {
       lastSync: this.oldDelivery.lastSync,
