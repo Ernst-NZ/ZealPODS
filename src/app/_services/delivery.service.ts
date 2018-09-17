@@ -105,8 +105,7 @@ export class DeliveryService extends BaseService {
         delivered: 'false',
         updated: 'false'
       });
-      // // // // //    store.put({ id: 67890, name: { first: 'Bob', last: 'Smith' }, age: 35 });
-
+     
       // Close the db when the transaction is done
       tx.oncomplete = function () {
         db.close();
