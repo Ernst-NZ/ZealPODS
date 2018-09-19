@@ -64,7 +64,23 @@ clearOldDelivery() {
   this.oldDelivery = new Delivery();
 }
 updateDelivery() {
-  this.service.preUpdateDelivery(this.lineID, 999, 'rotten', '', '', '', '', '', '', '');
+  this.service.preUpdateDelivery(this.lineID, this.oldDelivery.lastSync,
+this.oldDelivery.name,
+this.oldDelivery.documentId,
+this.oldDelivery.lineId,
+this.oldDelivery.qtyOrdered,
+this.oldDelivery.qtyRejected,
+this.oldDelivery.rejectReason,
+this.oldDelivery.delivered,
+this.oldDelivery.deliveryTime,
+this.oldDelivery.signature,
+this.oldDelivery.deliveredTo,
+this.oldDelivery.paymentType,
+this.oldDelivery.paymentAmount,
+this.oldDelivery.updated,
+this.oldDelivery.json);
+//  alert('Delivery Successfully updated');
+  this.router.navigate(['/order-details/', this.docID]);
 }
 
 // updateDelivery() {

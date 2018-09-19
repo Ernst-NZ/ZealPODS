@@ -55,62 +55,41 @@ export class DeliveryService extends BaseService {
   }
 
   clearOldDelivery() {
-    this.oldDelivery = new Delivery();
+    //  this.oldDelivery = new Delivery();
   }
 
-  preUpdateDelivery(id, qtyRejected, rejectReason, delivered, deliveryTime, signature, deliveredTo, paymentType, paymentAmount, json) {
-    this.getProduct(id);
-    if (qtyRejected === '') { qtyRejected = this.oldDelivery.qtyRejected; }
-    if (rejectReason === '') { rejectReason = this.oldDelivery.rejectReason; }
-    if (delivered === '') {
-      delivered = this.oldDelivery.delivered;
-    }
-    if (deliveryTime === '') {
-      deliveryTime = this.oldDelivery.deliveryTime;
-    }
-    if (signature === '') {
-      signature = this.oldDelivery.signature;
-    }
-    if (deliveredTo === '') {
-      deliveredTo = this.oldDelivery.deliveredTo;
-    }
-    if (paymentType === '') {
-      paymentType = this.oldDelivery.paymentType;
-    }
-    if (paymentAmount === '') {
-      paymentAmount = this.oldDelivery.paymentAmount;
-    }
-    if (json === '') { json = this.oldDelivery.json; }
 
+  // tslint:disable-next-line:max-line-length
+  preUpdateDelivery(id, lastSync, name, docId, lineId, order, reject, reason, delivered, time, signature, deliveredTo, payType, payAmount, updated, json) {
     const updatedValue: IDelivery = {
-      lastSync: this.oldDelivery.lastSync,
-      name: this.oldDelivery.name,
-      documentId: this.oldDelivery.documentId,
-      lineId: this.oldDelivery.lineId,
-      qtyOrdered: this.oldDelivery.qtyOrdered,
-      qtyRejected: qtyRejected,
-      rejectReason: rejectReason,
+      lastSync: lastSync,
+      name: name,
+      documentId: docId,
+      lineId: lineId,
+      qtyOrdered: order,
+      qtyRejected: reject,
+      rejectReason: reason,
       delivered: delivered,
-      deliveryTime: deliveryTime,
+      deliveryTime: time,
       signature: signature,
       deliveredTo: deliveredTo,
-      paymentType: paymentType,
-      paymentAmount: paymentAmount,
-      updated: this.oldDelivery.updated,
+      paymentType: payType,
+      paymentAmount: payAmount,
+      updated: updated,
       json: json
     };
-    // this.updateDelivery(id, updatedValue).
-    //   then(rowsUpdated => {
-    //     if (rowsUpdated > 0) {
-    //       const index = this.deliveries.findIndex(delivery => delivery.id === this.oldDelivery.id);
-    //       this.deliveries[index] = this.oldDelivery;
-    //       this.clearOldDelivery();
-    //       alert('Delivery Successfully updated');
-    //     }
-    //   }).catch(error => {
-    //     console.error(error);
-    //     alert(error.message);
-    //   });
+    this.updateDelivery(id, updatedValue).
+      then(rowsUpdated => {
+        if (rowsUpdated > 0) {
+          const index = this.deliveries.findIndex(delivery => delivery.id === id);
+          this.deliveries[index] = this.oldDelivery;
+          this.clearOldDelivery();
+          alert('Delivery Successfully updated');
+        }
+      }).catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
   }
 
   // #####
@@ -145,7 +124,7 @@ export class DeliveryService extends BaseService {
 
   // ### Test Stuff
 
-  db1Test(id, lastSync, user, documentID, lineID, description, productCode, sellPrice, qtyOrdered, json) {
+  dbAdd(id, lastSync, user, documentID, lineID, description, productCode, sellPrice, qtyOrdered, json) {
     // const open = indexedDB.open('Student_db', 1);
     const open = indexedDB.open('Delivery_db', 1);
 
@@ -153,7 +132,7 @@ export class DeliveryService extends BaseService {
       const db = open.result;
       const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
       // const store = db.createObjectStore('Students', { keyPath: 'id' });
-     // const index = store.createIndex('LineIndex', ['lineID']);
+      // const index = store.createIndex('LineIndex', ['lineID']);
     };
 
     open.onsuccess = function () {
@@ -165,7 +144,6 @@ export class DeliveryService extends BaseService {
       //   const store = tx.objectStore('Students');
       //    var index = store.index('NameIndex');
 
-      //     store.put({ id, gender: gender, name: name, country: country, city: city});
       store.put({
         id,
         lastSync: lastSync,
@@ -210,9 +188,7 @@ export class DeliveryService extends BaseService {
                 const description = products[p].Description;
                 const productCode = products[p].ProductCode;
                 const sellPrice = products[p].SellPrice;
-                this.db1Test(
-                  LineId,
-                  lastSync,
+                this.dbAdd(LineId, lastSync,
                   user,
                   DocumentId,
                   LineId,
@@ -231,4 +207,32 @@ export class DeliveryService extends BaseService {
     }
   }
   // ### End
+
+  /// Edit Json
+  editJson(dataList, docId, lineId, qtyRejected, reason, signature, name, payType, payAmount, time, delivered) {
+    // this.data.getAllRoutes().subscribe(
+    //   data => this.orderDetail$ = data
+    // );
+    const lastSync = dataList.LastSyncronisation;
+    const drivers = dataList.orderGroups;
+    for (let d = 0; d < drivers.length; d++) {
+      const orderList = drivers[d]['Orders'];
+      for (let o = 0; o < orderList.length; o++) {
+        const products = orderList[o]['Lines'];
+        const DocumentId = orderList[o].DocumentId;
+        if (orderList[o].DocumentId = docId) {
+          orderList[o].Delivered = delivered;
+          orderList[o].DeliveryTime = time;
+          orderList[o].signature = signature;
+        }
+        // Check for existing document ID
+        for (let p = 0; p < products.length; p++) {
+          if (products[p].LineId = lineId) {
+            products[p].QuantityRejected = qtyRejected;
+            products[p].rejectReason = reason;
+          }
+        }
+      }
+    }
+  }
 }
