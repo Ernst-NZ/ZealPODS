@@ -107,6 +107,17 @@ export class DeliveryService extends BaseService {
     });
   }
 
+  updateJson(lineId: number, updateValue: IDelivery) {
+    return this.connection.update({
+      in: 'Deliveries',
+      where: {
+        id: lineId
+      },
+      set: updateValue
+    });
+  }
+
+
   // ## Get Delivery
   getDelivery(deliveryId: number) {
     return this.connection.select<IDelivery>({
