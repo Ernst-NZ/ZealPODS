@@ -117,6 +117,7 @@ export class DeliveryService extends BaseService {
     // this.data.getAllRoutes().subscribe(
     //   data => this.orderDetail$ = data
     // );
+    console.log(dataList)
     const lastSync = dataList.LastSyncronisation;
     const drivers = dataList.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
@@ -126,6 +127,7 @@ export class DeliveryService extends BaseService {
         for (let o = 0; o < orderList.length; o++) {
           const products = orderList[o]['Lines'];
           const DocumentId = orderList[o].DocumentId;
+          orderList[o].DocumentId = '99999999'
           // Check for existing document ID
           this.getOrder(DocumentId).then(deliveries => {
             if (deliveries.length < 1) {
@@ -153,6 +155,8 @@ export class DeliveryService extends BaseService {
         }
       }
     }
+    console.log('#######  Mod  xxxxxxxx')
+    console.log(dataList)
   }
   // ### End
 }
