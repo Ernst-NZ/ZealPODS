@@ -100,7 +100,8 @@ export class DeliveryComponent implements OnInit {
       deliveredTo: this.oldDelivery.deliveredTo,
       paymentType: this.oldDelivery.paymentType,
       paymentAmount: this.oldDelivery.paymentAmount,
-      updated: this.oldDelivery.updated
+      updated: this.oldDelivery.updated,
+      json: this.oldDelivery.json
     };
     this.service.updateDelivery(this.oldDelivery.id, updatedValue).
       then(rowsUpdated => {

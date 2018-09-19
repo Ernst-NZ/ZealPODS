@@ -75,7 +75,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
       {
        name: 'deliveryTime',
        dataType: DATA_TYPE.String
-      },      
+      },
       {
        name: 'signature',
        dataType: DATA_TYPE.String
@@ -97,7 +97,12 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
        dataType: DATA_TYPE.String,
        notNull: true,
        default: 'false'
-      }
+       },
+       {
+         name: 'json',
+         dataType: DATA_TYPE.Object,
+         notNull: true,
+       }
      ]
     };
     const dataBase: IDataBase = {

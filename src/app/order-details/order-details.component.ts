@@ -55,6 +55,14 @@ export class OrderDetailsComponent implements OnInit {
   show = false;
   hidden = true;
   addDB = false;
+  public signaturePadOptions: Object = {// passed through to szimek/signature_pad constructor
+    'minWidth': 0.5,
+    'canvasWidth': 700,
+    'canvasHeight': 100,
+    'canvasBackgroundcolor': 'white'
+  };
+  public signatureImage: string;
+
 
   toggleTable() {
     this.show = !this.show;
@@ -71,15 +79,6 @@ export class OrderDetailsComponent implements OnInit {
     );
     this.service = service;
   }
-
-  public signaturePadOptions: Object = {// passed through to szimek/signature_pad constructor
-    'minWidth': 0.5,
-    'canvasWidth': 700,
-    'canvasHeight': 100,
-    'canvasBackgroundcolor': 'white'
-  };
-  public signatureImage: string;
-
 
   ngOnInit() {
     this.data.getAllRoutes().subscribe(data => (this.orderDetail$ = data));
@@ -113,18 +112,18 @@ export class OrderDetailsComponent implements OnInit {
     if (this.oldDelivery.deliveredTo == null) {
       return alert('Please provide a Name.');
     }
-    var signatureData = atob(dataSvg.split(',')[1]);
-    var displayTime = new Date().toLocaleTimeString();
-    var displayDate = new Date().toLocaleDateString();
-    var newDate = displayDate.concat(displayTime);
-    var deliveredTo = this.oldDelivery.deliveredTo;
-    var paymentType = this.oldDelivery.paymentType;
-    var paymentAmount = this.oldDelivery.paymentAmount;
+    const signatureData = atob(dataSvg.split(',')[1]);
+    const displayTime = new Date().toLocaleTimeString();
+    const displayDate = new Date().toLocaleDateString();
+    const newDate = displayDate.concat(displayTime);
+    const deliveredTo = this.oldDelivery.deliveredTo;
+    const paymentType = this.oldDelivery.paymentType;
+    const paymentAmount = this.oldDelivery.paymentAmount;
 
     try {
       for (let d = 0; d < this.deliveries.length; d++) {
         this.oldDelivery = this.deliveries[d];
-        this.updateDelivery(signatureData, newDate, deliveredTo, paymentType, paymentAmount);        
+        this.updateDelivery(signatureData, newDate, deliveredTo, paymentType, paymentAmount);
       }
       alert('Delivery Successfully updated');
     } catch (error) {
@@ -151,7 +150,8 @@ export class OrderDetailsComponent implements OnInit {
       deliveredTo: deliveredTo,
       paymentType: paymentType,
       paymentAmount: paymentAmount,
-      updated: this.oldDelivery.updated
+      updated: this.oldDelivery.updated,
+      json: this.oldDelivery.json
     };
     this.service
       .updateDelivery(this.oldDelivery.id, updatedValue)

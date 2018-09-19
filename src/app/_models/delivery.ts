@@ -6,7 +6,7 @@ export class IDelivery {
   lineId: number;
   qtyOrdered: number;
   qtyRejected: number;
-  rejectReason: string;  
+  rejectReason: string;
   delivered: string;
   deliveryTime: string;
   signature: string;
@@ -14,6 +14,7 @@ export class IDelivery {
   paymentType: string;
   paymentAmount: number;
   updated: string;
+  json: object;
 }
 
 export class Delivery implements IDelivery {
@@ -26,11 +27,12 @@ export class Delivery implements IDelivery {
   qtyRejected: 0;
   rejectReason: '';
   delivered: '';
-  deliveryTime: '';  
+  deliveryTime: '';
   signature: '';
   deliveredTo: '';
   paymentType: '';
   paymentAmount: 0;
   updated: '';
+  json: object;
 }
 // ## End

@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
-import { IDelivery } from '../_models/delivery';
 import { DataService } from '../data.service';
+import { Delivery, IDelivery } from '../_models/delivery';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeliveryService extends BaseService {
   orderDetail$: Object;
+  deliveries: Array<IDelivery> = [];
+  oldDelivery: IDelivery = new Delivery();
   constructor(private data: DataService) {
     super();
   }
@@ -39,6 +41,79 @@ export class DeliveryService extends BaseService {
   //  ## Not going to enable Delete for Deliveries
 
   // ## update Product for Edit purposes
+  // Get Product
+  getProduct(lineId) {
+    this.getDelivery(lineId).
+      then(deliveries => {
+        if (deliveries.length > 0) {
+          this.oldDelivery = deliveries[0];
+        }
+      }).catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
+  }
+
+  clearOldDelivery() {
+    this.oldDelivery = new Delivery();
+  }
+
+  preUpdateDelivery(id, qtyRejected, rejectReason, delivered, deliveryTime, signature, deliveredTo, paymentType, paymentAmount, json) {
+    this.getProduct(id);
+    if (qtyRejected === '') { qtyRejected = this.oldDelivery.qtyRejected; }
+    if (rejectReason === '') { rejectReason = this.oldDelivery.rejectReason; }
+    if (delivered === '') {
+      delivered = this.oldDelivery.delivered;
+    }
+    if (deliveryTime === '') {
+      deliveryTime = this.oldDelivery.deliveryTime;
+    }
+    if (signature === '') {
+      signature = this.oldDelivery.signature;
+    }
+    if (deliveredTo === '') {
+      deliveredTo = this.oldDelivery.deliveredTo;
+    }
+    if (paymentType === '') {
+      paymentType = this.oldDelivery.paymentType;
+    }
+    if (paymentAmount === '') {
+      paymentAmount = this.oldDelivery.paymentAmount;
+    }
+    if (json === '') { json = this.oldDelivery.json; }
+
+    const updatedValue: IDelivery = {
+      lastSync: this.oldDelivery.lastSync,
+      name: this.oldDelivery.name,
+      documentId: this.oldDelivery.documentId,
+      lineId: this.oldDelivery.lineId,
+      qtyOrdered: this.oldDelivery.qtyOrdered,
+      qtyRejected: qtyRejected,
+      rejectReason: rejectReason,
+      delivered: delivered,
+      deliveryTime: deliveryTime,
+      signature: signature,
+      deliveredTo: deliveredTo,
+      paymentType: paymentType,
+      paymentAmount: paymentAmount,
+      updated: this.oldDelivery.updated,
+      json: json
+    };
+    // this.updateDelivery(id, updatedValue).
+    //   then(rowsUpdated => {
+    //     if (rowsUpdated > 0) {
+    //       const index = this.deliveries.findIndex(delivery => delivery.id === this.oldDelivery.id);
+    //       this.deliveries[index] = this.oldDelivery;
+    //       this.clearOldDelivery();
+    //       alert('Delivery Successfully updated');
+    //     }
+    //   }).catch(error => {
+    //     console.error(error);
+    //     alert(error.message);
+    //   });
+  }
+
+  // #####
   updateDelivery(lineId: number, updateValue: IDelivery) {
     return this.connection.update({
       in: 'Deliveries',
@@ -70,7 +145,7 @@ export class DeliveryService extends BaseService {
 
   // ### Test Stuff
 
-  db1Test(id, lastSync, user, documentID, lineID, description, productCode, sellPrice, qtyOrdered) {
+  db1Test(id, lastSync, user, documentID, lineID, description, productCode, sellPrice, qtyOrdered, json) {
     // const open = indexedDB.open('Student_db', 1);
     const open = indexedDB.open('Delivery_db', 1);
 
@@ -103,9 +178,9 @@ export class DeliveryService extends BaseService {
         qtyOrdered: qtyOrdered,
         qtyRejected: 0,
         delivered: 'false',
-        updated: 'false'
+        updated: 'false',
+        json: json
       });
-     
       // Close the db when the transaction is done
       tx.oncomplete = function () {
         db.close();
@@ -144,12 +219,13 @@ export class DeliveryService extends BaseService {
                   description,
                   productCode,
                   sellPrice,
-                  QTYOrdered
+                  QTYOrdered,
+                  dataList
                 );
               }
             }
 
-          })
+          });
         }
       }
     }
