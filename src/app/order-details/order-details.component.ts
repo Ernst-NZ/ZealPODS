@@ -113,9 +113,7 @@ export class OrderDetailsComponent implements OnInit {
       return alert('Please provide a Name.');
     }
     const signatureData = atob(dataSvg.split(',')[1]);
-    const displayTime = new Date().toLocaleTimeString();
-    const displayDate = new Date().toLocaleDateString();
-    const newDate = displayDate.concat(displayTime);
+    const newDate = JSON.stringify(new Date())
     const deliveredTo = this.oldDelivery.deliveredTo;
     const paymentType = this.oldDelivery.paymentType;
     const paymentAmount = this.oldDelivery.paymentAmount;
@@ -173,6 +171,28 @@ export class OrderDetailsComponent implements OnInit {
 
 /// Signature Stuff
 
+  drawComplete() {
+    if (this.signaturePad.isEmpty()) {
+      return alert('Please provide a signature first.');
+    }
+
+    this.signatureImage = this.signaturePad.toDataURL();
+    //  console.log(this.signatureImage);
+
+    const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
+    console.log(atob(dataSvg.split(',')[1]));
+    this.download(dataSvg, 'signature.svg');
+
+    const dataJpeg = this.signaturePad.toDataURL('image/jpeg');
+    this.download(dataJpeg, 'signature.jpg');
+
+    const dataPng = this.signaturePad.toDataURL('image/png');
+    this.download(dataPng, 'signature.png');
+
+    //   console.log(dataPng);
+
+  }
+
   download(dataURL, filename) {
     const blob = this.dataURLToBlob(dataURL);
     const url = window.URL.createObjectURL(blob);
@@ -203,7 +223,16 @@ export class OrderDetailsComponent implements OnInit {
     return new Blob([uInt8Array], { type: contentType });
   }
 
-
+  drawClear() {
+    this.signaturePad.clear();
+  }
 /////
+
+  test() {
+    alert('xxx');
+    alert(JSON.stringify(new Date()));
+    alert(JSON.stringify(new Date));
+    this.service.editJson(this.orderDetail$, 404, 1964, 777, 'Damaged', 'signature', 'Koos', 'Cash', 99.22)
+  }
 
 }

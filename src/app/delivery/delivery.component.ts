@@ -116,6 +116,14 @@ export class DeliveryComponent implements OnInit {
         alert(error.message);
       });
   }
+
+xxx() {
+  alert('xxx');
+  alert(JSON.stringify(new Date()));
+  alert(JSON.stringify(new Date));
+ // this.service.editJson('', 404, 1964, 777, 'Damaged', 'signature', 'Koos', 'Cash', 99.22)
+}
+
   }
 
 

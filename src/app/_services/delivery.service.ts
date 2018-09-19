@@ -61,6 +61,10 @@ export class DeliveryService extends BaseService {
 
   // tslint:disable-next-line:max-line-length
   preUpdateDelivery(id, lastSync, name, docId, lineId, order, reject, reason, delivered, time, signature, deliveredTo, payType, payAmount, updated, json) {
+    // Update the Json String
+    const jsonTemp = this.editJson(json, docId, lineId, reject, reason, signature, deliveredTo, payType, payAmount);
+    console.log('xxx #####')
+    console.log(jsonTemp)
     const updatedValue: IDelivery = {
       lastSync: lastSync,
       name: name,
@@ -76,7 +80,7 @@ export class DeliveryService extends BaseService {
       paymentType: payType,
       paymentAmount: payAmount,
       updated: updated,
-      json: json
+      json: jsonTemp
     };
     this.updateDelivery(id, updatedValue).
       then(rowsUpdated => {
@@ -170,6 +174,7 @@ export class DeliveryService extends BaseService {
     // this.data.getAllRoutes().subscribe(
     //   data => this.orderDetail$ = data
     // );
+
     const lastSync = dataList.LastSyncronisation;
     const drivers = dataList.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
@@ -209,30 +214,30 @@ export class DeliveryService extends BaseService {
   // ### End
 
   /// Edit Json
-  editJson(dataList, docId, lineId, qtyRejected, reason, signature, name, payType, payAmount, time, delivered) {
-    // this.data.getAllRoutes().subscribe(
-    //   data => this.orderDetail$ = data
-    // );
-    const lastSync = dataList.LastSyncronisation;
-    const drivers = dataList.orderGroups;
+  editJson(dataTemp, docId, lineId, qtyRejected, reason, signature, name, payType, payAmount) {
+    const drivers = dataTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       const orderList = drivers[d]['Orders'];
       for (let o = 0; o < orderList.length; o++) {
         const products = orderList[o]['Lines'];
-        const DocumentId = orderList[o].DocumentId;
+        // Get Document ID
         if (orderList[o].DocumentId = docId) {
-          orderList[o].Delivered = delivered;
-          orderList[o].DeliveryTime = time;
+          orderList[o].Delivered = true;
+          orderList[o].DeliveryTime = JSON.stringify(new Date());
+          orderList[o].ReceivedBy = name;
+          orderList[o].PaymentMethod = payType;
+          orderList[o].PaymentAmount = payAmount
           orderList[o].signature = signature;
-        }
-        // Check for existing document ID
-        for (let p = 0; p < products.length; p++) {
-          if (products[p].LineId = lineId) {
-            products[p].QuantityRejected = qtyRejected;
-            products[p].rejectReason = reason;
+          for (let p = 0; p < products.length; p++) {
+            if (products[p].LineId = lineId) {
+              products[p].QuantityRejected = qtyRejected;
+              products[p].RejectReason = reason;
+            }
           }
         }
       }
     }
+    console.log(dataTemp)
+    return dataTemp 
   }
 }
