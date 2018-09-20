@@ -87,6 +87,8 @@ export class OrderDetailsComponent implements OnInit {
     this.getOrder(Number(this.docID));
   }
 
+
+  
   getOrder(documentId) {
     this.service.getOrder(documentId).then(deliveries => {
       this.deliveries = deliveries;

@@ -21,7 +21,7 @@ export class DeliveryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getDeliveries();
+  // this.getDeliveries();
     this.getOrder(402);
   }
 
@@ -118,9 +118,9 @@ export class DeliveryComponent implements OnInit {
   }
 
 xxx() {
-  alert('xxx');
-  alert(JSON.stringify(new Date()));
-  alert(JSON.stringify(new Date));
+//  this.service.getProduct(1965)
+  this.service.serviceTest();
+
  // this.service.editJson('', 404, 1964, 777, 'Damaged', 'signature', 'Koos', 'Cash', 99.22)
 }
 

@@ -8,8 +8,8 @@ import { Delivery, IDelivery } from '../_models/delivery';
 })
 export class DeliveryService extends BaseService {
   orderDetail$: Object;
-  deliveries: Array<IDelivery> = [];
-  oldDelivery: IDelivery = new Delivery();
+  tempDeliveries: Array<IDelivery> = [];
+  tempDelivery: IDelivery = new Delivery();
   constructor(private data: DataService) {
     super();
   }
@@ -40,13 +40,15 @@ export class DeliveryService extends BaseService {
   // }
   //  ## Not going to enable Delete for Deliveries
 
+
+  // **** ####  Test Zone  #### ****
   // ## update Product for Edit purposes
   // Get Product
   getProduct(lineId) {
     this.getDelivery(lineId).
       then(deliveries => {
         if (deliveries.length > 0) {
-          this.oldDelivery = deliveries[0];
+          this.tempDelivery = deliveries[0];
         }
       }).catch(error => {
         console.error(error);
@@ -54,17 +56,37 @@ export class DeliveryService extends BaseService {
       });
   }
 
+  test2() {
+    this.getProduct(1965)
+  }
+
+  serviceTest() {
+    var re = /-/gi;
+    var str = "2018-09-20T00:00:00+12:00";
+    var xx = str.substring(4, 10)
+    var newstr = xx.replace(re, "");
+    alert(newstr)
+    console.log(newstr)
+    console.log('start');
+    console.log(this.tempDelivery);
+    console.log('before get Product');
+    //    this.test2();
+    this.getProduct(1965);
+    console.log('after get Product');
+    console.log(this.tempDelivery);
+    console.log('done');
+  }
+
   clearOldDelivery() {
     //  this.oldDelivery = new Delivery();
   }
-
+  // **** ####  Test Zone  #### ****
 
   // tslint:disable-next-line:max-line-length
   preUpdateDelivery(id, lastSync, name, docId, lineId, order, reject, reason, delivered, time, signature, deliveredTo, payType, payAmount, updated, json) {
     // Update the Json String
     const jsonTemp = this.editJson(json, docId, lineId, reject, reason, signature, deliveredTo, payType, payAmount);
-    console.log('xxx #####')
-    console.log(jsonTemp)
+
     const updatedValue: IDelivery = {
       lastSync: lastSync,
       name: name,
@@ -85,8 +107,8 @@ export class DeliveryService extends BaseService {
     this.updateDelivery(id, updatedValue).
       then(rowsUpdated => {
         if (rowsUpdated > 0) {
-          const index = this.deliveries.findIndex(delivery => delivery.id === id);
-          this.deliveries[index] = this.oldDelivery;
+          const index = this.tempDeliveries.findIndex(delivery => delivery.id === id);
+          this.tempDeliveries[index] = this.tempDelivery;
           this.clearOldDelivery();
           alert('Delivery Successfully updated');
         }
@@ -181,12 +203,37 @@ export class DeliveryService extends BaseService {
     };
   }
 
-  getData(dataList, driverName) {
-    // this.data.getAllRoutes().subscribe(
-    //   data => this.orderDetail$ = data
-    // );
+  checkAddJson(dataList) {
+    const re = /-/gi;
+    var deliveryDate;
+    var justDate;
+    var newId: Number;
 
-    const lastSync = dataList.LastSyncronisation;
+    const drivers = dataList.orderGroups;
+    for (let d = 0; d < drivers.length; d++) {
+      deliveryDate = drivers[d].DeliveryDate;
+      justDate = deliveryDate.substring(4, 10);
+      newId = +justDate.replace(re, "");
+
+      const orderList = drivers[d]['Orders'];
+      for (let o = 0; o < orderList.length; o++) {
+        const DocumentId = orderList[o].DocumentId;
+        // check order no
+        this.getOrder(DocumentId).then(deliveries => {
+          if (deliveries.length < 1) {
+            this.dbAdd(newId, dataList.LastSyncronisation,
+              '', 0, 0, '', '', 0, 0, dataList
+            );
+          }
+        })
+      }
+    }
+  }
+
+
+  getData(dataList, driverName) {
+   this.checkAddJson(dataList);
+   const lastSync = dataList.LastSyncronisation;
     const drivers = dataList.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       if (drivers[d].Name === driverName) {
@@ -242,13 +289,33 @@ export class DeliveryService extends BaseService {
           for (let p = 0; p < products.length; p++) {
             if (products[p].LineId = lineId) {
               products[p].QuantityRejected = qtyRejected;
-              products[p].RejectReason = reason;
+              products[p].RejectionReason = reason;
             }
           }
         }
       }
     }
     console.log(dataTemp)
-    return dataTemp 
+    const updatedValue: IDelivery = {
+      lastSync: dataTemp.LastSyncronisation,
+      name: '', documentId: 0, lineId: 0, qtyOrdered: 0,
+      qtyRejected: 0, rejectReason: '', delivered: 'true',
+      deliveryTime: '', signature: '', deliveredTo: '',
+      paymentType: '', paymentAmount: 0, updated: 'false',
+      json: dataTemp
+    };
+    this.updateDelivery(0, updatedValue).
+      then(rowsUpdated => {
+        if (rowsUpdated > 0) {
+          const index = this.tempDeliveries.findIndex(delivery => delivery.id === 0);
+          this.tempDeliveries[index] = this.tempDelivery;
+          this.clearOldDelivery();
+          alert('Delivery Successfully updated');
+        }
+      }).catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
+    return dataTemp;
   }
 }
