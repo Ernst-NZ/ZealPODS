@@ -87,7 +87,7 @@ export class RejectproductsComponent implements OnInit {
       this.oldDelivery.updated,
       this.oldDelivery.json);
     //  alert('Delivery Successfully updated');
-    this.router.navigate(['/order-details/', this.docID&&'True']);
+    this.router.navigate(['/order-details/', this.docID]);
   }
 
   xxx() {

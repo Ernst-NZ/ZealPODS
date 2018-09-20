@@ -87,8 +87,6 @@ export class OrderDetailsComponent implements OnInit {
     this.getOrder(Number(this.docID));
   }
 
-
-  
   getOrder(documentId) {
     this.service.getOrder(documentId).then(deliveries => {
       this.deliveries = deliveries;
@@ -115,7 +113,7 @@ export class OrderDetailsComponent implements OnInit {
       return alert('Please provide a Name.');
     }
     const signatureData = atob(dataSvg.split(',')[1]);
-    const newDate = JSON.stringify(new Date())
+    const newDate = JSON.stringify(new Date());
     const deliveredTo = this.oldDelivery.deliveredTo;
     const paymentType = this.oldDelivery.paymentType;
     const paymentAmount = this.oldDelivery.paymentAmount;
@@ -231,10 +229,10 @@ export class OrderDetailsComponent implements OnInit {
 /////
 
   test() {
-    alert('xxx');
-    alert(JSON.stringify(new Date()));
-    alert(JSON.stringify(new Date));
-    this.service.editJson(this.orderDetail$, 404, 1964, 777, 'Damaged', 'signature', 'Koos', 'Cash', 99.22)
+    alert('Look at rejected for update option. Update command needs to change.');
+    // alert(JSON.stringify(new Date()));
+    // alert(JSON.stringify(new Date));
+    // this.service.editJson(2, this.orderDetail$, 404, 1964, 777, 'Damaged', 'signature', 'Koos', 'Cash', 99.22);
   }
 
 }

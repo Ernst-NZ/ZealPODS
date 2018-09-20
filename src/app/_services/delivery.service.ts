@@ -57,16 +57,16 @@ export class DeliveryService extends BaseService {
   }
 
   test2() {
-    this.getProduct(1965)
+    this.getProduct(1965);
   }
 
   serviceTest() {
-    var re = /-/gi;
-    var str = "2018-09-20T00:00:00+12:00";
-    var xx = str.substring(4, 10)
-    var newstr = xx.replace(re, "");
-    alert(newstr)
-    console.log(newstr)
+    const re = /-/gi;
+   const str = '2018-09-20T00:00:00+12:00';
+    const xx = str.substring(4, 10);
+    const newstr = xx.replace(re, '');
+    alert(newstr);
+    console.log(newstr);
     console.log('start');
     console.log(this.tempDelivery);
     console.log('before get Product');
@@ -85,7 +85,18 @@ export class DeliveryService extends BaseService {
   // tslint:disable-next-line:max-line-length
   preUpdateDelivery(id, lastSync, name, docId, lineId, order, reject, reason, delivered, time, signature, deliveredTo, payType, payAmount, updated, json) {
     // Update the Json String
-    const jsonTemp = this.editJson(json, docId, lineId, reject, reason, signature, deliveredTo, payType, payAmount);
+    const re = /-/gi;
+    let deliveryDate;
+    let justDate;
+    let newId: Number;
+    const drivers = json.orderGroups;
+    for (let d = 0; d < drivers.length; d++) {
+      deliveryDate = drivers[d].DeliveryDate;
+      justDate = deliveryDate.substring(4, 10);
+      newId = +justDate.replace(re, '');
+    }
+
+    const jsonTemp = this.editJson(newId, json, docId, lineId, reject, reason, signature, deliveredTo, payType, payAmount);
 
     const updatedValue: IDelivery = {
       lastSync: lastSync,
@@ -205,15 +216,15 @@ export class DeliveryService extends BaseService {
 
   checkAddJson(dataList) {
     const re = /-/gi;
-    var deliveryDate;
-    var justDate;
-    var newId: Number;
+    let deliveryDate;
+    let justDate;
+    let newId: Number;
 
     const drivers = dataList.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       deliveryDate = drivers[d].DeliveryDate;
       justDate = deliveryDate.substring(4, 10);
-      newId = +justDate.replace(re, "");
+      newId = +justDate.replace(re, '');
 
       const orderList = drivers[d]['Orders'];
       for (let o = 0; o < orderList.length; o++) {
@@ -225,7 +236,7 @@ export class DeliveryService extends BaseService {
               '', 0, 0, '', '', 0, 0, dataList
             );
           }
-        })
+        });
       }
     }
   }
@@ -272,7 +283,7 @@ export class DeliveryService extends BaseService {
   // ### End
 
   /// Edit Json
-  editJson(dataTemp, docId, lineId, qtyRejected, reason, signature, name, payType, payAmount) {
+  editJson(newId, dataTemp, docId, lineId, qtyRejected, reason, signature, name, payType, payAmount) {
     const drivers = dataTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       const orderList = drivers[d]['Orders'];
@@ -284,7 +295,7 @@ export class DeliveryService extends BaseService {
           orderList[o].DeliveryTime = JSON.stringify(new Date());
           orderList[o].ReceivedBy = name;
           orderList[o].PaymentMethod = payType;
-          orderList[o].PaymentAmount = payAmount
+          orderList[o].PaymentAmount = payAmount;
           orderList[o].signature = signature;
           for (let p = 0; p < products.length; p++) {
             if (products[p].LineId = lineId) {
@@ -295,7 +306,8 @@ export class DeliveryService extends BaseService {
         }
       }
     }
-    console.log(dataTemp)
+    console.log(dataTemp);
+    console.log(newId);
     const updatedValue: IDelivery = {
       lastSync: dataTemp.LastSyncronisation,
       name: '', documentId: 0, lineId: 0, qtyOrdered: 0,
@@ -304,10 +316,10 @@ export class DeliveryService extends BaseService {
       paymentType: '', paymentAmount: 0, updated: 'false',
       json: dataTemp
     };
-    this.updateDelivery(0, updatedValue).
+    this.updateDelivery(newId, updatedValue).
       then(rowsUpdated => {
         if (rowsUpdated > 0) {
-          const index = this.tempDeliveries.findIndex(delivery => delivery.id === 0);
+          const index = this.tempDeliveries.findIndex(delivery => delivery.id === newId);
           this.tempDeliveries[index] = this.tempDelivery;
           this.clearOldDelivery();
           alert('Delivery Successfully updated');
