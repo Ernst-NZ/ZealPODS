@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../data.service';
 import { DeliveryService } from '../_services/delivery.service';
@@ -14,7 +14,7 @@ export interface Reason {
   styleUrls: ['./rejectproducts.component.scss'],
   providers: [DeliveryService]
 })
-export class RejectproductsComponent implements OnInit {
+export class RejectproductsComponent implements OnInit, AfterContentChecked  {
   private service: DeliveryService;
   // deliveries: Array<IDelivery> = [];
   //  newDelivery: IDelivery = new Delivery();
@@ -37,15 +37,20 @@ export class RejectproductsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data.getAllRoutes().subscribe(
-      data => this.productDetail$ = data
-    );
     const getLine = (this.route.snapshot.paramMap.get('LineId'));
     this.i = getLine.lastIndexOf(',');
     this.docID = getLine.substring(0, this.i);
     this.lineID = Number(getLine.substring(this.i + 1));
     this.getProduct(this.lineID);
+    // this.data.getAllRoutes().subscribe(
+    //   data => this.productDetail$ = data
+    // );
+    this.productDetail$ = this.oldDelivery.json;
   }
+
+  ngAfterContentChecked() {
+    this.productDetail$ = this.oldDelivery.json;
+    }
 
   // Get Product
   getProduct(lineId) {

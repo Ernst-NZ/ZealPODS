@@ -40,29 +40,31 @@ export interface Payment {
     ])
   ]
 })
-export class OrderDetailsComponent implements OnInit {
-  @ViewChild(SignaturePad) signaturePad: SignaturePad;
+export class OrderDetailsComponent implements OnInit, AfterContentChecked {
+  @ViewChild(SignaturePad)
+  signaturePad: SignaturePad;
+  orderDetail$: Object;
+  deliveries: Array<IDelivery> = [];
+  oldDelivery: IDelivery = new Delivery();
   private service: DeliveryService;
+  public docID;
+  public signatureImage: string;
+  public i: number;
+  show = false;
+  hidden = true;
+  addDB = false;
   pay: Payment[] = [
     { value: 'No Payment', viewValue: 'No Payment' },
     { value: 'Cash', viewValue: 'Cash' },
     { value: 'Cheque', viewValue: 'Cheque' }
   ];
-  orderDetail$: Object;
-  deliveries: Array<IDelivery> = [];
-  oldDelivery: IDelivery = new Delivery();
-  public docID;
-  show = false;
-  hidden = true;
-  addDB = false;
-  public signaturePadOptions: Object = {// passed through to szimek/signature_pad constructor
-    'minWidth': 0.5,
-    'canvasWidth': 700,
-    'canvasHeight': 100,
-    'canvasBackgroundcolor': 'white'
+  public signaturePadOptions: Object = {
+    // passed through to szimek/signature_pad constructor
+    minWidth: 0.5,
+    canvasWidth: 700,
+    canvasHeight: 100,
+    canvasBackgroundcolor: 'white'
   };
-  public signatureImage: string;
-
 
   toggleTable() {
     this.show = !this.show;
@@ -81,19 +83,32 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data.getAllRoutes().subscribe(data => (this.orderDetail$ = data));
+    // this.data.getAllRoutes().subscribe(data => (this.orderDetail$ = data));
     const getOrder = this.route.snapshot.paramMap.get('DocumentId');
     this.docID = getOrder;
     this.getOrder(Number(this.docID));
+    this.orderDetail$ = this.oldDelivery.json;
+    this.i = document.referrer.lastIndexOf('reject');
+    if (this.i > 0 ) {
+      this.hidden = false;
+      this.show = true;
+    }
+    alert(document.referrer);
+  }
+
+  ngAfterContentChecked() {
+    this.orderDetail$ = this.oldDelivery.json;
   }
 
   getOrder(documentId) {
-    this.service.getOrder(documentId).then(deliveries => {
-      this.deliveries = deliveries;
-      if (deliveries.length > 0) {
-        this.oldDelivery = deliveries[0];
-      }
-    })
+    this.service
+      .getOrder(documentId)
+      .then(deliveries => {
+        this.deliveries = deliveries;
+        if (deliveries.length > 0) {
+          this.oldDelivery = deliveries[0];
+        }
+      })
       .catch(error => {
         console.error(error);
         alert(error.message);
@@ -101,7 +116,6 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   xxx() {
-
     const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
     console.log(atob(dataSvg.split(',')[1]));
     this.download(dataSvg, 'signature.svg');
@@ -121,7 +135,13 @@ export class OrderDetailsComponent implements OnInit {
     try {
       for (let d = 0; d < this.deliveries.length; d++) {
         this.oldDelivery = this.deliveries[d];
-        this.updateDelivery(signatureData, newDate, deliveredTo, paymentType, paymentAmount);
+        this.updateDelivery(
+          signatureData,
+          newDate,
+          deliveredTo,
+          paymentType,
+          paymentAmount
+        );
       }
       alert('Delivery Successfully updated');
     } catch (error) {
@@ -133,7 +153,13 @@ export class OrderDetailsComponent implements OnInit {
     this.oldDelivery = new Delivery();
   }
 
-  updateDelivery(signatureData, newDate, deliveredTo, paymentType, paymentAmount) {
+  updateDelivery(
+    signatureData,
+    newDate,
+    deliveredTo,
+    paymentType,
+    paymentAmount
+  ) {
     const updatedValue: IDelivery = {
       lastSync: this.oldDelivery.lastSync,
       name: this.oldDelivery.name,
@@ -169,7 +195,7 @@ export class OrderDetailsComponent implements OnInit {
       });
   }
 
-/// Signature Stuff
+  /// Signature Stuff
 
   drawComplete() {
     if (this.signaturePad.isEmpty()) {
@@ -190,7 +216,6 @@ export class OrderDetailsComponent implements OnInit {
     this.download(dataPng, 'signature.png');
 
     //   console.log(dataPng);
-
   }
 
   download(dataURL, filename) {
@@ -226,13 +251,14 @@ export class OrderDetailsComponent implements OnInit {
   drawClear() {
     this.signaturePad.clear();
   }
-/////
+  /////
 
   test() {
-    alert('Look at rejected for update option. Update command needs to change.');
+    alert(
+      'Look at rejected for update option. Update command needs to change.'
+    );
     // alert(JSON.stringify(new Date()));
     // alert(JSON.stringify(new Date));
     // this.service.editJson(2, this.orderDetail$, 404, 1964, 777, 'Damaged', 'signature', 'Koos', 'Cash', 99.22);
   }
-
 }

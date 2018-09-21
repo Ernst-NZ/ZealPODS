@@ -13,11 +13,51 @@ export class DeliveryService extends BaseService {
   constructor(private data: DataService) {
     super();
   }
-
+  // ### Get funtions (SQL Actions) ####
   // ## Get Deliveries
   getDeliveries() {
     return this.connection.select<IDelivery>({
       from: 'Deliveries'
+    });
+  }
+
+  // ## Get Delivery
+  getDelivery(deliveryId: number) {
+    return this.connection.select<IDelivery>({
+      from: 'Deliveries',
+      where: {
+        id: deliveryId
+      }
+    });
+  }
+
+  // ## Get all Deliveries per driver
+  getDriverDeliveries(name: string) {
+    return this.connection.select<IDelivery>({
+      from: 'Deliveries',
+      where: {
+        name: name
+      }
+    });
+  }
+
+  // ## Get outstanding Deliveries
+  getOutstandingDeliveries(name: string) {
+    return this.connection.select<IDelivery>({
+      from: 'Deliveries',
+      where: {
+        id: name,
+        delivered: 'false'
+      }
+    });
+  }
+
+  getOrder(documentId: number) {
+    return this.connection.select<IDelivery>({
+      from: 'Deliveries',
+      where: {
+        documentId: documentId
+      }
     });
   }
 
@@ -40,17 +80,17 @@ export class DeliveryService extends BaseService {
   // }
   //  ## Not going to enable Delete for Deliveries
 
-
   // **** ####  Test Zone  #### ****
   // ## update Product for Edit purposes
   // Get Product
   getProduct(lineId) {
-    this.getDelivery(lineId).
-      then(deliveries => {
+    this.getDelivery(lineId)
+      .then(deliveries => {
         if (deliveries.length > 0) {
           this.tempDelivery = deliveries[0];
         }
-      }).catch(error => {
+      })
+      .catch(error => {
         console.error(error);
         alert(error.message);
       });
@@ -62,7 +102,7 @@ export class DeliveryService extends BaseService {
 
   serviceTest() {
     const re = /-/gi;
-   const str = '2018-09-20T00:00:00+12:00';
+    const str = '2018-09-20T00:00:00+12:00';
     const xx = str.substring(4, 10);
     const newstr = xx.replace(re, '');
     alert(newstr);
@@ -83,7 +123,24 @@ export class DeliveryService extends BaseService {
   // **** ####  Test Zone  #### ****
 
   // tslint:disable-next-line:max-line-length
-  preUpdateDelivery(id, lastSync, name, docId, lineId, order, reject, reason, delivered, time, signature, deliveredTo, payType, payAmount, updated, json) {
+  preUpdateDelivery(
+    id,
+    lastSync,
+    name,
+    docId,
+    lineId,
+    order,
+    reject,
+    reason,
+    delivered,
+    time,
+    signature,
+    deliveredTo,
+    payType,
+    payAmount,
+    updated,
+    json
+  ) {
     // Update the Json String
     const re = /-/gi;
     let deliveryDate;
@@ -96,7 +153,18 @@ export class DeliveryService extends BaseService {
       newId = +justDate.replace(re, '');
     }
 
-    const jsonTemp = this.editJson(newId, json, docId, lineId, reject, reason, signature, deliveredTo, payType, payAmount);
+    const jsonTemp = this.editJson(
+      newId,
+      json,
+      docId,
+      lineId,
+      reject,
+      reason,
+      signature,
+      deliveredTo,
+      payType,
+      payAmount
+    );
 
     const updatedValue: IDelivery = {
       lastSync: lastSync,
@@ -115,15 +183,18 @@ export class DeliveryService extends BaseService {
       updated: updated,
       json: jsonTemp
     };
-    this.updateDelivery(id, updatedValue).
-      then(rowsUpdated => {
+    this.updateDelivery(id, updatedValue)
+      .then(rowsUpdated => {
         if (rowsUpdated > 0) {
-          const index = this.tempDeliveries.findIndex(delivery => delivery.id === id);
+          const index = this.tempDeliveries.findIndex(
+            delivery => delivery.id === id
+          );
           this.tempDeliveries[index] = this.tempDelivery;
           this.clearOldDelivery();
           alert('Delivery Successfully updated');
         }
-      }).catch(error => {
+      })
+      .catch(error => {
         console.error(error);
         alert(error.message);
       });
@@ -150,40 +221,31 @@ export class DeliveryService extends BaseService {
     });
   }
 
+   // ### Test Stuff
 
-  // ## Get Delivery
-  getDelivery(deliveryId: number) {
-    return this.connection.select<IDelivery>({
-      from: 'Deliveries',
-      where: {
-        id: deliveryId
-      }
-    });
-  }
-
-  getOrder(documentId: number) {
-    return this.connection.select<IDelivery>({
-      from: 'Deliveries',
-      where: {
-        documentId: documentId
-      }
-    });
-  }
-
-  // ### Test Stuff
-
-  dbAdd(id, lastSync, user, documentID, lineID, description, productCode, sellPrice, qtyOrdered, json) {
+  dbAdd(
+    id,
+    lastSync,
+    user,
+    documentID,
+    lineID,
+    description,
+    productCode,
+    sellPrice,
+    qtyOrdered,
+    json
+  ) {
     // const open = indexedDB.open('Student_db', 1);
     const open = indexedDB.open('Delivery_db', 1);
 
-    open.onupgradeneeded = function () {
+    open.onupgradeneeded = function() {
       const db = open.result;
       const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
       // const store = db.createObjectStore('Students', { keyPath: 'id' });
       // const index = store.createIndex('LineIndex', ['lineID']);
     };
 
-    open.onsuccess = function () {
+    open.onsuccess = function() {
       // Start a new transaction
       const db = open.result;
       const tx = db.transaction('Deliveries', 'readwrite');
@@ -208,7 +270,7 @@ export class DeliveryService extends BaseService {
         json: json
       });
       // Close the db when the transaction is done
-      tx.oncomplete = function () {
+      tx.oncomplete = function() {
         db.close();
       };
     };
@@ -232,8 +294,17 @@ export class DeliveryService extends BaseService {
         // check order no
         this.getOrder(DocumentId).then(deliveries => {
           if (deliveries.length < 1) {
-            this.dbAdd(newId, dataList.LastSyncronisation,
-              '', 0, 0, '', '', 0, 0, dataList
+            this.dbAdd(
+              newId,
+              dataList.LastSyncronisation,
+              '',
+              0,
+              0,
+              '',
+              '',
+              0,
+              0,
+              dataList
             );
           }
         });
@@ -241,10 +312,9 @@ export class DeliveryService extends BaseService {
     }
   }
 
-
   getData(dataList, driverName) {
-   this.checkAddJson(dataList);
-   const lastSync = dataList.LastSyncronisation;
+    this.checkAddJson(dataList);
+    const lastSync = dataList.LastSyncronisation;
     const drivers = dataList.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       if (drivers[d].Name === driverName) {
@@ -262,7 +332,9 @@ export class DeliveryService extends BaseService {
                 const description = products[p].Description;
                 const productCode = products[p].ProductCode;
                 const sellPrice = products[p].SellPrice;
-                this.dbAdd(LineId, lastSync,
+                this.dbAdd(
+                  LineId,
+                  lastSync,
                   user,
                   DocumentId,
                   LineId,
@@ -274,7 +346,6 @@ export class DeliveryService extends BaseService {
                 );
               }
             }
-
           });
         }
       }
@@ -283,14 +354,25 @@ export class DeliveryService extends BaseService {
   // ### End
 
   /// Edit Json
-  editJson(newId, dataTemp, docId, lineId, qtyRejected, reason, signature, name, payType, payAmount) {
+  editJson(
+    newId,
+    dataTemp,
+    docId,
+    lineId,
+    qtyRejected,
+    reason,
+    signature,
+    name,
+    payType,
+    payAmount
+  ) {
     const drivers = dataTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       const orderList = drivers[d]['Orders'];
       for (let o = 0; o < orderList.length; o++) {
         const products = orderList[o]['Lines'];
         // Get Document ID
-        if (orderList[o].DocumentId = docId) {
+        if ((orderList[o].DocumentId = docId)) {
           orderList[o].Delivered = true;
           orderList[o].DeliveryTime = JSON.stringify(new Date());
           orderList[o].ReceivedBy = name;
@@ -298,7 +380,7 @@ export class DeliveryService extends BaseService {
           orderList[o].PaymentAmount = payAmount;
           orderList[o].signature = signature;
           for (let p = 0; p < products.length; p++) {
-            if (products[p].LineId = lineId) {
+            if ((products[p].LineId = lineId)) {
               products[p].QuantityRejected = qtyRejected;
               products[p].RejectionReason = reason;
             }
@@ -310,21 +392,33 @@ export class DeliveryService extends BaseService {
     console.log(newId);
     const updatedValue: IDelivery = {
       lastSync: dataTemp.LastSyncronisation,
-      name: '', documentId: 0, lineId: 0, qtyOrdered: 0,
-      qtyRejected: 0, rejectReason: '', delivered: 'true',
-      deliveryTime: '', signature: '', deliveredTo: '',
-      paymentType: '', paymentAmount: 0, updated: 'false',
+      name: '',
+      documentId: 0,
+      lineId: 0,
+      qtyOrdered: 0,
+      qtyRejected: 0,
+      rejectReason: '',
+      delivered: 'true',
+      deliveryTime: '',
+      signature: '',
+      deliveredTo: '',
+      paymentType: '',
+      paymentAmount: 0,
+      updated: 'false',
       json: dataTemp
     };
-    this.updateDelivery(newId, updatedValue).
-      then(rowsUpdated => {
+    this.updateDelivery(newId, updatedValue)
+      .then(rowsUpdated => {
         if (rowsUpdated > 0) {
-          const index = this.tempDeliveries.findIndex(delivery => delivery.id === newId);
+          const index = this.tempDeliveries.findIndex(
+            delivery => delivery.id === newId
+          );
           this.tempDeliveries[index] = this.tempDelivery;
           this.clearOldDelivery();
           alert('Delivery Successfully updated');
         }
-      }).catch(error => {
+      })
+      .catch(error => {
         console.error(error);
         alert(error.message);
       });

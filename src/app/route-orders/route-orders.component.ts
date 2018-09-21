@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 import { Globals } from '../globals';
 import { DeliveryService } from '../_services/delivery.service';
-
+import { Delivery, IDelivery } from '../_models/delivery';
 
 @Component({
   selector: 'app-route-orders',
@@ -33,25 +33,54 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   public selectedRoute: string;
   private service: DeliveryService;
   addDB = false;
+  deliveries: Array<IDelivery> = [];
+  tempDelivery: IDelivery = new Delivery();
 
-  constructor(private route: ActivatedRoute, private data: DataService, private globals: Globals, service: DeliveryService) {
-    this.route.params.subscribe(params => this.allRoutes$ = data);
+  constructor(
+    private route: ActivatedRoute,
+    private data: DataService,
+    private globals: Globals,
+    service: DeliveryService) {
+    this.route.params.subscribe(
+      params => (this.allRoutes$ = data)
+    );
     this.selectedRoute = globals.selectedRoute;
     this.service = service;
   }
 
   ngOnInit() {
-    this.data.getAllRoutes().subscribe(
-      data => this.allRoutes$ = data);
     const getOrder = (this.route.snapshot.paramMap.get('routeName'));
     this.selectedRoute = getOrder;
     this.globals.selectedRoute = this.selectedRoute;
+    this.getDriverDeliveries(this.selectedRoute);
+//    this.allRoutes$ = this.tempDelivery.json;
+    if (this.tempDelivery.json) {
+      this.allRoutes$ = this.tempDelivery.json;
+    } else {
+      this.data.getAllRoutes().subscribe(
+        data => this.allRoutes$ = data);
+    }
   }
 
   ngAfterContentChecked() {
     if (typeof this.allRoutes$['orderGroups'] !== 'undefined' && this.addDB === false) {
       this.addDB = true;
       this.service.getData(this.allRoutes$, this.selectedRoute);
+      this.getDriverDeliveries(this.selectedRoute);
+//       this.allRoutes$ = this.tempDelivery.json;
     }
+  }
+  // Get Deliveries per driver(at the moment will get first delivery and use that json)
+  getDriverDeliveries(name) {
+    this.service.getDriverDeliveries(name)
+      .then(deliveries => {
+        if (deliveries.length > 0) {
+          this.tempDelivery = deliveries[0];
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
   }
 }
