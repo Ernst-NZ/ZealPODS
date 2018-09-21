@@ -93,7 +93,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       this.hidden = false;
       this.show = true;
     }
-    alert(document.referrer);
+  //  alert(document.referrer);
+
   }
 
   ngAfterContentChecked() {

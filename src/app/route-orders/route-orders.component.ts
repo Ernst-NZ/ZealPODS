@@ -52,11 +52,12 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
     const getOrder = (this.route.snapshot.paramMap.get('routeName'));
     this.selectedRoute = getOrder;
     this.globals.selectedRoute = this.selectedRoute;
-    this.getDriverDeliveries(this.selectedRoute);
-//    this.allRoutes$ = this.tempDelivery.json;
+    // this.getDriverDeliveries(this.selectedRoute);
+    // this.allRoutes$ = this.tempDelivery.json;
     if (this.tempDelivery.json) {
       this.allRoutes$ = this.tempDelivery.json;
     } else {
+      alert('db Didnt Work');
       this.data.getAllRoutes().subscribe(
         data => this.allRoutes$ = data);
     }
@@ -66,7 +67,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
     if (typeof this.allRoutes$['orderGroups'] !== 'undefined' && this.addDB === false) {
       this.addDB = true;
       this.service.getData(this.allRoutes$, this.selectedRoute);
-      this.getDriverDeliveries(this.selectedRoute);
+ //     this.getDriverDeliveries(this.selectedRoute);
 //       this.allRoutes$ = this.tempDelivery.json;
     }
   }
