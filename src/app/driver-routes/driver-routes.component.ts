@@ -45,8 +45,9 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   ngOnInit() {
     this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
     this.getJson();
-    //   alert('Order Update - Look at rejected for update option. Update command needs to change.');
-    //    alert('Look at data collection from db not web.');
+       alert('Order Update - Look at rejected for update option. Update command needs to change.');
+      alert('smelt saam met vrydag - goed wil nie lekker werk nie');
+       alert('Look at data collection from db not web.');
   }
 
   ngAfterContentChecked() {
