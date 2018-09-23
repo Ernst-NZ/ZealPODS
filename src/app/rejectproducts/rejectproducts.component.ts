@@ -41,11 +41,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked  {
     this.i = getLine.lastIndexOf(',');
     this.docID = getLine.substring(0, this.i);
     this.lineID = Number(getLine.substring(this.i + 1));
-    //  this.data.getAllRoutes().subscribe(
-    //   data => this.productDetail$ = data
-    // );
     this.getProduct(this.lineID);
-//    this.productDetail$ = this.oldDelivery.json;
   }
 
   ngAfterContentChecked() {

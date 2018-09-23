@@ -86,19 +86,34 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     // this.data.getAllRoutes().subscribe(data => (this.orderDetail$ = data));
     const getOrder = this.route.snapshot.paramMap.get('DocumentId');
     this.docID = getOrder;
+    this.getJson();
     this.getOrder(Number(this.docID));
-    this.orderDetail$ = this.oldDelivery.json;
-    this.i = document.referrer.lastIndexOf('reject');
-    if (this.i > 0 ) {
-      this.hidden = false;
-      this.show = true;
-    }
-  //  alert(document.referrer);
-
+  //  this.orderDetail$ = this.oldDelivery.json; 
   }
 
   ngAfterContentChecked() {
-    this.orderDetail$ = this.oldDelivery.json;
+    if (this.deliveries.length > 0) {
+      if (typeof this.deliveries[0]['id'] !== 'undefined') {
+        this.orderDetail$ = this.deliveries[0]['json'];
+        if (this.deliveries[0]['delivered'] === 'true') {
+          this.hidden = false;
+          this.show = true;
+        }  
+      }
+    }
+  }
+
+  // ## Get Json
+  getJson() {
+    this.service
+      .getJson()
+      .then(deliveries => {
+        this.deliveries = deliveries;
+      })
+      .catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
   }
 
   getOrder(documentId) {
