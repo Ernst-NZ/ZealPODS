@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { DeliveryService } from '../_services/delivery.service';
 import { Delivery, IDelivery } from '../_models/delivery';
 
@@ -9,12 +9,14 @@ import { Delivery, IDelivery } from '../_models/delivery';
   providers: [DeliveryService]
 })
 
-export class DeliveryComponent implements OnInit {
+export class DeliveryComponent implements OnInit, AfterContentChecked {
 
   private service: DeliveryService;
   deliveries: Array<IDelivery> = [];
   newDelivery: IDelivery = new Delivery();
   oldDelivery: IDelivery = new Delivery();
+  jsonFile$: object;
+  id: number;
 
   constructor(service: DeliveryService) {
     this.service = service;
@@ -22,9 +24,19 @@ export class DeliveryComponent implements OnInit {
 
   ngOnInit() {
   // this.getDeliveries();
-    this.getOrder(402);
-  }
+  this.getJson();
 
+  // this.jsonFile$ = this.deliveries[0].json;
+  }
+  ngAfterContentChecked() {
+      if (this.deliveries.length > 0) {
+        if (typeof this.deliveries[0]['id'] !== 'undefined') {
+          this.id = this.deliveries[0]['id'];
+           this.jsonFile$ = this.deliveries[0]['json'];
+           console.log(this.jsonFile$);
+        }
+      }
+  }
 
   getOrder(documentId) {
     this.service.getOrder(documentId).
@@ -35,6 +47,17 @@ export class DeliveryComponent implements OnInit {
       alert(error.message);
     });
 }
+
+  // ## Get Json
+  getJson() {
+    this.service.getJson().
+      then(deliveries => {
+        this.deliveries = deliveries;
+      }).catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
+  }
 
   // ## Get Deliveries
   getDeliveries() {

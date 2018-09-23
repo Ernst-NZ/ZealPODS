@@ -21,6 +21,15 @@ export class DeliveryService extends BaseService {
     });
   }
 
+  getJson() {
+    return this.connection.select<IDelivery>({
+      from: 'Deliveries',
+      where: {
+        lineId: 0
+      }
+    });
+  }
+
   // ## Get Delivery
   getDelivery(deliveryId: number) {
     return this.connection.select<IDelivery>({
@@ -154,7 +163,7 @@ export class DeliveryService extends BaseService {
     }
 
     const jsonTemp = this.editJson(
-      newId,
+      0,
       json,
       docId,
       lineId,
@@ -221,7 +230,7 @@ export class DeliveryService extends BaseService {
     });
   }
 
-   // ### Test Stuff
+  // ### Test Stuff
 
   dbAdd(
     id,
@@ -277,25 +286,18 @@ export class DeliveryService extends BaseService {
   }
 
   checkAddJson(dataList) {
-    const re = /-/gi;
-    let deliveryDate;
-    let justDate;
-    let newId: Number;
-
     const drivers = dataList.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
-      deliveryDate = drivers[d].DeliveryDate;
-      justDate = deliveryDate.substring(4, 10);
-      newId = +justDate.replace(re, '');
-
       const orderList = drivers[d]['Orders'];
       for (let o = 0; o < orderList.length; o++) {
         const DocumentId = orderList[o].DocumentId;
         // check order no
-        this.getOrder(DocumentId).then(deliveries => {
-          if (deliveries.length < 1) {
+        this.getOrder(0).then(deliveries => {
+          if (deliveries.length < 0) {
+            this.dbAdd(0, dataList.LastSyncronisation, '', 0, 0, '', '', 0, 0, dataList);
+          } else if (deliveries[0].delivered === 'true' && deliveries[0].updated === 'true') {
             this.dbAdd(
-              newId,
+              0,
               dataList.LastSyncronisation,
               '',
               0,
