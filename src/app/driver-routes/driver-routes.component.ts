@@ -53,7 +53,6 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
     if (this.deliveries.length > 0) {
       if (typeof this.deliveries[0]['id'] !== 'undefined') {
         this.allRoutes$ = this.deliveries[0]['json'];
-        console.log(this.allRoutes$);
       }
     }
   }

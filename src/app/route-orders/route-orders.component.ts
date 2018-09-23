@@ -15,20 +15,28 @@ import { Delivery, IDelivery } from '../_models/delivery';
   animations: [
     trigger('listStagger', [
       transition('* <=> *', [
-        query(':enter',
+        query(
+          ':enter',
           [
             style({ opacity: 0, transform: 'translateY(-15px)' }),
-            stagger('50ms',
-              animate('550ms ease-out',
-                style({ opacity: 1, transform: 'translateY(0px)' })))
-          ], { optional: true }),
-        query(':leave', animate('50ms', style({ opacity: 0 })), { optional: true })
+            stagger(
+              '50ms',
+              animate(
+                '550ms ease-out',
+                style({ opacity: 1, transform: 'translateY(0px)' })
+              )
+            )
+          ],
+          { optional: true }
+        ),
+        query(':leave', animate('50ms', style({ opacity: 0 })), {
+          optional: true
+        })
       ])
     ])
   ]
 })
 export class RouteOrdersComponent implements OnInit, AfterContentChecked {
-
   allRoutes$: object;
   public selectedRoute: string;
   private service: DeliveryService;
@@ -40,40 +48,45 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
     private route: ActivatedRoute,
     private data: DataService,
     private globals: Globals,
-    service: DeliveryService) {
-    this.route.params.subscribe(
-      params => (this.allRoutes$ = data)
-    );
+    service: DeliveryService
+  ) {
+    this.route.params.subscribe(params => (this.allRoutes$ = data));
     this.selectedRoute = globals.selectedRoute;
     this.service = service;
   }
 
   ngOnInit() {
-    const getOrder = (this.route.snapshot.paramMap.get('routeName'));
+    const getOrder = this.route.snapshot.paramMap.get('routeName');
     this.selectedRoute = getOrder;
     this.globals.selectedRoute = this.selectedRoute;
-    // this.getDriverDeliveries(this.selectedRoute);
-    // this.allRoutes$ = this.tempDelivery.json;
-    if (this.tempDelivery.json) {
-      this.allRoutes$ = this.tempDelivery.json;
-    } else {
-      alert('db Didnt Work');
-      this.data.getAllRoutes().subscribe(
-        data => this.allRoutes$ = data);
-    }
+    this.getDriverDeliveries(this.selectedRoute);
+    this.getJson();
   }
 
   ngAfterContentChecked() {
-    if (typeof this.allRoutes$['orderGroups'] !== 'undefined' && this.addDB === false) {
-      this.addDB = true;
-      this.service.getData(this.allRoutes$, this.selectedRoute);
- //     this.getDriverDeliveries(this.selectedRoute);
-//       this.allRoutes$ = this.tempDelivery.json;
+    if (this.deliveries.length > 0) {
+      if (typeof this.deliveries[0]['id'] !== 'undefined') {
+        this.allRoutes$ = this.deliveries[0]['json'];
+      }
     }
+  }
+
+  // ## Get Json
+  getJson() {
+    this.service
+      .getJson()
+      .then(deliveries => {
+        this.deliveries = deliveries;
+      })
+      .catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
   }
   // Get Deliveries per driver(at the moment will get first delivery and use that json)
   getDriverDeliveries(name) {
-    this.service.getDriverDeliveries(name)
+    this.service
+      .getDriverDeliveries(name)
       .then(deliveries => {
         if (deliveries.length > 0) {
           this.tempDelivery = deliveries[0];

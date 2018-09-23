@@ -151,17 +151,6 @@ export class DeliveryService extends BaseService {
     json
   ) {
     // Update the Json String
-    const re = /-/gi;
-    let deliveryDate;
-    let justDate;
-    let newId: Number;
-    const drivers = json.orderGroups;
-    for (let d = 0; d < drivers.length; d++) {
-      deliveryDate = drivers[d].DeliveryDate;
-      justDate = deliveryDate.substring(4, 10);
-      newId = +justDate.replace(re, '');
-    }
-
     const jsonTemp = this.editJson(
       0,
       json,
@@ -231,7 +220,6 @@ export class DeliveryService extends BaseService {
   }
 
   // ### Test Stuff
-
   dbAdd(
     id,
     lastSync,
@@ -293,20 +281,12 @@ export class DeliveryService extends BaseService {
         const DocumentId = orderList[o].DocumentId;
         // check order no
         this.getOrder(0).then(deliveries => {
-          if (deliveries.length < 0) {
+          if (deliveries.length < 1) {
             this.dbAdd(0, dataList.LastSyncronisation, '', 0, 0, '', '', 0, 0, dataList);
           } else if (deliveries[0].delivered === 'true' && deliveries[0].updated === 'true') {
             this.dbAdd(
-              0,
-              dataList.LastSyncronisation,
-              '',
-              0,
-              0,
-              '',
-              '',
-              0,
-              0,
-              dataList
+              0, dataList.LastSyncronisation, '', 0, 0,
+              '', '', 0, 0, dataList
             );
           }
         });
@@ -334,17 +314,9 @@ export class DeliveryService extends BaseService {
                 const description = products[p].Description;
                 const productCode = products[p].ProductCode;
                 const sellPrice = products[p].SellPrice;
-                this.dbAdd(
-                  LineId,
-                  lastSync,
-                  user,
-                  DocumentId,
-                  LineId,
-                  description,
-                  productCode,
-                  sellPrice,
-                  QTYOrdered,
-                  dataList
+                this.dbAdd(LineId, lastSync, user, DocumentId,
+                  LineId, description, productCode, sellPrice,
+                  QTYOrdered, dataList
                 );
               }
             }
@@ -357,16 +329,9 @@ export class DeliveryService extends BaseService {
 
   /// Edit Json
   editJson(
-    newId,
-    dataTemp,
-    docId,
-    lineId,
-    qtyRejected,
-    reason,
-    signature,
-    name,
-    payType,
-    payAmount
+    newId, dataTemp, docId, lineId,
+    qtyRejected, reason, signature,
+    name, payType, payAmount
   ) {
     const drivers = dataTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
@@ -390,14 +355,10 @@ export class DeliveryService extends BaseService {
         }
       }
     }
-    console.log(dataTemp);
-    console.log(newId);
     const updatedValue: IDelivery = {
       lastSync: dataTemp.LastSyncronisation,
-      name: '',
-      documentId: 0,
-      lineId: 0,
-      qtyOrdered: 0,
+      name: '', documentId: 0,
+      lineId: 0, qtyOrdered: 0,
       qtyRejected: 0,
       rejectReason: '',
       delivered: 'true',
