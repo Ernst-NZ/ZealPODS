@@ -79,7 +79,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked  {
       this.oldDelivery.qtyOrdered,
       this.oldDelivery.qtyRejected,
       this.oldDelivery.rejectReason,
-      this.oldDelivery.delivered,
+      'product',
       this.oldDelivery.deliveryTime,
       this.oldDelivery.signature,
       this.oldDelivery.deliveredTo,

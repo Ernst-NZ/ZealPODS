@@ -133,35 +133,16 @@ export class DeliveryService extends BaseService {
 
   // tslint:disable-next-line:max-line-length
   preUpdateDelivery(
-    id,
-    lastSync,
-    name,
-    docId,
-    lineId,
-    order,
-    reject,
-    reason,
-    delivered,
-    time,
-    signature,
-    deliveredTo,
-    payType,
-    payAmount,
-    updated,
-    json
+    id, lastSync, name, docId, lineId, order,
+    reject, reason, delivered, time, signature,
+    deliveredTo, payType, payAmount,
+    updated, json
   ) {
     // Update the Json String
     const jsonTemp = this.editJson(
-      0,
-      json,
-      docId,
-      lineId,
-      reject,
-      reason,
-      signature,
-      deliveredTo,
-      payType,
-      payAmount
+      0, json, docId, lineId, reject,
+      reason, delivered, signature, deliveredTo,
+      payType, payAmount
     );
 
     const updatedValue: IDelivery = {
@@ -328,11 +309,9 @@ export class DeliveryService extends BaseService {
   // ### End
 
   /// Edit Json
-  editJson(
-    newId, dataTemp, docId, lineId,
-    qtyRejected, reason, signature,
-    name, payType, payAmount
-  ) {
+  editJson( newId, dataTemp, docId, lineId,
+    qtyRejected, reason, delivered, signature,
+    name, payType, payAmount ) {
     const drivers = dataTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       const orderList = drivers[d]['Orders'];
@@ -357,18 +336,12 @@ export class DeliveryService extends BaseService {
     }
     const updatedValue: IDelivery = {
       lastSync: dataTemp.LastSyncronisation,
-      name: '', documentId: 0,
-      lineId: 0, qtyOrdered: 0,
-      qtyRejected: 0,
-      rejectReason: '',
-      delivered: 'true',
-      deliveryTime: '',
-      signature: '',
-      deliveredTo: '',
-      paymentType: '',
-      paymentAmount: 0,
-      updated: 'false',
-      json: dataTemp
+      name: '', documentId: 0, lineId: 0, qtyOrdered: 0,
+      qtyRejected: 0, rejectReason: '',
+      delivered: delivered, deliveryTime: '',
+      signature: '', deliveredTo: '',
+      paymentType: '', paymentAmount: 0,
+      updated: 'false', json: dataTemp
     };
     this.updateDelivery(newId, updatedValue)
       .then(rowsUpdated => {
@@ -387,4 +360,15 @@ export class DeliveryService extends BaseService {
       });
     return dataTemp;
   }
+
+  //// Check and post Delivery
+  // #########################
+  // When a product has been rejected the delivery status is set as "product"
+  // When the signatures and name is added the delivery status is set as "true"
+  // When off line -
+  // It is possible that the staus can be set as true for one order 
+  // and then for the next order after a rejection it will be reset to "product".
+  // This will prevent the Json string to be over written when there are pending changes
+  
+
 }
