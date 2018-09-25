@@ -48,8 +48,8 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
       if (typeof this.deliveries[0]['id'] !== 'undefined') {
         this.getJson();
       }
-    }    
-       alert('Order Update - Look at rejected for update option. Update command needs to change.');       
+    }
+       alert('Order Update - Look at rejected for update option. Update command needs to change.');
   }
 
   ngAfterContentChecked() {
