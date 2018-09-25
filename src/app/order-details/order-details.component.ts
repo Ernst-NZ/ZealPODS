@@ -152,6 +152,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       for (let d = 0; d < this.deliveries.length; d++) {
         this.oldDelivery = this.deliveries[d];
         this.updateDelivery(
+          this.oldDelivery.lineId,
           signatureData,
           newDate,
           deliveredTo,
@@ -170,45 +171,28 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   }
 
   updateDelivery(
+    lineId,
     signatureData,
     newDate,
     deliveredTo,
     paymentType,
     paymentAmount
   ) {
-    const updatedValue: IDelivery = {
-      lastSync: this.oldDelivery.lastSync,
-      name: this.oldDelivery.name,
-      documentId: this.oldDelivery.documentId,
-      lineId: this.oldDelivery.lineId,
-      qtyOrdered: this.oldDelivery.qtyOrdered,
-      qtyRejected: this.oldDelivery.qtyRejected,
-      rejectReason: this.oldDelivery.rejectReason,
-      delivered: 'true',
-      deliveryTime: newDate,
-      signature: signatureData,
-      deliveredTo: deliveredTo,
-      paymentType: paymentType,
-      paymentAmount: paymentAmount,
-      updated: this.oldDelivery.updated,
-      json: this.oldDelivery.json
-    };
-    this.service
-      .updateDelivery(this.oldDelivery.id, updatedValue)
-      .then(rowsUpdated => {
-        if (rowsUpdated > 0) {
-          const index = this.deliveries.findIndex(
-            delivery => delivery.id === this.oldDelivery.id
-          );
-          this.deliveries[index] = this.oldDelivery;
-          this.clearOldDelivery();
-          // alert('Delivery Successfully updated');
-        }
-      })
-      .catch(error => {
-        console.error(error);
-        alert(error.message);
-      });
+    this.service.preUpdateDelivery(
+      lineId, this.oldDelivery.lastSync,
+      this.oldDelivery.name, this.oldDelivery.documentId,
+      this.oldDelivery.lineId,
+      this.oldDelivery.qtyOrdered,
+      this.oldDelivery.qtyRejected,
+      this.oldDelivery.rejectReason,
+      this.oldDelivery.delivered,
+      newDate,
+      signatureData,
+      deliveredTo,
+      paymentType,
+      paymentAmount,
+      this.oldDelivery.updated,
+      this.oldDelivery.json);
   }
 
   /// Signature Stuff
