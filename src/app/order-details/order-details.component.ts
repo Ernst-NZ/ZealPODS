@@ -134,7 +134,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   xxx() {
     const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
     console.log(atob(dataSvg.split(',')[1]));
-    this.download(dataSvg, 'signature.svg');
+ //   this.download(dataSvg, 'signature.svg');
 
     if (this.signaturePad.isEmpty()) {
       return alert('Please provide a signature first.');
@@ -160,7 +160,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
           paymentAmount
         );
       }
-      alert('Delivery Successfully updated');
+      alert('Delivery Successfully Updated');
     } catch (error) {
       alert(error);
     }
@@ -185,7 +185,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       this.oldDelivery.qtyOrdered,
       this.oldDelivery.qtyRejected,
       this.oldDelivery.rejectReason,
-      this.oldDelivery.delivered,
+      'true',
       newDate,
       signatureData,
       deliveredTo,

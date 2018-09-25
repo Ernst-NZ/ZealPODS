@@ -87,7 +87,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked  {
       this.oldDelivery.paymentAmount,
       this.oldDelivery.updated,
       this.oldDelivery.json);
-    //  alert('Delivery Successfully updated');
+      alert('Delivery Successfully updated');
     this.router.navigate(['/order-details/', this.docID]);
   }
 
@@ -95,39 +95,4 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked  {
 
 
   }
-  // updateDelivery() {
-  //   if (this.oldDelivery.rejectReason == null ) {
-  //   return alert('Please provide a reason for rejection.');  }
-
-  //   const updatedValue: IDelivery = {
-  //     lastSync: this.oldDelivery.lastSync,
-  //     name: this.oldDelivery.name,
-  //     documentId: this.oldDelivery.documentId,
-  //     lineId: this.oldDelivery.lineId,
-  //     qtyOrdered: this.oldDelivery.qtyOrdered,
-  //     qtyRejected: this.oldDelivery.qtyRejected,
-  //     rejectReason: this.oldDelivery.rejectReason,
-  //     delivered: this.oldDelivery.delivered,
-  //     deliveryTime: this.oldDelivery.deliveryTime,
-  //     signature: this.oldDelivery.signature,
-  //     deliveredTo: this.oldDelivery.deliveredTo,
-  //     paymentType: this.oldDelivery.paymentType,
-  //     paymentAmount: this.oldDelivery.paymentAmount,
-  //     updated: this.oldDelivery.updated,
-  //     json: this.oldDelivery.json
-  //   };
-  //   this.service.updateDelivery(this.oldDelivery.id, updatedValue).
-  //     then(rowsUpdated => {
-  //       if (rowsUpdated > 0) {
-  //         const index = this.deliveries.findIndex(delivery => delivery.id === this.oldDelivery.id);
-  //         this.deliveries[index] = this.oldDelivery;
-  //         this.clearOldDelivery();
-  //         alert('Delivery Successfully updated');
-  //         this.router.navigate(['/order-details/', this.docID]);
-  //       }
-  //     }).catch(error => {
-  //       console.error(error);
-  //       alert(error.message);
-  //     });
-  // }
 }
