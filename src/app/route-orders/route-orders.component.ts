@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 import { Globals } from '../globals';
 import { DeliveryService } from '../_services/delivery.service';
-
+import { Delivery, IDelivery } from '../_models/delivery';
 
 @Component({
   selector: 'app-route-orders',
@@ -33,6 +33,8 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   public selectedRoute: string;
   private service: DeliveryService;
   addDB = false;
+  deliveries: Array<IDelivery> = [];
+  oldDelivery: IDelivery = new Delivery();
 
   constructor(private route: ActivatedRoute, private data: DataService, private globals: Globals, service: DeliveryService) {
     this.route.params.subscribe(params => this.allRoutes$ = data);
@@ -43,15 +45,34 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   ngOnInit() {
     this.data.getAllRoutes().subscribe(
       data => this.allRoutes$ = data);
+   // this.getJson();
     const getOrder = (this.route.snapshot.paramMap.get('routeName'));
     this.selectedRoute = getOrder;
     this.globals.selectedRoute = this.selectedRoute;
   }
 
   ngAfterContentChecked() {
+    // if (this.deliveries.length > 0) {
+    //   if (typeof this.deliveries[0]['id'] !== 'undefined') {
+    //     this.allRoutes$ = this.deliveries[0]['json'];
+    //   }
+    // }
+    // console.log(this.allRoutes$);
     if (typeof this.allRoutes$['orderGroups'] !== 'undefined' && this.addDB === false) {
       this.addDB = true;
       this.service.getData(this.allRoutes$, this.selectedRoute);
     }
+  }
+   // ## Get Json
+   getJson() {
+    this.service
+      .getJson()
+      .then(deliveries => {
+        this.deliveries = deliveries;
+      })
+      .catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
   }
 }

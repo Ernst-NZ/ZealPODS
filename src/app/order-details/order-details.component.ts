@@ -88,7 +88,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     this.docID = getOrder;
     this.getJson();
     this.getOrder(Number(this.docID));
-  //  this.orderDetail$ = this.oldDelivery.json; 
+  //  this.orderDetail$ = this.oldDelivery.json;
   }
 
   ngAfterContentChecked() {
@@ -98,7 +98,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
         if (this.deliveries[0]['delivered'] === 'true') {
           this.hidden = false;
           this.show = true;
-        }  
+        }
       }
     }
   }

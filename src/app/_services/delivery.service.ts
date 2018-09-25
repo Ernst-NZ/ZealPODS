@@ -378,7 +378,7 @@ export class DeliveryService extends BaseService {
           );
           this.tempDeliveries[index] = this.tempDelivery;
           this.clearOldDelivery();
-          alert('Delivery Successfully updated');
+    //      alert('Delivery Successfully updated');
         }
       })
       .catch(error => {
