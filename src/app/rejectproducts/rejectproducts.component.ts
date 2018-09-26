@@ -73,7 +73,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked  {
     }
 
 
-    this.service.preUpdateDelivery(this.lineID, this.oldDelivery.lastSync,
+    this.service.preUpdateDelivery('product', this.lineID, this.oldDelivery.lastSync,
       this.oldDelivery.name, this.oldDelivery.documentId,
       this.oldDelivery.lineId,
       this.oldDelivery.qtyOrdered,

@@ -44,8 +44,10 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   @ViewChild(SignaturePad)
   signaturePad: SignaturePad;
   orderDetail$: Object;
-  deliveries: Array<IDelivery> = [];
+  deliveries: Array<IDelivery> = [];  
   oldDelivery: IDelivery = new Delivery();
+  json: Array<IDelivery> = [];
+  tempJson: IDelivery = new Delivery();
   private service: DeliveryService;
   public docID;
   public signatureImage: string;
@@ -113,14 +115,17 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   // ## Get Json
   getJson() {
     this.service
-      .getJson()
-      .then(deliveries => {
-        this.deliveries = deliveries;
-      })
-      .catch(error => {
-        console.error(error);
-        alert(error.message);
-      });
+    .getOrder(0)
+    .then(deliveries => {
+      this.deliveries = deliveries;
+      if (deliveries.length > 0) {
+        this.tempJson = deliveries[0];
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      alert(error.message);
+    });
   }
 
   getOrder(documentId) {
@@ -185,7 +190,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     paymentType,
     paymentAmount
   ) {
-    this.service.preUpdateDelivery(
+    this.service.preUpdateDelivery( 'order',
       lineId, this.oldDelivery.lastSync,
       this.oldDelivery.name, this.oldDelivery.documentId,
       this.oldDelivery.lineId,
@@ -199,7 +204,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       paymentType,
       paymentAmount,
       this.oldDelivery.updated,
-      this.oldDelivery.json);
+      this.tempJson.json);
   }
 
   /// Signature Stuff

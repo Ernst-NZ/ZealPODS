@@ -32,7 +32,7 @@ export class DataService {
   }
 
   postJson(dataString) {
-    return this.http.post('https://test1.zealsystems.co.nz/api/values/1', dataString, {
+    return this.http.post('https://test1.zealsystems.co.nz/api/', dataString, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })      

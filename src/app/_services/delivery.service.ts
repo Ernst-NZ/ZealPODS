@@ -132,18 +132,20 @@ export class DeliveryService extends BaseService {
   // **** ####  Test Zone  #### ****
 
   // tslint:disable-next-line:max-line-length
-  preUpdateDelivery(
+  preUpdateDelivery( type, 
     id, lastSync, name, docId, lineId, order,
     reject, reason, delivered, time, signature,
     deliveredTo, payType, payAmount,
-    updated, json
-  ) {
+    updated, json) {
+      let jsonTemp = json;
     // Update the Json String
-    const jsonTemp = this.editJson(
-      0, json, docId, lineId, reject,
-      reason, delivered, signature, deliveredTo,
-      payType, payAmount
-    );
+    if (type === 'order') {
+        jsonTemp = this.editJson(
+        lineId, json, docId, lineId, reject,
+        reason, delivered, signature, deliveredTo,
+        payType, payAmount
+      );
+    }
 
     /// Post Json
     if (delivered === 'true') {
@@ -322,13 +324,16 @@ export class DeliveryService extends BaseService {
   editJson( newId, dataTemp, docId, lineId,
     qtyRejected, reason, delivered, signature,
     name, payType, payAmount ) {
+
+
     const drivers = dataTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       const orderList = drivers[d]['Orders'];
       for (let o = 0; o < orderList.length; o++) {
         const products = orderList[o]['Lines'];
         // Get Document ID
-        if ((orderList[o].DocumentId = docId)) {
+
+        if (orderList[o].DocumentId === docId) {
           orderList[o].Delivered = true;
           orderList[o].DeliveryTime = JSON.stringify(new Date());
           orderList[o].ReceivedBy = name;
@@ -336,7 +341,7 @@ export class DeliveryService extends BaseService {
           orderList[o].PaymentAmount = payAmount;
       //    orderList[o].signature = signature;
           for (let p = 0; p < products.length; p++) {
-            if ((products[p].LineId = lineId)) {
+            if (products[p].LineId === lineId) {
               products[p].QuantityRejected = qtyRejected;
               products[p].RejectionReason = reason;
             }
@@ -346,18 +351,19 @@ export class DeliveryService extends BaseService {
     }
     const updatedValue: IDelivery = {
       lastSync: dataTemp.LastSyncronisation,
-      name: '', documentId: 0, lineId: 0, qtyOrdered: 0,
-      qtyRejected: 0, rejectReason: '',
+      name: dataTemp.name, documentId: docId, 
+      lineId: lineId, qtyOrdered: dataTemp.qtyOrdered,
+      qtyRejected: qtyRejected, rejectReason: reason,
       delivered: delivered, deliveryTime: '',
-      signature: '', deliveredTo: '',
-      paymentType: '', paymentAmount: 0,
+      signature: '', deliveredTo: name,
+      paymentType: payType, paymentAmount: payAmount,
       updated: 'true', json: dataTemp
     };
-    this.updateDelivery(newId, updatedValue)
+    this.updateDelivery(0, updatedValue)
       .then(rowsUpdated => {
         if (rowsUpdated > 0) {
           const index = this.tempDeliveries.findIndex(
-            delivery => delivery.id === newId
+            delivery => delivery.id === 0
           );
           this.tempDeliveries[index] = this.tempDelivery;
           this.clearOldDelivery();
