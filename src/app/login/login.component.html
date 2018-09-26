@@ -1,44 +1,48 @@
-<h1 class="header text-dark">Welcome to ZealPODS by Zeal Systems</h1>
-<h2>Integrated - Proof of Delivery System</h2>
+<h1 class="headerText headerk">Welcome to ZealPODS by Zeal Systems</h1>
+<h2 class = "headerText">Integrated - Proof of Delivery System</h2>
 <br>
 <!-- <button class="btn float-center btn-info btn-lg" data-toggle="modal" data-target="#loginModal" id="loginButton">Login...</button>
 <br><br> -->
-<div id="loginModal" role="dialog" class="col-md-6 col-md-offset-3"> <!--class="modal fade form-inline" -->
-    <div class="modal-dialog">
-        <div class="modal-content">
+<!-- <div id="loginModal" role="dialog" class="col-md-6 col-md-offset-3"> class="modal fade form-inline" -->
+  <div id="loginForm" class="col-md-6 col-md-offset-3">
+    <div class="loginForm-dialog">
+        <div class="loginForm-content">
             <!-- <div class="modal-header bg-dark text-light">
                 <button type="button" class="close text-light" data-dismiss="modal"> &times;</button>
                 <h4>Login</h4>
             </div> -->
-            <div class="modal-body">
+            <div class="loginForm-body">
                 <form name="form" class="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
                     <div class="col-sm-6 offset-sm-3">
                         <alert></alert>
                     </div>
 
-                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+                    <div class="form-group headerText" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
                         <label for="username">Username</label>
                         <input type="text" class="form-control" name="username" [(ngModel)]="model.username" #username="ngModel" required autofocus/>
                         <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div>
                     </div>
 
-                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+                    <div class="form-group headerText" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" required />
                         <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
                     </div>
 
-                    <div class="checkbox float-left">
-                        <label>
-                            <input type="checkbox"> Remember me
-                        </label>
+                    <div class="form-group headerText checkbox">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"> Remember me
+                            </label>
+                        </div>
                     </div>
                     
                     <!-- <button type="button" class="btn float-right btn-default btn-xs" id="cancelButton" data-dismiss="modal">Cancel</button> -->
 
                     <div class="form-group">
-                        <button [disabled]="loading" type="submit" class="btn float-right btn-info btn-xs" id="submitButton">Sign in</button>
+                        <button [disabled]="loading" type="submit" class="btn float-right btn-info btn-xs" id="submitButton">Sign in
                         <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />                    
+                        </button>
                     </div>      
                 </form>
             </div>

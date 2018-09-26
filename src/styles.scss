@@ -9,9 +9,16 @@ body {
 }
 
 #container {
-  display: grid;
+  display: ruby;
+  height: 100%;
+  //background-color: rgb(85, 85, 85) ;  //change main background here
+  background-image: url("./assets/bgimage.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;  
   grid-template-columns: auto;
-
+  
   #content {
     padding: 10px 20px 50px;
 
@@ -207,3 +214,28 @@ body {
   border-top: 10px solid white;
   border-radius: 8px;
 }
+
+.headerText {
+  color:rgb(199, 214, 238);
+}
+
+#infoBlock {
+  background-color: rgba(0, 0, 0, 0.5);
+  color:rgb(199, 214, 238);
+  max-width: fit-content;
+}
+
+#myCanvas {
+  background-color:white;
+}
+
+.row {
+  display: block;
+  position: relative;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-right: 15px;
+}
+
+
+  
