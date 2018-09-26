@@ -145,6 +145,16 @@ export class DeliveryService extends BaseService {
       payType, payAmount
     );
 
+    /// Post Json
+    if (delivered === 'true') {
+      try {
+        this.data.postJson(jsonTemp);
+      } catch (error) {
+        alert(error);
+        console.log(error);
+      }      
+    }
+
     const updatedValue: IDelivery = {
       lastSync: lastSync,
       name: name,
@@ -324,7 +334,7 @@ export class DeliveryService extends BaseService {
           orderList[o].ReceivedBy = name;
           orderList[o].PaymentMethod = payType;
           orderList[o].PaymentAmount = payAmount;
-          orderList[o].signature = signature;
+      //    orderList[o].signature = signature;
           for (let p = 0; p < products.length; p++) {
             if ((products[p].LineId = lineId)) {
               products[p].QuantityRejected = qtyRejected;
@@ -341,7 +351,7 @@ export class DeliveryService extends BaseService {
       delivered: delivered, deliveryTime: '',
       signature: '', deliveredTo: '',
       paymentType: '', paymentAmount: 0,
-      updated: 'false', json: dataTemp
+      updated: 'true', json: dataTemp
     };
     this.updateDelivery(newId, updatedValue)
       .then(rowsUpdated => {

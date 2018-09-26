@@ -49,8 +49,8 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
         this.getJson();
       }
     }
-       alert('Order Update - look at delivered status between orders and products.');
-       alert('Check Delivered status on products');
+        alert('Check if we can run through the orders and post them one by one');
+        alert('Duplication of order after save');
   }
 
   ngAfterContentChecked() {

@@ -50,6 +50,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   public docID;
   public signatureImage: string;
   public i: number;
+  forceView = false;
+  
   show = false;
   hidden = true;
   addDB = false;
@@ -67,6 +69,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   };
 
   toggleTable() {
+    this.forceView = true;
     this.show = !this.show;
     this.hidden = !this.hidden;
   }
@@ -95,9 +98,13 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     if (this.deliveries.length > 0) {
       if (typeof this.deliveries[0]['id'] !== 'undefined') {
         this.orderDetail$ = this.deliveries[0]['json'];
-        if (this.deliveries[0]['delivered'] === 'true') {
-          this.hidden = false;
-          this.show = true;
+        if (this.deliveries[0]['delivered'] !== '' && this.forceView === false) {
+          for (let i = 0; i < this.deliveries.length; i++ ) {
+            if (this.deliveries[i]['qtyRejected'] > 0) {
+              this.hidden = false;
+              this.show = true;
+            }
+          }          
         }
       }
     }
@@ -152,7 +159,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       for (let d = 0; d < this.deliveries.length; d++) {
         this.oldDelivery = this.deliveries[d];
         this.updateDelivery(
-          this.oldDelivery.lineId,
+          this.deliveries[d]['lineId'],
           signatureData,
           newDate,
           deliveredTo,
