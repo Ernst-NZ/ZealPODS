@@ -11,17 +11,22 @@ body {
 #container {
   display: ruby;
   height: 100%;
-  //background-color: rgb(85, 85, 85) ;  //change main background here
-  background-image: url("./assets/bgimage.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-attachment: fixed;  
-  grid-template-columns: auto;
+  //background: -webkit-linear-gradient(90deg, rgba(72,126,212,1) 0%, rgba(0,0,0,1) 100%);
+  background: -webkit-linear-gradient(270deg, rgba(5,25,43,1) 10%, rgba(5,25,43,1) 11%, rgba(11,59,104,1) 80%, rgba(12,60,105,1) 81%);
   
+  // background-image: url("./assets/bgimage.jpg");
+  // background-repeat: no-repeat;
+  // background-position: center;
+  // background-size: cover;
+  // background-attachment: fixed;  
+  grid-template-columns: auto;
+  nav {
+    padding-top:0px;
+    padding-bottom:0px;
+  
+  }
   #content {
     padding: 10px 20px 50px;
-
     ul {
       list-style-type: none;
       margin: 0;
@@ -41,20 +46,21 @@ body {
           padding-top: 5px;
           // color: #00a8ff;
           // color: whitesmoke;
-          color: #17a2b8;
+          //color: #17a2b8;
         }
 
-        a:hover {
-          background-color: #d4d4d4;
-          background-color: #06548D;
+        a:hover:not(.phoneNo) {
+         // background-color: #d4d4d4;
+          //background-color: #06548D;
           transition: 0.3s;
           padding: 0px 5px 0px 30px;
           color: white;
         }
 
+
         p:not(.a) {
           // color: black;
-          color: white;
+          //color: white;
           font-family: Arial, Helvetica, sans-serif;
           font-size: 12px;
           font-weight: normal;
@@ -98,6 +104,8 @@ body {
 body {
   margin: 0;
   font-family: "Roboto", sans-serif;
+  overflow-y: auto;
+  
 }
 
 .content {
@@ -107,21 +115,28 @@ body {
 .theList {
   ul {
     li {
-      background-color: rgb(106, 107, 107);
-
+     // background-color: rgb(106, 107, 107);
+     background: -webkit-linear-gradient(270deg, rgba(191,191,191,1) 10%, rgba(190,190,191,1) 11%, rgba(181,190,254,1) 80%, rgba(181,190,255,1) 81%);
+     border: 2px solid #343a40;
+     max-width: 500px;
       a {
         font-size: 10px;
         border-radius: 8px;
         padding: 0px 20px 0px 20px;
-        color: white;
+        color: black;
         display: block;
         line-height: 1em;
+        transition: 0.3s;
       }
 
-      a:hover {
+      a .phoneNo {
+        color:blue;
+      }
+
+      a:hover:not(.phoneNo) {
         // background-color: #d4d4d4;
         //  background-color: #343a40 !important;
-        background: #06548D;
+        background: -webkit-linear-gradient(270deg, rgba(176,176,176,1) 10%, rgba(175,175,176,1) 11%, rgba(167,175,234,1) 80%, rgba(167,175,235,1) 81%);
         // color: #17a2b8;
         color: whitesmoke;
         transition: 0.3s;
@@ -237,5 +252,7 @@ body {
   margin-right: 15px;
 }
 
-
-  
+#navbarFixed > ul > li > a {
+  padding-top:0px;
+  padding-bottom:0px;
+}
