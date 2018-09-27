@@ -132,7 +132,7 @@ export class DeliveryService extends BaseService {
   // **** ####  Test Zone  #### ****
 
   // tslint:disable-next-line:max-line-length
-  preUpdateDelivery( type, 
+  preUpdateDelivery( type, productNo, 
     id, lastSync, name, docId, lineId, order,
     reject, reason, delivered, time, signature,
     deliveredTo, payType, payAmount,
@@ -146,12 +146,13 @@ export class DeliveryService extends BaseService {
         payType, payAmount
       );
     }
-
     /// Post Json
-    if (delivered === 'true') {
+    if (delivered === 'true' && type === 'order' && productNo === 1) {
       try {
+        console.log('Try 154')
         this.data.postJson(jsonTemp);
       } catch (error) {
+        console.log('Error 1157')
         alert(error);
         console.log(error);
       }      
@@ -377,14 +378,5 @@ export class DeliveryService extends BaseService {
     return dataTemp;
   }
 
-  //// Check and post Delivery
-  // #########################
-  // When a product has been rejected the delivery status is set as "product"
-  // When the signatures and name is added the delivery status is set as "true"
-  // When off line -
-  // It is possible that the staus can be set as true for one order 
-  // and then for the next order after a rejection it will be reset to "product".
-  // This will prevent the Json string to be over written when there are pending changes
-  
 
 }

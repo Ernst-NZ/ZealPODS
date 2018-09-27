@@ -49,8 +49,8 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
         this.getJson();
       }
     }
-        alert('Check if we can run through the orders and post them one by one');
-        alert('Duplication of order after save');
+        // alert('Check if we can run through the orders and post them one by one');
+        // alert('Duplication of order after save');
   }
 
   ngAfterContentChecked() {

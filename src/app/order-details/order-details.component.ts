@@ -142,15 +142,21 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
         alert(error.message);
       });
   }
+  
+zzz() {
+  this.data.postJson(this.oldDelivery.json);
+}
+
+
 
   xxx() {
     const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
     console.log(atob(dataSvg.split(',')[1]));
  //   this.download(dataSvg, 'signature.svg');
 
-    if (this.signaturePad.isEmpty()) {
-      return alert('Please provide a signature first.');
-    }
+    // if (this.signaturePad.isEmpty()) {
+    //   return alert('Please provide a signature first.');
+    // }
     if (this.oldDelivery.deliveredTo == null) {
       return alert('Please provide a Name.');
     }
@@ -161,8 +167,10 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     const paymentAmount = this.oldDelivery.paymentAmount;
 
     try {
-      for (let d = 0; d < this.deliveries.length; d++) {
+      this.i = 0;
+      for (let d = 0; d < this.deliveries.length; d++) {        
         this.oldDelivery = this.deliveries[d];
+        this.i = this.i +1;
         this.updateDelivery(
           this.deliveries[d]['lineId'],
           signatureData,
@@ -172,6 +180,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
           paymentAmount
         );
       }
+      
       alert('Delivery Successfully Updated');
     } catch (error) {
       alert(error);
@@ -190,7 +199,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     paymentType,
     paymentAmount
   ) {
-    this.service.preUpdateDelivery( 'order',
+    this.service.preUpdateDelivery( 'order', this.i,
       lineId, this.oldDelivery.lastSync,
       this.oldDelivery.name, this.oldDelivery.documentId,
       this.oldDelivery.lineId,
