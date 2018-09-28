@@ -44,7 +44,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   @ViewChild(SignaturePad)
   signaturePad: SignaturePad;
   orderDetail$: Object;
-  deliveries: Array<IDelivery> = [];  
+  deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
   json: Array<IDelivery> = [];
   tempJson: IDelivery = new Delivery();
@@ -53,7 +53,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   public signatureImage: string;
   public i: number;
   forceView = false;
-  
+  delivered = false;
+
   show = false;
   hidden = true;
   addDB = false;
@@ -100,13 +101,16 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     if (this.deliveries.length > 0) {
       if (typeof this.deliveries[0]['id'] !== 'undefined') {
         this.orderDetail$ = this.deliveries[0]['json'];
-        if (this.deliveries[0]['delivered'] !== '' && this.forceView === false) {
+        if (this.deliveries[0]['delivered'] !== 'false') {
+          this.delivered = true;
+        }
+        if (this.deliveries[0]['delivered'] !== 'false' && this.forceView === false) {
           for (let i = 0; i < this.deliveries.length; i++ ) {
             if (this.deliveries[i]['qtyRejected'] > 0) {
               this.hidden = false;
               this.show = true;
             }
-          }          
+          }
         }
       }
     }
@@ -142,7 +146,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
         alert(error.message);
       });
   }
-  
+
   postData() {
     const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
  //   console.log(atob(dataSvg.split(',')[1]));
@@ -162,9 +166,9 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 
     try {
       this.i = 0;
-      for (let d = 0; d < this.deliveries.length; d++) {        
+      for (let d = 0; d < this.deliveries.length; d++) {
         this.oldDelivery = this.deliveries[d];
-        this.i = this.i +1;
+        this.i = this.i + 1;
         this.updateDelivery(
           this.deliveries[d]['lineId'],
           signatureData,
@@ -174,7 +178,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
           paymentAmount
         );
       }
-      
+
       alert('Delivery Successfully Updated');
     } catch (error) {
       alert(error);
