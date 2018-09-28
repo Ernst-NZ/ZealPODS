@@ -36,6 +36,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignatureComponent } from './signature/signature.component';
 import { RejectproductsComponent } from './rejectproducts/rejectproducts.component';
 import { DeliveryComponent } from './delivery/delivery.component';
+// import * as $ from 'jquery'
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { DeliveryComponent } from './delivery/delivery.component';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+  //  $,
   ],
   providers: [
     Globals,

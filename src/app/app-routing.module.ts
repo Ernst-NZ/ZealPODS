@@ -36,7 +36,7 @@ const routes: Routes = [
   },
   {
     path: 'order-details/:DocumentId',
-    component: OrderDetailsComponent
+    component: OrderDetailsComponent, canActivate: [AuthGuard]
   },
   {
     path: 'testapi',

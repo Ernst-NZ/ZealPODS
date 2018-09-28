@@ -10,7 +10,7 @@ export class AuthenticationService {
 
     login(username: string, password: string) {
         // tslint:disable-next-line:max-line-length
-        return this.http.post<any>(`https://test1.zealsystems.co.nz/token`, 'username=' + username + '&password=' + password + '&grant_type=password')
+        return this.http.post<any>('https://test1.zealsystems.co.nz/token', 'username=' + username + '&password=' + password + '&grant_type=password')
             .map(JSONObject => {
                 // login successful if there's a jwt token in the response
                 if (JSONObject) {

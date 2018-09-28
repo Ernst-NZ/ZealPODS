@@ -142,10 +142,10 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
         alert(error.message);
       });
   }
-
-  xxx() {
+  
+  postData() {
     const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
-    console.log(atob(dataSvg.split(',')[1]));
+ //   console.log(atob(dataSvg.split(',')[1]));
  //   this.download(dataSvg, 'signature.svg');
 
     if (this.signaturePad.isEmpty()) {
@@ -161,8 +161,10 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     const paymentAmount = this.oldDelivery.paymentAmount;
 
     try {
-      for (let d = 0; d < this.deliveries.length; d++) {
+      this.i = 0;
+      for (let d = 0; d < this.deliveries.length; d++) {        
         this.oldDelivery = this.deliveries[d];
+        this.i = this.i +1;
         this.updateDelivery(
           this.deliveries[d]['lineId'],
           signatureData,
@@ -172,6 +174,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
           paymentAmount
         );
       }
+      
       alert('Delivery Successfully Updated');
     } catch (error) {
       alert(error);
@@ -190,7 +193,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     paymentType,
     paymentAmount
   ) {
-    this.service.preUpdateDelivery( 'order',
+    this.service.preUpdateDelivery( 'order', this.i,
       lineId, this.oldDelivery.lastSync,
       this.oldDelivery.name, this.oldDelivery.documentId,
       this.oldDelivery.lineId,
@@ -203,7 +206,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       deliveredTo,
       paymentType,
       paymentAmount,
-      this.oldDelivery.updated,
+      'true',
       this.tempJson.json);
   }
 
@@ -265,12 +268,4 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   }
   /////
 
-  test() {
-    alert(
-      'Look at rejected for update option. Update command needs to change.'
-    );
-    // alert(JSON.stringify(new Date()));
-    // alert(JSON.stringify(new Date));
-    // this.service.editJson(2, this.orderDetail$, 404, 1964, 777, 'Damaged', 'signature', 'Koos', 'Cash', 99.22);
-  }
 }
