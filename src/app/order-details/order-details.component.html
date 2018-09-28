@@ -13,8 +13,7 @@
           Category2: {{ order.Category2 }}</p>
 
         <button color="primary" (click)="toggleTable()" class="toggle-panel" *ngIf="show">Hide Products</button>
-        <button color="primary" (click)="toggleTable()" class="toggle-panel" *ngIf="!show">View Products</button>
-        <br> <br>
+        <button color="primary" (click)="toggleTable()" class="toggle-panel" *ngIf="!show">View Products</button>        
         <table style="width: 100%" [hidden]="hidden">
           <thead>
             <tr class="tableHead">
@@ -49,8 +48,7 @@
           <span style="font-weight: bolder; text-decoration: underline;">
             Signature</span>
           <div id="myCanvas">
-            <signature-pad>
-            </signature-pad>
+            <signature-pad></signature-pad>
           </div>
           <hr>
           <div class="row">
@@ -59,6 +57,7 @@
             <button mat-raised-button color="warm" (click)="drawComplete()">Test Signature</button>
           </div>
         </div>
+        <br>
         <div class=""></div>
         <div>
           <mat-form-field style="width: 100%;">
