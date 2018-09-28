@@ -1,5 +1,4 @@
 <h1>Order Details</h1>
-<button color="primary" (click)="zzz()">Test Post</button>
 <div class="theList" *ngIf="orderDetail$">
   <ul *ngFor="let driver of orderDetail$.orderGroups">
     <ul *ngFor="let order of driver.Orders">
@@ -81,7 +80,7 @@
           </mat-form-field>
         </div>
         <div>
-          <button color="primary" (click)="xxx()">Confirm Order</button>
+          <button color="primary" (click)="postData()">Confirm Order</button>
           
           <br>
         </div>

@@ -139,7 +139,7 @@ export class DeliveryService extends BaseService {
     updated, json) {
       let jsonTemp = json;
     // Update the Json String
-    if (type === 'order') {
+    if (delivered === 'true' && type === 'order' && productNo === 1) {
         jsonTemp = this.editJson(
         lineId, json, docId, lineId, reject,
         reason, delivered, signature, deliveredTo,
@@ -340,6 +340,7 @@ export class DeliveryService extends BaseService {
           orderList[o].ReceivedBy = name;
           orderList[o].PaymentMethod = payType;
           orderList[o].PaymentAmount = payAmount;
+          orderList[o].Updated = true;
       //    orderList[o].signature = signature;
           for (let p = 0; p < products.length; p++) {
             if (products[p].LineId === lineId) {

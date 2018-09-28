@@ -143,13 +143,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       });
   }
   
-zzz() {
-  this.data.postJson(this.oldDelivery.json);
-}
-
-
-
-  xxx() {
+  postData() {
     const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
     console.log(atob(dataSvg.split(',')[1]));
  //   this.download(dataSvg, 'signature.svg');
@@ -212,7 +206,7 @@ zzz() {
       deliveredTo,
       paymentType,
       paymentAmount,
-      this.oldDelivery.updated,
+      'true',
       this.tempJson.json);
   }
 
@@ -274,12 +268,4 @@ zzz() {
   }
   /////
 
-  test() {
-    alert(
-      'Look at rejected for update option. Update command needs to change.'
-    );
-    // alert(JSON.stringify(new Date()));
-    // alert(JSON.stringify(new Date));
-    // this.service.editJson(2, this.orderDetail$, 404, 1964, 777, 'Damaged', 'signature', 'Koos', 'Cash', 99.22);
-  }
 }
