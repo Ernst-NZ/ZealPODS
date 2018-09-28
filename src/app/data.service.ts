@@ -46,19 +46,19 @@ export class DataService {
   // ###  111  #############
   postJson(dataString) {
     
-    console.log("Test 1 Line 41")
     console.log(dataString)
     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
       .subscribe(
         val => {
           console.log("POST call successful value returned in body",
             val);
+          alert("POST call successful value returned in body: " && val)  
         },
         response => {
           console.log("POST call in error", response);
         },
         () => {
-          console.log("The POST observable is now completed.");
+ //         console.log("The POST observable is now completed.");
         }
       );
   }

@@ -149,10 +149,8 @@ export class DeliveryService extends BaseService {
     /// Post Json
     if (delivered === 'true' && type === 'order' && productNo === 1) {
       try {
-        console.log('Try 154')
         this.data.postJson(jsonTemp);
       } catch (error) {
-        console.log('Error 1157')
         alert(error);
         console.log(error);
       }      

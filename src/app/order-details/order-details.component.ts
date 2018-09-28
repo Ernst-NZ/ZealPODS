@@ -145,12 +145,12 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   
   postData() {
     const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
-    console.log(atob(dataSvg.split(',')[1]));
+ //   console.log(atob(dataSvg.split(',')[1]));
  //   this.download(dataSvg, 'signature.svg');
 
-    // if (this.signaturePad.isEmpty()) {
-    //   return alert('Please provide a signature first.');
-    // }
+    if (this.signaturePad.isEmpty()) {
+      return alert('Please provide a signature first.');
+    }
     if (this.oldDelivery.deliveredTo == null) {
       return alert('Please provide a Name.');
     }
