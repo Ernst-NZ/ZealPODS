@@ -1,11 +1,12 @@
-<h1>Order Details</h1>
+<h3 class="headerText">Order Details</h3>
+<br>
 <div class="theList" *ngIf="orderDetail$">
   <ul *ngFor="let driver of orderDetail$.orderGroups">
     <ul *ngFor="let order of driver.Orders">
-      <div class="justP strong" *ngIf="order.DocumentId == docID">
+      <div class="justP strong headerText" *ngIf="order.DocumentId == docID">
         <span>Order Date: {{ order.DocumentDate | date:'dd/MMM/yyyy'}}</span>
         <hr>
-        <p>Customer Code: {{ order.CustomerCode }}<br>
+        <p id="infoBlock">Customer Code: {{ order.CustomerCode }}<br>
           Delivery Date: {{ order.DocumentDate | date:'dd/MMM/yyyy' }}<br>
           Packing Slip No: {{ order.PackingSlipNo }}<br>
           Order Id: {{ order.DocumentId }}<br>
@@ -56,6 +57,7 @@
             <button mat-raised-button color="warm" (click)="drawClear()">Clear</button>
             <button mat-raised-button color="warm" (click)="drawComplete()">Test Signature</button>
           </div>
+         
         </div>
         <br>
         <div class=""></div>

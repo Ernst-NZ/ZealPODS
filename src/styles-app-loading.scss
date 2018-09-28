@@ -1,9 +1,8 @@
-// .app-loading {
-//     .logo {
-//       width: 50px;
-//       height: 50px;
+.app-loading {
+    .logo {
+      width: 50px;
+      height: 50px;
       
-//       // this way asset gets processed by webpack 
-//       background: url(./assets/icons/ZealPODSlogo.png) stretch center center no-repeat; 
-//     }
-//   }
+      background: url(./assets/icons/android-icon-48x48.png) stretch center center no-repeat; 
+    }
+  }
