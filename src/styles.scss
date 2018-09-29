@@ -1,16 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
-
 body {
   margin: 0;
   //background: #F2F2F2;
-  background: rgb(179, 179, 179);
+//  background: rgb(179, 179, 179);
+  background: -webkit-linear-gradient(270deg, rgba(5,25,43,1) 10%, rgba(5,25,43,1) 11%, rgba(11,59,104,1) 80%, rgba(12,60,105,1) 81%);
+
   font-family: "Montserrat", sans-serif;
-  height: 100%;
+  height: auto;
+  min-height: 100%;
 }
 
 #container {
   display: ruby;
-  height: 100%;
+  min-height: 100%;
+  height: auto;
   //background: -webkit-linear-gradient(90deg, rgba(72,126,212,1) 0%, rgba(0,0,0,1) 100%);
   background: -webkit-linear-gradient(270deg, rgba(5,25,43,1) 10%, rgba(5,25,43,1) 11%, rgba(11,59,104,1) 80%, rgba(12,60,105,1) 81%);
 
