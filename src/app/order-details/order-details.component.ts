@@ -68,7 +68,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     minWidth: 0.5,
     canvasWidth: 700,
     canvasHeight: 100,
-    canvasBackgroundcolor: 'white'
+    canvasBackgroundColor: 'white'
   };
 
   toggleTable() {

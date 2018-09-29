@@ -1,3 +1,6 @@
+<h3 class="headerText">Product Details</h3>
+<hr class="devide">
+
 <div *ngIf="productDetail$">
   <div id="main">
     <ul *ngFor="let driver of productDetail$.orderGroups">
@@ -5,44 +8,51 @@
         <div class="blackFont fontSmall1 strong" *ngIf="order.DocumentId == docID">
           <ul *ngFor="let item of order.Lines; index as i">
             <div class="blackFont fontSmall1 strong" *ngIf="item.LineId == lineID">
-              <table width="100%" class="table toggle-panel">
-                <tbody>
-                  <tr>
+              <table width="100%">
+                <thead>
+                  <tr class="lineDiv" style="font-size: 1.25em;">
                     <td>Product Code</td>
                     <td>{{item.ProductCode}}</td>
                   </tr>
-                  <tr>
+                </thead>
+                <tbody>
+                  <tr class="lineDiv tableRow">
                     <td>Description</td>
                     <td>{{item.Description}}</td>
                   </tr>
-                  <tr>
+                  <tr class="lineDiv">
                     <td>QTY Ordered</td>
                     <td>{{item.QuantityOrdered}}</td>
                   </tr>
-                  <tr>
+                  <tr class="block">
                     <td>QTY Rejected</td>
                     <td class="strong inPutBox">
-                        <mat-form-field  class="matInput">
-                            <input type="number" matInput placeholder="Number" [(ngModel)]="oldDelivery.qtyRejected">
-                          </mat-form-field>
+                      <mat-form-field class="matInput">
+                        <input type="number" matInput placeholder="Number" [(ngModel)]="oldDelivery.qtyRejected">
+                      </mat-form-field>
                     </td>
                   </tr>
-                  <tr>
+                  <tr class="block">
                     <td>Reason</td>
-                    <td class="inPutBox"><mat-form-field class="matInput">
-                        <mat-select placeholder="Reason"  [(ngModel)]="oldDelivery.rejectReason">
+                    <td class="inPutBox">
+                      <mat-form-field class="matInput">
+                        <mat-select placeholder="Reason" [(ngModel)]="oldDelivery.rejectReason">
                           <mat-option *ngFor="let reject of reject" [value]="reject.value">
                             {{reject.viewValue}}
                           </mat-option>
                         </mat-select>
-                      </mat-form-field></td>
+                      </mat-form-field>
+                    </td>
                   </tr>
                 </tbody>
               </table>
-              <button mat-button color="accent" (click)="updateDelivery()">Add Rejected</button>
-              <a routerLink="/order-details/{{docID}}">
-                <button mat-button color="primary">Back to Order</button>                 
-              </a>
+              <div class='block'>
+                <button mat-button color="accent" (click)="updateDelivery()">Add Rejected</button>
+                <a routerLink="/order-details/{{docID}}">
+                  <button class="right" mat-button color="primary">Back to Order</button>
+                </a>
+              </div>
+
             </div>
           </ul>
         </div>

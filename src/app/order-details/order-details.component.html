@@ -1,5 +1,6 @@
 <h3 class="headerText">Order Details</h3>
-<br>
+<hr class="devide">
+
 <div class="theList" *ngIf="orderDetail$">
   <ul *ngFor="let driver of orderDetail$.orderGroups">
     <ul *ngFor="let order of driver.Orders">
@@ -14,10 +15,10 @@
           Category2: {{ order.Category2 }}</p>
 
         <button mat-button color="accent" (click)="toggleTable()" class="toggle-panel" *ngIf="show">Hide Products</button>
-        <button mat-button color="primary" (click)="toggleTable()" class="toggle-panel" *ngIf="!show">View Products</button>
+        <button mat-button color="warm" (click)="toggleTable()" class="toggle-panel" *ngIf="!show">View Products</button>
         <table style="width: 100%" [hidden]="hidden">
           <thead>
-            <tr class="tableHead">
+            <tr id='infoBlock' class="tableHead">
               <th>Product</th>
               <th>Qty<br>Ordered</th>
               <th style="text-align: center">Qty<br>Accepted</th>
@@ -44,44 +45,49 @@
             </tr>
           </tbody>
         </table>
+        <br>
+        <span style="font-weight: bolder; text-decoration: underline;">
+          Signature</span>
         <div class="block">
-          <span style="font-weight: bolder; text-decoration: underline;">
-            Signature</span>
-          <div id="myCanvas">
+          <!-- <div id="myCanvas"> -->
+          <div id="signature-pad" class="signature-pad">
             <signature-pad></signature-pad>
           </div>
-          <div class="row">
-            <br>
-            <button mat-raised-button color="accent" (click)="drawClear()">Clear</button>
-            <button mat-raised-button color="warm" (click)="drawComplete()">Test Signature</button>
-          </div>
         </div>
-        <div class='block'>
-          <div *ngIf="!delivered">
-            <mat-form-field style="width: 100%;">
-              <input type="text" matInput placeholder="Name" [(ngModel)]="oldDelivery.deliveredTo">
-            </mat-form-field>
-          </div>
-          <span *ngIf="delivered">{{oldDelivery.deliveredTo}}</span>
-          <div *ngIf="!delivered">
-            <mat-form-field style="width: 100%;">
-              <mat-select placeholder="Payment" [(ngModel)]="oldDelivery.paymentType">
-                <mat-option *ngFor="let pay of pay" [value]="pay.value">
-                  {{pay.viewValue}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
+        <div class="row" style="margin-bottom: 5px;">
+          <br>
+          <button mat-raised-button color="accent" (click)="drawClear()">Clear</button>
+          <button mat-raised-button color="warm" (click)="drawComplete()">Test Signature</button>
+        </div>
+
+        <div *ngIf="!delivered" class='block' style='margin-bottom: 5px;'>
+          <mat-form-field style="width: 100%;">
+            <input type="text" matInput placeholder="Name" [(ngModel)]="oldDelivery.deliveredTo">
+          </mat-form-field>
+        </div>
+        <div class='block' style='margin-bottom: 5px;' *ngIf="delivered">
+          <span>{{oldDelivery.deliveredTo}}</span>
+        </div>
+        <div class='block' *ngIf="!delivered" style="margin-bottom: 5px;">
+          <mat-form-field style="width: 100%;">
+            <mat-select placeholder="Payment" [(ngModel)]="oldDelivery.paymentType">
+              <mat-option *ngFor="let pay of pay" [value]="pay.value">
+                {{pay.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class='block' style="margin-bottom: 5px;" *ngIf="delivered">
           <span>{{oldDelivery.paymentType}}</span>
-          <div *ngIf="!delivered">
-            <mat-form-field style="width: 100%;">
-              <input type="number" matInput placeholder="Amount" [(ngModel)]="oldDelivery.paymentAmount">
-              <span *ngIf="delivered">{{oldDelivery.paymentAmount}}</span>
-            </mat-form-field>
-          </div>
-          <div *ngIf="!delivered">
-            <button color="primary" (click)="postData()">Confirm Order</button>
-          </div>
+        </div>
+        <div class='block' style="margin-bottom: 5px;" *ngIf="!delivered">
+          <mat-form-field style="width: 100%;">
+            <input type="number" matInput placeholder="Amount" [(ngModel)]="oldDelivery.paymentAmount">
+            <span *ngIf="delivered">{{oldDelivery.paymentAmount}}</span>
+          </mat-form-field>
+        </div>
+        <div class='block' *ngIf="!delivered" style="margin-bottom: 5px;">
+          <button color="primary" (click)="postData()">Confirm Order</button>
         </div>
       </div>
     </ul>
