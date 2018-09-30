@@ -27,9 +27,5 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
   }
 
-  postData() {
-    this.data.postJson('123');
-
-  }
 
 }

@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
 import { DataService } from '../data.service';
 import { Delivery, IDelivery } from '../_models/delivery';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeliveryService extends BaseService {
-  orderDetail$: Object;
+  orderDetails$: Object;
+  updateStatus: String;
   tempDeliveries: Array<IDelivery> = [];
   tempDelivery: IDelivery = new Delivery();
-  constructor(private data: DataService) {
+  constructor(private data: DataService, private http: HttpClient) {
     super();
   }
   // ### Get funtions (SQL Actions) ####
@@ -104,11 +106,7 @@ export class DeliveryService extends BaseService {
         alert(error.message);
       });
   }
-
-  test2() {
-    this.getProduct(1965);
-  }
-
+ 
   serviceTest() {
     const re = /-/gi;
     const str = '2018-09-20T00:00:00+12:00';
@@ -149,45 +147,45 @@ export class DeliveryService extends BaseService {
     /// Post Json
     if (delivered === 'true' && type === 'order' && productNo === 1) {
       try {
-        this.data.postJson(jsonTemp);
+        this.postJson(jsonTemp);
       } catch (error) {
         alert(error);
         console.log(error);
       }      
-    }
-
-    const updatedValue: IDelivery = {
-      lastSync: lastSync,
-      name: name,
-      documentId: docId,
-      lineId: lineId,
-      qtyOrdered: order,
-      qtyRejected: reject,
-      rejectReason: reason,
-      delivered: delivered,
-      deliveryTime: time,
-      signature: signature,
-      deliveredTo: deliveredTo,
-      paymentType: payType,
-      paymentAmount: payAmount,
-      updated: updated,
-      json: jsonTemp
-    };
-    this.updateDelivery(id, updatedValue)
-      .then(rowsUpdated => {
-        if (rowsUpdated > 0) {
-          const index = this.tempDeliveries.findIndex(
-            delivery => delivery.id === id
-          );
-          this.tempDeliveries[index] = this.tempDelivery;
-          this.clearOldDelivery();
-  //        alert('Delivery Successfully updated');
-        }
-      })
-      .catch(error => {
-        console.error(error);
-        alert(error.message);
-      });
+    } else {
+      const updatedValue: IDelivery = {
+        lastSync: lastSync,
+        name: name,
+        documentId: docId,
+        lineId: lineId,
+        qtyOrdered: order,
+        qtyRejected: reject,
+        rejectReason: reason,
+        delivered: delivered,
+        deliveryTime: time,
+        signature: signature,
+        deliveredTo: deliveredTo,
+        paymentType: payType,
+        paymentAmount: payAmount,
+        updated: updated,
+        json: jsonTemp
+      };
+      this.updateDelivery(id, updatedValue)
+        .then(rowsUpdated => {
+          if (rowsUpdated > 0) {
+            const index = this.tempDeliveries.findIndex(
+              delivery => delivery.id === id
+            );
+            this.tempDeliveries[index] = this.tempDelivery;
+            this.clearOldDelivery();
+            //        alert('Delivery Successfully updated');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          alert(error.message);
+        });
+    }   
   }
 
   // #####
@@ -376,6 +374,48 @@ export class DeliveryService extends BaseService {
       });
     return dataTemp;
   }
+
+
+  postJson(dataString) {
+    console.log(dataString)
+    return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
+      .subscribe(
+        val => {
+          //          console.log("POST call successful value returned in body",val);
+               alert("POST call successful value returned in body: " && val)
+          //    Clear Indexed DB - Gete new info and populate
+      //    this.getNewData();
+
+        },
+        response => {
+          console.log("POST call in error", response);
+        },
+        () => {
+          //         console.log("The POST observable is now completed.");
+        }
+      );
+  }
+
+  getNewData() {
+
+    var DBDeleteRequest = window.indexedDB.deleteDatabase("Delivery_db");
+    
+    DBDeleteRequest.onerror = function (event) {
+      console.log("Error deleting database.");
+    };
+
+    DBDeleteRequest.onsuccess = function (event) {
+      console.log("Database deleted successfully");
+
+//      console.log(event.result); // should be undefined
+    };
+
+
+
+    this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
+
+  }
+
 
 
 }

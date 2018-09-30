@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterContentChecked, AfterViewChecked } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../data.service';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 import { DeliveryService } from '../_services/delivery.service';
@@ -80,7 +80,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   constructor(
     private route: ActivatedRoute,
     private data: DataService,
-    service: DeliveryService
+    service: DeliveryService,
+    private router: Router
   ) {
     this.route.params.subscribe(
       params => (this.orderDetail$ = params.DocumentId)
@@ -178,8 +179,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
           paymentAmount
         );
       }
-
-      alert('Delivery Successfully Updated');
+//      alert('Delivery Successfully Updated');
+//      this.router.navigate(['/route-Orders/', this.oldDelivery.name]);
     } catch (error) {
       alert(error);
     }
