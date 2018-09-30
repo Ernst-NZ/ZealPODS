@@ -180,7 +180,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
         );
       }
 //      alert('Delivery Successfully Updated');
-//      this.router.navigate(['/route-Orders/', this.oldDelivery.name]);
+      this.router.navigate(['/route-Orders/', this.oldDelivery.name]);
     } catch (error) {
       alert(error);
     }

@@ -81,6 +81,11 @@ export class DeliveryService extends BaseService {
     });
   }
 
+  clearAll() {
+    this.connection.clear('Deliveries');
+  }
+
+
   // deleteStudent(studentId: number) {
   //   return this.connection.remove({
   //     from: 'Students',
@@ -89,8 +94,18 @@ export class DeliveryService extends BaseService {
   //     }
   //   });
   // }
-  //  ## Not going to enable Delete for Deliveries
 
+
+   deleteDelivery(docId: number) {
+     return this.connection.remove({
+       from: 'Deliveries',
+       where: {
+         id: docId
+       }
+     });
+   }
+
+  
   // **** ####  Test Zone  #### ****
   // ## update Product for Edit purposes
   // Get Product
@@ -147,7 +162,7 @@ export class DeliveryService extends BaseService {
     /// Post Json
     if (delivered === 'true' && type === 'order' && productNo === 1) {
       try {
-        this.postJson(jsonTemp);
+        this.postJson(jsonTemp, docId);
       } catch (error) {
         alert(error);
         console.log(error);
@@ -322,7 +337,6 @@ export class DeliveryService extends BaseService {
     qtyRejected, reason, delivered, signature,
     name, payType, payAmount ) {
 
-
     const drivers = dataTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       const orderList = drivers[d]['Orders'];
@@ -375,8 +389,7 @@ export class DeliveryService extends BaseService {
     return dataTemp;
   }
 
-
-  postJson(dataString) {
+  postJson(dataString, docId) {
     console.log(dataString)
     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
       .subscribe(
@@ -384,8 +397,7 @@ export class DeliveryService extends BaseService {
           //          console.log("POST call successful value returned in body",val);
                alert("POST call successful value returned in body: " && val)
           //    Clear Indexed DB - Gete new info and populate
-      //    this.getNewData();
-
+            this.deleteDelivery(docId)
         },
         response => {
           console.log("POST call in error", response);
