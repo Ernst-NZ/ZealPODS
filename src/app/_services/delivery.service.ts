@@ -3,6 +3,7 @@ import { BaseService } from './base.service';
 import { DataService } from '../data.service';
 import { Delivery, IDelivery } from '../_models/delivery';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Alert } from 'selenium-webdriver';
 
 @Injectable({
   providedIn: 'root'
@@ -394,38 +395,34 @@ export class DeliveryService extends BaseService {
     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
       .subscribe(
         val => {
-          //          console.log("POST call successful value returned in body",val);
+                console.log("POST call successful value returned in body",val);
                alert("POST call successful value returned in body: " && val)
           //    Clear Indexed DB - Gete new info and populate
             this.deleteDelivery(docId)
         },
         response => {
           console.log("POST call in error", response);
+          alert("POST call in error " && response);
+
+
         },
         () => {
-          //         console.log("The POST observable is now completed.");
+         console.log("The POST observable is now completed.");
+         alert("The POST observable is now completed.");
         }
       );
   }
 
   getNewData() {
-
-    var DBDeleteRequest = window.indexedDB.deleteDatabase("Delivery_db");
-    
+    var DBDeleteRequest = window.indexedDB.deleteDatabase("Delivery_db");    
     DBDeleteRequest.onerror = function (event) {
       console.log("Error deleting database.");
     };
-
     DBDeleteRequest.onsuccess = function (event) {
       console.log("Database deleted successfully");
-
 //      console.log(event.result); // should be undefined
     };
-
-
-
     this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
-
   }
 
 
