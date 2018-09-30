@@ -403,12 +403,10 @@ export class DeliveryService extends BaseService {
         response => {
           console.log("POST call in error", response);
           alert("POST call in error " && response);
-
-
         },
         () => {
          console.log("The POST observable is now completed.");
-         alert("The POST observable is now completed.");
+//         alert("The POST observable is now completed.");
         }
       );
   }
