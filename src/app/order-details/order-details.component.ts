@@ -105,7 +105,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
         if (this.deliveries[0]['delivered'] !== 'false') {
           this.delivered = true;
         }        
-        if (this.deliveries[0]['delivered'] !== 'false' && this.forceView === false) {
+        if (this.forceView === false) {
           for (let i = 0; i < this.deliveries.length; i++ ) {
             if (this.deliveries[i]['qtyRejected'] > 0) {
               this.hidden = false;
