@@ -101,10 +101,10 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   ngAfterContentChecked() {
     if (this.deliveries.length > 0) {
       if (typeof this.deliveries[0]['id'] !== 'undefined') {
-        this.orderDetail$ = this.deliveries[0]['json'];
+        this.orderDetail$ = this.deliveries[0]['json'];        
         if (this.deliveries[0]['delivered'] !== 'false') {
           this.delivered = true;
-        }
+        }        
         if (this.deliveries[0]['delivered'] !== 'false' && this.forceView === false) {
           for (let i = 0; i < this.deliveries.length; i++ ) {
             if (this.deliveries[i]['qtyRejected'] > 0) {
@@ -112,7 +112,15 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
               this.show = true;
             }
           }
-        }
+         } 
+         // else {
+        //   for (let i = 0; i < this.deliveries.length; i++) {
+        //     if (this.deliveries[i]['qtyRejected'] > 0) {
+        //       // this.hidden = true;
+        //       // this.show = false;
+        //     }
+       //    }
+     //   }
       }
     }
   }

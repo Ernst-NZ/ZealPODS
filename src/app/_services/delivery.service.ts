@@ -239,7 +239,7 @@ export class DeliveryService extends BaseService {
     json
   ) {
     // const open = indexedDB.open('Student_db', 1);
-    const open = indexedDB.open('Delivery_db', 1);
+    const open = indexedDB.open('Delivery_db', 2);
 
     open.onupgradeneeded = function() {
       const db = open.result;
@@ -370,7 +370,7 @@ export class DeliveryService extends BaseService {
       delivered: delivered, deliveryTime: '',
       signature: '', deliveredTo: name,
       paymentType: payType, paymentAmount: payAmount,
-      updated: 'true', json: dataTemp
+      updated: 'True', json: dataTemp
     };
     this.updateDelivery(0, updatedValue)
       .then(rowsUpdated => {
