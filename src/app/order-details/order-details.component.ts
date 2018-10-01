@@ -112,15 +112,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
               this.show = true;
             }
           }
-         } 
-         // else {
-        //   for (let i = 0; i < this.deliveries.length; i++) {
-        //     if (this.deliveries[i]['qtyRejected'] > 0) {
-        //       // this.hidden = true;
-        //       // this.show = false;
-        //     }
-       //    }
-     //   }
+         }         
       }
     }
   }

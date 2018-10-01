@@ -101,7 +101,7 @@ export class DeliveryService extends BaseService {
      return this.connection.remove({
        from: 'Deliveries',
        where: {
-         id: docId
+         documentId: docId
        }
      });
    }
@@ -235,7 +235,7 @@ export class DeliveryService extends BaseService {
     json
   ) {
     // const open = indexedDB.open('Student_db', 1);
-    const open = indexedDB.open('Delivery_db', 2);
+    const open = indexedDB.open('Delivery1_db', 1);
 
     open.onupgradeneeded = function() {
       const db = open.result;

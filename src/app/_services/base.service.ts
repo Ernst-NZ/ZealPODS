@@ -1,7 +1,7 @@
 import { IdbService } from '../_services/idb.service';
 import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
  export class BaseService {
-  dbname = 'Delivery_db';
+  dbname = 'Delivery1_db';
   dbDelivery = 'dbDelivery';
   constructor() {
    // turn on jsstore log status - help you to debug
