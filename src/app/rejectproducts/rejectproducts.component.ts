@@ -72,7 +72,6 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked  {
       return alert('Please provide a reason for rejection.');
     }
 
-
     this.service.preUpdateDelivery('product', 0, this.lineID, this.oldDelivery.lastSync,
       this.oldDelivery.name, this.oldDelivery.documentId,
       this.oldDelivery.lineId,
@@ -90,9 +89,5 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked  {
       alert('Delivery Successfully updated');
     this.router.navigate(['/order-details/', this.docID]);
   }
-
-  xxx() {
-
-
-  }
+ 
 }

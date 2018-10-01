@@ -140,11 +140,10 @@ export class DeliveryService extends BaseService {
     console.log('done');
   }
 
-  clearOldDelivery() {
-    //  this.oldDelivery = new Delivery();
-  }
-  // **** ####  Test Zone  #### ****
-
+  // clearOldDelivery() {
+  //    this.oldDelivery = new Delivery();
+  // }
+  
   // tslint:disable-next-line:max-line-length
   preUpdateDelivery( type, productNo, 
     id, lastSync, name, docId, lineId, order,
@@ -159,15 +158,12 @@ export class DeliveryService extends BaseService {
         reason, delivered, signature, deliveredTo,
         payType, payAmount
       );
-    }
-    /// Post Json
-    if (delivered === 'true' && type === 'order' && productNo === 1) {
       try {
         this.postJson(jsonTemp, docId);
       } catch (error) {
         alert(error);
         console.log(error);
-      }      
+      }
     } else {
       const updatedValue: IDelivery = {
         lastSync: lastSync,
@@ -193,7 +189,7 @@ export class DeliveryService extends BaseService {
               delivery => delivery.id === id
             );
             this.tempDeliveries[index] = this.tempDelivery;
-            this.clearOldDelivery();
+       //     this.clearOldDelivery();
             //        alert('Delivery Successfully updated');
           }
         })
@@ -379,7 +375,7 @@ export class DeliveryService extends BaseService {
             delivery => delivery.id === 0
           );
           this.tempDeliveries[index] = this.tempDelivery;
-          this.clearOldDelivery();
+    //      this.clearOldDelivery();
     //      alert('Delivery Successfully updated');
         }
       })
@@ -391,7 +387,7 @@ export class DeliveryService extends BaseService {
   }
 
   postJson(dataString, docId) {
-    console.log(dataString)
+    console.log(JSON.stringify(new Date()));
     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
       .subscribe(
         val => {

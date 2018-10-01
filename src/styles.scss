@@ -280,7 +280,7 @@ body {
 .lineDiv {
   background: -webkit-linear-gradient(270deg, rgba(191,191,191,1) 10%, rgba(190,190,191,1) 11%, rgba(181,190,254,1) 80%, rgba(181,190,255,1) 81%);
   border: 2px solid #343a40;
-  border-radius: 8px;
+  border-radius: 5px;
 }
 
 .mat-form-field>div {
@@ -289,7 +289,8 @@ body {
 
 #signature-pad>signature-pad>canvas {
   width: 100%;
-  height: 130px;  
+  height: 93px; 
+  padding-bottom: 5px;
 }
 
   #signature-pad {
@@ -309,7 +310,7 @@ body {
     border: 1px solid red;
     background-color: #fff;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.08) inset;
-    border-radius: 8px;
+    border-radius: 5px;
     padding: 5px;
   }
 
