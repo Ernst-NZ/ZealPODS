@@ -44,33 +44,31 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
-    if (this.deliveries.length > 0) {
-      if (typeof this.deliveries[0]['id'] !== 'undefined') {
-        this.getJson();
-      }
-    }
-        // alert('Check if we can run through the orders and post them one by one');
-        // alert('Duplication of order after save');
   }
 
   ngAfterContentChecked() {
-    if (this.deliveries.length > 0) {
-      if (typeof this.deliveries[0]['id'] !== 'undefined') {
-        this.allRoutes$ = this.deliveries[0]['json'];
-      }
+    if (typeof this.allRoutes$ !== 'undefined') {
+      this.checkJson();
     }
+
   }
 
-  // ## Get Json
-  getJson() {
-    this.service
-      .getJson()
-      .then(deliveries => {
-        this.deliveries = deliveries;
-      })
-      .catch(error => {
-        console.error(error);
-        alert(error.message);
-      });
+  checkJson() {
+    // this.service
+    //   .getIncompleteDeliveries()
+    //   .then(deliveries => {
+    //     this.deliveries = deliveries;
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //   });
+    // if (this.deliveries.length < 1) {
+      this.service.dbAdd(
+        0, '', '', 0, 0,
+        '', '', 0, 0, this.allRoutes$
+      );
+
+//  }
   }
+ 
 }

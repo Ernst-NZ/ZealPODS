@@ -24,6 +24,17 @@ export class DeliveryService extends BaseService {
     });
   }
 
+ getIncompleteDeliveries() {
+    return this.connection.select<IDelivery>({
+      from: 'Deliveries',
+      where: {
+        delivered: 'true',
+        updated: 'false'
+      }
+    });
+  }
+
+
   getJson() {
     return this.connection.select<IDelivery>({
       from: 'Deliveries',
@@ -87,16 +98,6 @@ export class DeliveryService extends BaseService {
   }
 
 
-  // deleteStudent(studentId: number) {
-  //   return this.connection.remove({
-  //     from: 'Students',
-  //     where: {
-  //       id: studentId
-  //     }
-  //   });
-  // }
-
-
    deleteDelivery(docId: number) {
      return this.connection.remove({
        from: 'Deliveries',
@@ -105,9 +106,7 @@ export class DeliveryService extends BaseService {
        }
      });
    }
-
   
-  // **** ####  Test Zone  #### ****
   // ## update Product for Edit purposes
   // Get Product
   getProduct(lineId) {
@@ -234,8 +233,7 @@ export class DeliveryService extends BaseService {
     qtyOrdered,
     json
   ) {
-    // const open = indexedDB.open('Student_db', 1);
-    const open = indexedDB.open('Delivery1_db', 1);
+    const open = indexedDB.open('Delivery_db', 1);
 
     open.onupgradeneeded = function() {
       const db = open.result;
@@ -254,15 +252,15 @@ export class DeliveryService extends BaseService {
       //    var index = store.index('NameIndex');
 
       store.put({
-        id,
-        lastSync: lastSync,
-        name: user,
-        documentId: documentID,
+        id: id,
+        lastSync: '',
+        name: '',
+        documentId: '',
         lineId: lineID,
-        description: description,
-        productCode: productCode,
-        sellPrice: sellPrice,
-        qtyOrdered: qtyOrdered,
+        description: '',
+        productCode: '',
+        sellPrice: '',
+        qtyOrdered: 0,
         qtyRejected: 0,
         delivered: 'false',
         updated: 'false',
@@ -388,37 +386,22 @@ export class DeliveryService extends BaseService {
 
   postJson(dataString, docId) {
     console.log(JSON.stringify(new Date()));
-    return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
-      .subscribe(
-        val => {
-                console.log("POST call successful value returned in body",val);
-               alert("POST call successful value returned in body: " && val)
-          //    Clear Indexed DB - Gete new info and populate
-            this.deleteDelivery(docId)
-        },
-        response => {
-          console.log("POST call in error", response);
-          alert("POST call in error " && response);
-        },
-        () => {
-         console.log("The POST observable is now completed.");
-//         alert("The POST observable is now completed.");
-        }
-      );
+//     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
+//       .subscribe(
+//         val => {
+//                 console.log("POST call successful value returned in body",val);
+//                alert("POST call successful value returned in body: " && val)
+//           //    Clear Indexed DB - Gete new info and populate
+             this.deleteDelivery(docId)
+//         },
+//         response => {
+//           console.log("POST call in error", response);
+//           alert("POST call in error " && response);
+//         },
+//         () => {
+//          console.log("The POST observable is now completed.");
+// //         alert("The POST observable is now completed.");
+//         }
+//       );
   }
-
-  getNewData() {
-    var DBDeleteRequest = window.indexedDB.deleteDatabase("Delivery_db");    
-    DBDeleteRequest.onerror = function (event) {
-      console.log("Error deleting database.");
-    };
-    DBDeleteRequest.onsuccess = function (event) {
-      console.log("Database deleted successfully");
-//      console.log(event.result); // should be undefined
-    };
-    this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
-  }
-
-
-
 }

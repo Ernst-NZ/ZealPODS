@@ -43,36 +43,12 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
-    this.data.getAllRoutes().subscribe(
-      data => this.allRoutes$ = data);
-   // this.getJson();
+    this.data.getAllRoutes().subscribe(data => this.allRoutes$ = data);
     const getOrder = (this.route.snapshot.paramMap.get('routeName'));
     this.selectedRoute = getOrder;
     this.globals.selectedRoute = this.selectedRoute;
   }
-
   ngAfterContentChecked() {
-    // if (this.deliveries.length > 0) {
-    //   if (typeof this.deliveries[0]['id'] !== 'undefined') {
-    //     this.allRoutes$ = this.deliveries[0]['json'];
-    //   }
-    // }
-    // console.log(this.allRoutes$);
-    if (typeof this.allRoutes$['orderGroups'] !== 'undefined' && this.addDB === false) {
-      this.addDB = true;
-      this.service.getData(this.allRoutes$, this.selectedRoute);
-    }
   }
-   // ## Get Json
-   getJson() {
-    this.service
-      .getJson()
-      .then(deliveries => {
-        this.deliveries = deliveries;
-      })
-      .catch(error => {
-        console.error(error);
-        alert(error.message);
-      });
-  }
+
 }

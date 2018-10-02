@@ -1,12 +1,12 @@
 import { IdbService } from '../_services/idb.service';
 import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
  export class BaseService {
-  dbname = 'Delivery1_db';
+  dbname = 'Delivery_db';
   dbDelivery = 'dbDelivery';
   constructor() {
    // turn on jsstore log status - help you to debug
    // turn off it in production or when you dont need
-   this.connection.setLogStatus(false);
+   this.connection.setLogStatus(true);
    this.initJsStore();
   }
  get connection() {
@@ -37,7 +37,6 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
       },
       {
        name: 'lastSync',
-       notNull: true,
        dataType: DATA_TYPE.String
       },
       {
@@ -46,7 +45,6 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
       },
       {
        name: 'documentId',
-       notNull: true,
        dataType: DATA_TYPE.Number
       },
       {
@@ -101,7 +99,6 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
        {
          name: 'json',
          dataType: DATA_TYPE.Object,
-         notNull: true,
        }
      ]
     };
