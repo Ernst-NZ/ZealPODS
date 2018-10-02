@@ -58,10 +58,10 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
     //   }
     // }
     // console.log(this.allRoutes$);
-    if (typeof this.allRoutes$['orderGroups'] !== 'undefined' && this.addDB === false) {
-      this.addDB = true;
-      this.service.getData(this.allRoutes$, this.selectedRoute);
-    }
+    // if (typeof this.allRoutes$['orderGroups'] !== 'undefined' && this.addDB === false) {
+    //   this.addDB = true;
+    //   this.service.getData(this.allRoutes$, this.selectedRoute);
+    // }
   }
    // ## Get Json
    getJson() {

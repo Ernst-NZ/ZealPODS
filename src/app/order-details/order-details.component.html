@@ -1,8 +1,8 @@
 <h3 class='headerText'>Order Details</h3>
 <hr class='devide'>
 
-<div class='theList' *ngIf='orderDetail$'>
-  <ul *ngFor='let driver of orderDetail$.orderGroups'>
+<div class='theList' *ngIf='orderDetails$'>
+  <ul *ngFor='let driver of orderDetails$.orderGroups'>
     <ul *ngFor='let order of driver.Orders'>
       <div class='justP strong headerText' *ngIf='order.DocumentId == docID'>
         <span>Order Date: {{ order.DocumentDate | date:'dd/MMM/yyyy'}}</span>

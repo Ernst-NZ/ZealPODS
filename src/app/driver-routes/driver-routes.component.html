@@ -1,19 +1,18 @@
-<h3 class = "headerText">Select Your Route</h3>
+<h3 class="headerText">Select Your Route</h3>
 <hr class="devide">
 <br>
 
-<div class="theList" *ngIf = "allRoutes$">
+<div class="theList" *ngIf="allRoutes$">
   <ul [@listStagger]="allRoutes$" style="list-style-type:none">
     <div *ngFor="let route of allRoutes$.orderGroups">
       <ul style="list-style-type:none">
         <li>
           <a routerLink="/route-Orders/{{route.Name}}">{{ route.Name }}
-          <p>&emsp;Delivery Date: {{route.DeliveryDate | date : "dd.MM.yyyy"}}</p>
+            <p>&emsp;Delivery Date: {{route.DeliveryDate | date : "dd.MM.yyyy"}}</p>
           </a>
         </li>
       </ul>
-  </div>
-
+    </div>
 
   </ul>
 </div>

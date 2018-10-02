@@ -24,6 +24,16 @@ export class DeliveryService extends BaseService {
     });
   }
 
+  getIncompleteDeliveries() {
+    return this.connection.select<IDelivery>({
+      from: 'Deliveries',
+      where: {
+        delivered: true,
+        updated: false
+      }
+    });
+  }
+
   getJson() {
     return this.connection.select<IDelivery>({
       from: 'Deliveries',
@@ -95,7 +105,7 @@ export class DeliveryService extends BaseService {
      });
    }
 
-  
+
   // **** ####  Test Zone  #### ****
   // ## update Product for Edit purposes
   // Get Product
@@ -111,7 +121,7 @@ export class DeliveryService extends BaseService {
         alert(error.message);
       });
   }
- 
+
   serviceTest() {
     const re = /-/gi;
     const str = '2018-09-20T00:00:00+12:00';
@@ -132,9 +142,9 @@ export class DeliveryService extends BaseService {
   // clearOldDelivery() {
   //    this.oldDelivery = new Delivery();
   // }
-  
+
   // tslint:disable-next-line:max-line-length
-  preUpdateDelivery( type, productNo, 
+  preUpdateDelivery( type, productNo,
     id, lastSync, name, docId, lineId, order,
     reject, reason, delivered, time, signature,
     deliveredTo, payType, payAmount,
@@ -186,7 +196,7 @@ export class DeliveryService extends BaseService {
           console.error(error);
           alert(error.message);
         });
-    }   
+    }
   }
 
   // #####
@@ -223,7 +233,7 @@ export class DeliveryService extends BaseService {
     qtyOrdered,
     json
   ) {
-    const open = indexedDB.open('ZEDS_db', 1);
+    const open = indexedDB.open('Delivery_db', 1);
 
     open.onupgradeneeded = function() {
       const db = open.result;
@@ -315,6 +325,41 @@ export class DeliveryService extends BaseService {
       }
     }
   }
+
+  addData(dataList, docId) {
+    //  this.checkAddJson(dataList);
+      const lastSync = dataList.LastSyncronisation;
+      const drivers = dataList.orderGroups;
+      for (let d = 0; d < drivers.length; d++) {
+     //   if (drivers[d].Name === driverName) {
+          const user = drivers[d].Name;
+          const orderList = drivers[d]['Orders'];
+          for (let o = 0; o < orderList.length; o++) {
+            const products = orderList[o]['Lines'];
+            const DocumentId = orderList[o].DocumentId;
+            if (orderList[o].DocumentId === docId) {
+            // Check for existing document ID
+            this.getOrder(DocumentId).then(deliveries => {
+              if (deliveries.length < 1) {
+                for (let p = 0; p < products.length; p++) {
+                  const LineId = products[p].LineId;
+                  const QTYOrdered = products[p].QuantityOrdered;
+                  const description = products[p].Description;
+                  const productCode = products[p].ProductCode;
+                  const sellPrice = products[p].SellPrice;
+                  this.dbAdd(LineId, lastSync, user, DocumentId,
+                    LineId, description, productCode, sellPrice,
+                    QTYOrdered, ''
+                  );
+                }
+              }
+            });
+
+          }
+          }
+    //    }
+      }
+    }
   // ### End
 
   /// Edit Json
@@ -348,7 +393,7 @@ export class DeliveryService extends BaseService {
     }
     const updatedValue: IDelivery = {
       lastSync: dataTemp.LastSyncronisation,
-      name: dataTemp.name, documentId: docId, 
+      name: dataTemp.name, documentId: docId,
       lineId: lineId, qtyOrdered: dataTemp.qtyOrdered,
       qtyRejected: qtyRejected, rejectReason: reason,
       delivered: delivered, deliveryTime: '',
@@ -382,7 +427,7 @@ export class DeliveryService extends BaseService {
 //                 console.log("POST call successful value returned in body",val);
 //                alert("POST call successful value returned in body: " && val)
 //           //    Clear Indexed DB - Gete new info and populate
-             this.deleteDelivery(docId)
+             this.deleteDelivery(docId);
 //         },
 //         response => {
 //           console.log("POST call in error", response);
@@ -396,7 +441,7 @@ export class DeliveryService extends BaseService {
   }
 
 //   getNewData() {
-//     var DBDeleteRequest = window.indexedDB.deleteDatabase("ZEDS_db");    
+//     var DBDeleteRequest = window.indexedDB.deleteDatabase("Delivery_db");
 //     DBDeleteRequest.onerror = function (event) {
 //       console.log("Error deleting database.");
 //     };
