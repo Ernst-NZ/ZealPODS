@@ -72,7 +72,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
       });
       if (this.deliveries.length < 1) {
         this.service.dbAdd(
-          0, '', '', 0, 0,
+          1, '', '', 0, 0,
           '', '', 0, 0, this.allRoutes$
         );
 

@@ -93,8 +93,9 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
     const getOrder = this.route.snapshot.paramMap.get('DocumentId');
      this.docID = getOrder;
+     this.service.addData(this.orderDetails$, Number(this.docID));
     // this.getJson();
-    this.getOrder(Number(this.docID));
+    // this.getOrder(Number(this.docID));
   //  this.orderDetail$ = this.oldDelivery.json;
   }
 
@@ -102,6 +103,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     if (typeof this.orderDetails$['orderGroups'] !== 'undefined' && this.addDB === false) {
       this.addDB = true;
       this.service.addData(this.orderDetails$, this.docID);
+      this.getOrder(Number(this.docID));
     }
 
     // if (this.deliveries.length > 0) {

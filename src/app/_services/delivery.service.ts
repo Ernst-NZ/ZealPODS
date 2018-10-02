@@ -11,6 +11,7 @@ import { Alert } from 'selenium-webdriver';
 export class DeliveryService extends BaseService {
   orderDetails$: Object;
   updateStatus: String;
+  isOrder: Boolean;
   tempDeliveries: Array<IDelivery> = [];
   tempDelivery: IDelivery = new Delivery();
   constructor(private data: DataService, private http: HttpClient) {
@@ -337,24 +338,25 @@ export class DeliveryService extends BaseService {
           for (let o = 0; o < orderList.length; o++) {
             const products = orderList[o]['Lines'];
             const DocumentId = orderList[o].DocumentId;
-            if (orderList[o].DocumentId === docId) {
+            if (orderList[o].DocumentId === Number(docId)) {
+              this.isOrder = false;
             // Check for existing document ID
             this.getOrder(DocumentId).then(deliveries => {
-              if (deliveries.length < 1) {
-                for (let p = 0; p < products.length; p++) {
-                  const LineId = products[p].LineId;
-                  const QTYOrdered = products[p].QuantityOrdered;
-                  const description = products[p].Description;
-                  const productCode = products[p].ProductCode;
-                  const sellPrice = products[p].SellPrice;
-                  this.dbAdd(LineId, lastSync, user, DocumentId,
-                    LineId, description, productCode, sellPrice,
-                    QTYOrdered, ''
-                  );
-                }
-              }
+              this.isOrder = true;
             });
-
+          }
+          if (this.isOrder === false) {
+            for (let p = 0; p < products.length; p++) {
+              const LineId = products[p].LineId;
+              const QTYOrdered = products[p].QuantityOrdered;
+              const description = products[p].Description;
+              const productCode = products[p].ProductCode;
+              const sellPrice = products[p].SellPrice;
+              this.dbAdd(LineId, lastSync, user, DocumentId,
+                LineId, description, productCode, sellPrice,
+                QTYOrdered, ''
+              );
+            }
           }
           }
     //    }
