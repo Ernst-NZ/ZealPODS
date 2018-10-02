@@ -35,6 +35,7 @@ import { Delivery, IDelivery } from '../_models/delivery';
 })
 export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   allRoutes$: object;
+  addDB = false;
   private service: DeliveryService;
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
@@ -47,28 +48,30 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   }
 
   ngAfterContentChecked() {
-    if (typeof this.allRoutes$ !== 'undefined') {
+    if (typeof this.allRoutes$ !== 'undefined' && this.addDB === false) {
+      this.addDB = true;
       this.checkJson();
     }
 
   }
 
   checkJson() {
-    // this.service
-    //   .getIncompleteDeliveries()
-    //   .then(deliveries => {
-    //     this.deliveries = deliveries;
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   });
-    // if (this.deliveries.length < 1) {
+    this.service.clearAll();
+    this.service
+      .getIncompleteDeliveries()
+      .then(deliveries => {
+        this.deliveries = deliveries;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    if (this.deliveries.length < 1) {
       this.service.dbAdd(
         0, '', '', 0, 0,
         '', '', 0, 0, this.allRoutes$
       );
 
-//  }
+ }
   }
  
 }

@@ -273,6 +273,89 @@ export class DeliveryService extends BaseService {
     };
   }
 
+  // ### Test Stuff
+  orderAdd(
+    id,
+    user,
+    documentID,
+    lineID,
+    qtyOrdered,
+    description,
+    productCode,
+    sellPrice   
+  ) {
+    const open = indexedDB.open('Delivery_db', 1);
+
+    open.onupgradeneeded = function () {
+      const db = open.result;
+      const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
+      // const store = db.createObjectStore('Students', { keyPath: 'id' });
+      // const index = store.createIndex('LineIndex', ['lineID']);
+    };
+
+    open.onsuccess = function () {
+      // Start a new transaction
+      const db = open.result;
+      const tx = db.transaction('Deliveries', 'readwrite');
+      const store = tx.objectStore('Deliveries');
+      //   const tx = db.transaction('Students', 'readwrite');
+      //   const store = tx.objectStore('Students');
+      //    var index = store.index('NameIndex');
+
+      store.put({
+        id: id,
+        lastSync: '',
+        name: user,
+        documentId: documentID,
+        lineId: lineID,
+        description: description,
+        productCode: productCode,
+        sellPrice: sellPrice,
+        qtyOrdered: qtyOrdered,
+        qtyRejected: 0,
+        delivered: 'false',
+        updated: 'false',
+        json: ''
+      });
+      // Close the db when the transaction is done
+      tx.oncomplete = function () {
+        db.close();
+      };
+    };
+  }
+
+  preOrderAdd(dataList, documentId) {
+    // this.checkAddJson(dataList);
+    const drivers = dataList.orderGroups;
+    for (let d = 0; d < drivers.length; d++) {
+   //   if (drivers[d].Name === driverName) {
+        const user = drivers[d].Name;
+        const orderList = drivers[d]['Orders'];
+        for (let o = 0; o < orderList.length; o++) {
+          const products = orderList[o]['Lines'];
+          if (drivers[o].DocumentId === Number(documentId)) {
+          const DocumentId = orderList[o].DocumentId;
+          // Check for existing document ID
+          this.getOrder(DocumentId).then(deliveries => {
+            if (deliveries.length < 1) {
+              for (let p = 0; p < products.length; p++) {
+                const LineId = products[p].LineId;
+                const QTYOrdered = products[p].QuantityOrdered;
+                const description = products[p].Description;
+                const productCode = products[p].ProductCode;
+                const sellPrice = products[p].SellPrice;
+                this.orderAdd(LineId, user, DocumentId,
+                  LineId, QTYOrdered, description, productCode, sellPrice 
+                );
+              }
+            }
+          });
+        }
+        }
+  //    }
+    }
+  }
+
   checkAddJson(dataList) {
     const drivers = dataList.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
@@ -293,6 +376,7 @@ export class DeliveryService extends BaseService {
       }
     }
   }
+
 
   getData(dataList, driverName) {
     this.checkAddJson(dataList);

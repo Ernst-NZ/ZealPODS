@@ -44,6 +44,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   @ViewChild(SignaturePad)
   signaturePad: SignaturePad;
   orderDetail$: Object;
+  allRoutes$: object;
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
   json: Array<IDelivery> = [];
@@ -90,31 +91,43 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
-    // this.data.getAllRoutes().subscribe(data => (this.orderDetail$ = data));
+    this.data.getAllRoutes().subscribe(data => (this.orderDetail$ = data));
     const getOrder = this.route.snapshot.paramMap.get('DocumentId');
     this.docID = getOrder;
-    this.getJson();
-    this.getOrder(Number(this.docID));
+  //  this.getJson();
+//    this.getOrder(Number(this.docID));
   //  this.orderDetail$ = this.oldDelivery.json;
   }
 
   ngAfterContentChecked() {
-    if (this.deliveries.length > 0) {
-      if (typeof this.deliveries[0]['id'] !== 'undefined') {
-        this.orderDetail$ = this.deliveries[0]['json'];        
-        if (this.deliveries[0]['delivered'] !== 'false') {
-          this.delivered = true;
-        }        
-        if (this.forceView === false) {
-          for (let i = 0; i < this.deliveries.length; i++ ) {
-            if (this.deliveries[i]['qtyRejected'] > 0) {
-              this.hidden = false;
-              this.show = true;
-            }
-          }
-         }         
-      }
-    }
+    // if (typeof this.orderDetail$[0] !== 'undefined' && this.addDB === false) {
+    //   this.addDB = true;
+    // //  this.orderDetail$ = this.deliveries[0]['json'];
+    //   this.service.preOrderAdd(this.orderDetail$, this.docID)
+    // }
+
+
+    // if (typeof this.allRoutes$ !== 'undefined' && this.addDB === false) {
+    //   this.addDB = true;
+    //   this.service.preOrderAdd(this.orderDetail$, this.docID)
+    // }
+
+    // if (this.deliveries.length > 0) {
+    //   if (typeof this.deliveries[0]['id'] !== 'undefined') {
+    //     this.orderDetail$ = this.deliveries[0]['json'];        
+    //     if (this.deliveries[0]['delivered'] !== 'false') {
+    //       this.delivered = true;
+    //     }        
+    //     if (this.forceView === false) {
+    //       for (let i = 0; i < this.deliveries.length; i++ ) {
+    //         if (this.deliveries[i]['qtyRejected'] > 0) {
+    //           this.hidden = false;
+    //           this.show = true;
+    //         }
+    //       }
+    //      }         
+    //   }
+    // }
   }
 
   // ## Get Json

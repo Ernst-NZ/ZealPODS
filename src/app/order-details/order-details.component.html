@@ -1,6 +1,6 @@
 <h3 class='headerText'>Order Details</h3>
 <hr class='devide'>
-
+{{ docID }}
 <div class='theList' *ngIf='orderDetail$'>
   <ul *ngFor='let driver of orderDetail$.orderGroups'>
     <ul *ngFor='let order of driver.Orders'>
@@ -26,24 +26,24 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor='let delivery of deliveries; index as i' class='tableRow'>
-              <td>{{delivery.description}}<br>
-                <span>{{delivery.productCode}}</span>
-                <span [hidden]=1>{{delivery.lineId}}</span>
-                <input type='hidden' *ngIf='delivery.editing' [(ngModel)]='oldDelivery.qtyOrdered' />
+            <tr *ngFor='let line of order.Lines; index as i' class='tableRow'>
+              <td>{{line.Description}}<br>
+                <span>{{line.ProductCode}}</span>
+                <span [hidden]=1>{{line.LineId}}</span>
               </td>
-              <td>{{delivery.qtyOrdered}}
-                <br>${{delivery.sellPrice}}
+              <td>{{line.QuantityOrdered}}
+                <br>${{line.SellPrice}}
               </td>
-              <td style='text-align: center'>{{delivery.qtyOrdered-delivery.qtyRejected}}</td>
-              <td><a *ngIf='!delivered && delivery.qtyRejected === 0' routerLink='/rejectproducts/{{docID}},{{delivery.lineId}}'>
-                  <button style='width: 100%' color='primary'>{{delivery.qtyRejected}}</button>
+              <td style='text-align: center'>{{line.QuantityOrdered-line.QuantityRejected}}</td>
+              <td>
+                <a *ngIf='!delivered' routerLink='/rejectproducts/{{docID}},{{line.lineId}}'>
+                  <button style='width: 100%' color='primary'>{{line.QuantityRejected}}</button>
                 </a>
-                <a *ngIf='!delivered && delivery.qtyRejected !== 0' routerLink='/rejectproducts/{{docID}},{{delivery.lineId}}'>
-                  <button style='width: 100%; background-color:maroon; font-weight: bold; ' color='primary'>{{delivery.qtyRejected}}</button>
+                <a *ngIf='!delivered' routerLink='/rejectproducts/{{docID}},{{line.lineId}}'>
+                  <button style='width: 100%; background-color:maroon; font-weight: bold; ' color='primary'>{{line.QuantityRejected}}</button>
                 </a>
                 <span *ngIf='delivered' style='width: 100%; background-color:maroon; font-weight: bold; color: white'>
-                  {{delivery.qtyRejected}}
+                  {{line.QuantityRejected}}
                 </span>
               </td>
             </tr>
