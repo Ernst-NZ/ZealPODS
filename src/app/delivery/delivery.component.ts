@@ -142,7 +142,7 @@ export class DeliveryComponent implements OnInit, AfterContentChecked {
 
 xxx() {
 //  this.service.getProduct(1965)
-  this.service.getNewData();
+//  this.service.getNewData();
 
  // this.service.editJson('', 404, 1964, 777, 'Damaged', 'signature', 'Koos', 'Cash', 99.22)
 }

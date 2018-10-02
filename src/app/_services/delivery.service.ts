@@ -86,17 +86,6 @@ export class DeliveryService extends BaseService {
     this.connection.clear('Deliveries');
   }
 
-
-  // deleteStudent(studentId: number) {
-  //   return this.connection.remove({
-  //     from: 'Students',
-  //     where: {
-  //       id: studentId
-  //     }
-  //   });
-  // }
-
-
    deleteDelivery(docId: number) {
      return this.connection.remove({
        from: 'Deliveries',
@@ -234,8 +223,7 @@ export class DeliveryService extends BaseService {
     qtyOrdered,
     json
   ) {
-    // const open = indexedDB.open('Student_db', 1);
-    const open = indexedDB.open('Delivery1_db', 1);
+    const open = indexedDB.open('ZEDS_db', 1);
 
     open.onupgradeneeded = function() {
       const db = open.result;
@@ -297,7 +285,7 @@ export class DeliveryService extends BaseService {
   }
 
   getData(dataList, driverName) {
-    this.checkAddJson(dataList);
+  //  this.checkAddJson(dataList);
     const lastSync = dataList.LastSyncronisation;
     const drivers = dataList.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
@@ -388,36 +376,36 @@ export class DeliveryService extends BaseService {
 
   postJson(dataString, docId) {
     console.log(JSON.stringify(new Date()));
-    return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
-      .subscribe(
-        val => {
-                console.log("POST call successful value returned in body",val);
-               alert("POST call successful value returned in body: " && val)
-          //    Clear Indexed DB - Gete new info and populate
-            this.deleteDelivery(docId)
-        },
-        response => {
-          console.log("POST call in error", response);
-          alert("POST call in error " && response);
-        },
-        () => {
-         console.log("The POST observable is now completed.");
-//         alert("The POST observable is now completed.");
-        }
-      );
+//     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
+//       .subscribe(
+//         val => {
+//                 console.log("POST call successful value returned in body",val);
+//                alert("POST call successful value returned in body: " && val)
+//           //    Clear Indexed DB - Gete new info and populate
+             this.deleteDelivery(docId)
+//         },
+//         response => {
+//           console.log("POST call in error", response);
+//           alert("POST call in error " && response);
+//         },
+//         () => {
+//          console.log("The POST observable is now completed.");
+// //         alert("The POST observable is now completed.");
+//         }
+//       );
   }
 
-  getNewData() {
-    var DBDeleteRequest = window.indexedDB.deleteDatabase("Delivery_db");    
-    DBDeleteRequest.onerror = function (event) {
-      console.log("Error deleting database.");
-    };
-    DBDeleteRequest.onsuccess = function (event) {
-      console.log("Database deleted successfully");
-//      console.log(event.result); // should be undefined
-    };
-    this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
-  }
+//   getNewData() {
+//     var DBDeleteRequest = window.indexedDB.deleteDatabase("ZEDS_db");    
+//     DBDeleteRequest.onerror = function (event) {
+//       console.log("Error deleting database.");
+//     };
+//     DBDeleteRequest.onsuccess = function (event) {
+//       console.log("Database deleted successfully");
+// //      console.log(event.result); // should be undefined
+//     };
+//     this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
+//   }
 
 
 
