@@ -55,23 +55,28 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
 
   }
 
-  checkJson() {
-    this.service.clearAll();
+  checkJson() { 
     this.service
       .getIncompleteDeliveries()
-      .then(deliveries => {
-        this.deliveries = deliveries;
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    .then(deliveries => {
+      if (deliveries.length > 0) {
+        this.oldDelivery = deliveries[0];
+      }
+    }).catch(error => {
+      console.error(error);
+      alert(error.message);
+    });
     if (this.deliveries.length < 1) {
+  //    this.service.clearAll();
       this.service.dbAdd(
         0, '', '', 0, 0,
         '', '', 0, 0, this.allRoutes$
-      );
+     );
 
+ } else {
+      
  }
   }
- 
+
+
 }

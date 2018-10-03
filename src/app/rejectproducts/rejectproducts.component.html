@@ -1,34 +1,38 @@
 <h3 class='headerText'>Product Details</h3>
 <hr class='devide'>
+<div *ngIf='productDetails$' style="width: 100%; max-width: 500px; ">
 
-<div *ngIf='productDetail$'>
   <div id='main'>
-    <ul *ngFor='let driver of productDetail$.orderGroups'>
-      <ul *ngFor='let order of driver.Orders'>
+    <ul *ngFor='let driver of productDetails$.orderGroups'>
+      <ul *ngFor='let order of driver.Orders'>       
         <div class='blackFont fontSmall1 strong' *ngIf='order.DocumentId == docID'>
-          <ul *ngFor='let item of order.Lines; index as i'>
-            <div class='blackFont fontSmall1 strong' *ngIf='item.LineId == lineID'>
+          <ul *ngFor='let oeLine of order.Lines'>
+            <div class='blackFont fontSmall1 strong' *ngIf='oeLine.LineId === lineID'>
+              <!-- <div style='color: white'>  id {{lineID}}   </div> -->
               <table width='100%'>
                 <thead>
                   <tr class='lineDiv' style='font-size: 1.25em;'>
                     <td>Product Code</td>
-                    <td>{{item.ProductCode}}</td>
+                    <td>{{ oeLine.ProductCode }}</td>
                   </tr>
                 </thead>
                 <tbody>
                   <tr class='lineDiv tableRow'>
                     <td>Description</td>
-                    <td>{{item.Description}}</td>
+                    <td>{{oeLine.Description}}</td>
                   </tr>
                   <tr class='lineDiv'>
                     <td>QTY Ordered</td>
-                    <td>{{item.QuantityOrdered}}</td>
+                    <!-- <input name='QuantityOrdered' [hidden]=1 [(ngModel)]="model.QuantityOrdered" #QuantityOrdered="ngModel" /> -->
+                    <input [hidden]=1 [(ngModel)]="oldItem.QuantityOrdered" #QuantityOrdered="ngModel" />
+                    <td>{{oldItem.QuantityOrdered}}</td>
                   </tr>
                   <tr class='block'>
                     <td>QTY Rejected</td>
                     <td class='strong inPutBox'>
                       <mat-form-field class='matInput'>
-                        <input type='number' matInput placeholder='Number' [(ngModel)]='oldDelivery.qtyRejected'>
+                        <input type='number' matInput placeholder='Number' [(ngModel)]='oldItem.QuantityRejected'
+                          #QuantityRejected="ngModel">
                       </mat-form-field>
                     </td>
                   </tr>
@@ -36,7 +40,7 @@
                     <td>Reason</td>
                     <td class='inPutBox'>
                       <mat-form-field class='matInput'>
-                        <mat-select placeholder='Reason' [(ngModel)]='oldDelivery.rejectReason'>
+                        <mat-select placeholder='Reason' [(ngModel)]='oldItem.RRejectionReason' #RejectionReason="ngModel">
                           <mat-option *ngFor='let reject of reject' [value]='reject.value'>
                             {{reject.viewValue}}
                           </mat-option>

@@ -1,40 +1,39 @@
-import { Component, OnInit, ViewChild, AfterContentChecked, AfterViewChecked } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../data.service';
-import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
-import { DeliveryService } from '../_services/delivery.service';
-import { Delivery, IDelivery } from '../_models/delivery';
-import { SignaturePad } from 'angular2-signaturepad/signature-pad';
+import {Component, OnInit, ViewChild, AfterContentChecked, AfterViewChecked }from '@angular/core'; 
+import {ActivatedRoute, Router }from '@angular/router'; 
+import {DataService }from '../data.service'; 
+import {trigger, style, transition, animate, keyframes, query, stagger }from '@angular/animations'; 
+import {DeliveryService }from '../_services/delivery.service'; 
+import {Delivery, IDelivery }from '../_models/delivery'; 
+import {SignaturePad }from 'angular2-signaturepad/signature-pad'; 
 
 export interface Payment {
-  value: string;
-  viewValue: string;
+  value:string; 
+  viewValue:string; 
 }
 
-@Component({
-  selector: 'app-order-details',
-  templateUrl: './order-details.component.html',
-  styleUrls: ['./order-details.component.scss'],
-  providers: [DeliveryService],
-  animations: [
+@Component( {
+  selector:'app-order-details', 
+  templateUrl:'./order-details.component.html', 
+  styleUrls:['./order-details.component.scss'], 
+  providers:[DeliveryService], 
+  animations:[
     trigger('listStagger', [
       transition('* <=> *', [
         query(
-          ':enter',
+          ':enter', 
           [
-            style({ opacity: 0, transform: 'translateY(-15px)' }),
+            style( {opacity:0, transform:'translateY(-15px)'}), 
             stagger(
-              '50ms',
+              '50ms', 
               animate(
-                '550ms ease-out',
-                style({ opacity: 1, transform: 'translateY(0px)' })
+                '550ms ease-out', 
+                style( {opacity:1, transform:'translateY(0px)'})
               )
             )
-          ],
-          { optional: true }
-        ),
-        query(':leave', animate('50ms', style({ opacity: 0 })), {
-          optional: true
+          ],  {optional:true }
+        ), 
+        query(':leave', animate('50ms', style( {opacity:0 })),  {
+          optional:true
         })
       ])
     ])
@@ -42,247 +41,221 @@ export interface Payment {
 })
 export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   @ViewChild(SignaturePad)
-  signaturePad: SignaturePad;
-  orderDetail$: Object;
-  allRoutes$: object;
-  deliveries: Array<IDelivery> = [];
-  oldDelivery: IDelivery = new Delivery();
-  json: Array<IDelivery> = [];
-  tempJson: IDelivery = new Delivery();
-  private service: DeliveryService;
-  public docID;
-  public signatureImage: string;
-  public i: number;
-  forceView = false;
-  delivered = false;
+  signaturePad:SignaturePad; 
+  orderDetails$:Object; 
+  allRoutes$:object; 
+  deliveries:Array < IDelivery >  = []; 
+  oldDelivery:IDelivery = new Delivery(); 
+  tempDelivery:IDelivery = new Delivery(); 
 
-  show = false;
-  hidden = true;
-  addDB = false;
-  pay: Payment[] = [
-    { value: 'No Payment', viewValue: 'No Payment' },
-    { value: 'Cash', viewValue: 'Cash' },
-    { value: 'Cheque', viewValue: 'Cheque' }
-  ];
-  public signaturePadOptions: Object = {
+  oldItem:any =  {}; 
+  oldOrder:any =  {}; 
+  dataset:any =  {}; 
+
+  json:Array < IDelivery >  = []; 
+  tempJson:IDelivery = new Delivery(); 
+  private service:DeliveryService; 
+  public docID;
+  public driver;
+  public signatureImage:string; 
+  public i:number; 
+  forceView = false; 
+  delivered = false; 
+
+  show = false; 
+  hidden = true; 
+  addDB = false; 
+  pay:Payment[] = [ {value:'No Payment', viewValue:'No Payment'},  {value:'Cash', viewValue:'Cash'},  {value:'Cheque', viewValue:'Cheque'}
+  ]; 
+  public signaturePadOptions:Object =  {
     // passed through to szimek/signature_pad constructor
-    minWidth: 0.5,
-    canvasWidth: 700,
-    canvasHeight: 100,
-    canvasBackgroundColor: 'white'
-  };
+    minWidth:0.5, 
+    canvasWidth:700, 
+    canvasHeight:100, 
+    canvasBackgroundColor:'white'
+  }; 
 
   toggleTable() {
-    this.forceView = true;
-    this.show = !this.show;
-    this.hidden = !this.hidden;
+    this.forceView = true; 
+    this.show =  ! this.show; 
+    this.hidden =  ! this.hidden; 
   }
 
   constructor(
-    private route: ActivatedRoute,
-    private data: DataService,
-    service: DeliveryService,
-    private router: Router
+    private route:ActivatedRoute, 
+    private data:DataService, 
+    service:DeliveryService, 
+    private router:Router
   ) {
     this.route.params.subscribe(
-      params => (this.orderDetail$ = params.DocumentId)
-    );
-    this.service = service;
+      params => (this.orderDetails$ = params.DocumentId)
+    ); 
+    this.service = service; 
   }
 
   ngOnInit() {
-    this.data.getAllRoutes().subscribe(data => (this.orderDetail$ = data));
-    const getOrder = this.route.snapshot.paramMap.get('DocumentId');
-    this.docID = getOrder;
-  //  this.getJson();
-//    this.getOrder(Number(this.docID));
-  //  this.orderDetail$ = this.oldDelivery.json;
+  //  this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
+    const getOrder = this.route.snapshot.paramMap.get('DocumentId'); 
+    this.docID = getOrder; 
+    this.getJson(); 
   }
 
   ngAfterContentChecked() {
-    // if (typeof this.orderDetail$[0] !== 'undefined' && this.addDB === false) {
-    //   this.addDB = true;
-    // //  this.orderDetail$ = this.deliveries[0]['json'];
-    //   this.service.preOrderAdd(this.orderDetail$, this.docID)
-    // }
-
-
-    // if (typeof this.allRoutes$ !== 'undefined' && this.addDB === false) {
-    //   this.addDB = true;
-    //   this.service.preOrderAdd(this.orderDetail$, this.docID)
-    // }
-
-    // if (this.deliveries.length > 0) {
-    //   if (typeof this.deliveries[0]['id'] !== 'undefined') {
-    //     this.orderDetail$ = this.deliveries[0]['json'];        
-    //     if (this.deliveries[0]['delivered'] !== 'false') {
-    //       this.delivered = true;
-    //     }        
-    //     if (this.forceView === false) {
-    //       for (let i = 0; i < this.deliveries.length; i++ ) {
-    //         if (this.deliveries[i]['qtyRejected'] > 0) {
-    //           this.hidden = false;
-    //           this.show = true;
-    //         }
-    //       }
-    //      }         
-    //   }
-    // }
+    if (this.deliveries.length > 0 && this.addDB === false) {
+      this.addDB = true;
+      this.dataset = this.tempDelivery.json;
+      const drivers = this.dataset['orderGroups'];            
+      this.orderDetails$ = this.tempDelivery.json;
+      console.log(this.tempDelivery.json);
+      for (let d = 0; d < drivers.length; d++) {
+        const orderList = drivers[d]['Orders'];
+        this.driver = drivers[d].Name;
+        for (let o = 0; o < orderList.length; o++) {
+          // Get Document ID
+          if (orderList[o].DocumentId === Number(this.docID)) {
+            const productList = orderList[o]['Lines'];
+            this.oldDelivery = orderList[o];
+            this.oldOrder = orderList[o];
+                this.oldItem = productList[0];
+            break
+          }
+        }
+        break
+      }
+    }
   }
 
   // ## Get Json
+  // v2
   getJson() {
-    this.service
-    .getOrder(0)
-    .then(deliveries => {
-      this.deliveries = deliveries;
-      if (deliveries.length > 0) {
-        this.tempJson = deliveries[0];
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      alert(error.message);
-    });
-  }
-
-  getOrder(documentId) {
-    this.service
-      .getOrder(documentId)
+    this.service.getJson()
       .then(deliveries => {
         this.deliveries = deliveries;
         if (deliveries.length > 0) {
-          this.oldDelivery = deliveries[0];
+          this.tempDelivery = deliveries[0];
         }
       })
       .catch(error => {
         console.error(error);
-        alert(error.message);
+        alert(error.message);     
       });
   }
-
+ 
+  // V2 Post data
   postData() {
     const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
- //   console.log(atob(dataSvg.split(',')[1]));
- //   this.download(dataSvg, 'signature.svg');
+    console.log(dataSvg); 
+    console.log(atob(dataSvg.split(',')[1]));
 
     if (this.signaturePad.isEmpty()) {
-      return alert('Please provide a signature first.');
+      return alert('Please provide a signature first.'); 
     }
-    if (this.oldDelivery.deliveredTo == null) {
-      return alert('Please provide a Name.');
+    if (this.oldDelivery.ReceivedBy == null) {
+      return alert('Please provide a Name.'); 
     }
-    const signatureData = atob(dataSvg.split(',')[1]);
-    const newDate = JSON.stringify(new Date());
-    const deliveredTo = this.oldDelivery.deliveredTo;
-    const paymentType = this.oldDelivery.paymentType;
-    const paymentAmount = this.oldDelivery.paymentAmount;
-
+    const signatureData = atob(dataSvg.split(',')[1]); 
+    const newDate = JSON.stringify(new Date()); 
+    
     try {
-      this.i = 0;
+      this.i = 0; 
       for (let d = 0; d < this.deliveries.length; d++) {
-        this.oldDelivery = this.deliveries[d];
-        this.i = this.i + 1;
+        this.oldDelivery = this.deliveries[d]; 
+        this.i = this.i + 1; 
         this.updateDelivery(
-          this.deliveries[d]['lineId'],
-          signatureData,
-          newDate,
-          deliveredTo,
-          paymentType,
-          paymentAmount
-        );
+          this.deliveries[d]['id'], 
+          signatureData, 
+          newDate, 
+          this.oldDelivery.ReceivedBy, 
+          this.oldOrder.PaymentMethod, 
+          this.oldOrder.PaymentAmount,); 
       }
 //      alert('Delivery Successfully Updated');
-      this.router.navigate(['/route-Orders/', this.oldDelivery.name]);
-    } catch (error) {
-      alert(error);
+      this.router.navigate(['/route-Orders/', this.driver]); 
+    }catch (error) {
+      alert(error); 
     }
   }
 
   clearOldDelivery() {
-    this.oldDelivery = new Delivery();
+    this.oldDelivery = new Delivery(); 
   }
 
+  // V2 Update
   updateDelivery(
-    lineId,
-    signatureData,
-    newDate,
-    deliveredTo,
-    paymentType,
-    paymentAmount
-  ) {
+    id, 
+    signatureData, 
+    newDate, 
+    deliveredTo, 
+    paymentType, 
+    paymentAmount) {
     this.service.preUpdateDelivery( 'order', this.i,
-      lineId, this.oldDelivery.lastSync,
-      this.oldDelivery.name, this.oldDelivery.documentId,
-      this.oldDelivery.lineId,
-      this.oldDelivery.qtyOrdered,
-      this.oldDelivery.qtyRejected,
-      this.oldDelivery.rejectReason,
-      'true',
-      newDate,
-      signatureData,
-      deliveredTo,
-      paymentType,
-      paymentAmount,
-      'true',
-      this.tempJson.json);
+      this.oldDelivery.documentId,
+       id,
+       this.oldOrder.QuantityRejected,
+       this.oldOrder.RejectionReason,
+       true,
+       signatureData,
+       deliveredTo,
+       paymentType,
+       paymentAmount,
+      this.orderDetails$);
   }
 
   /// Signature Stuff
 
-  drawComplete() {
-    if (this.signaturePad.isEmpty()) {
-      return alert('Please provide a signature first.');
-    }
+  // drawComplete() {
+  //   if (this.signaturePad.isEmpty()) {
+  //     return alert('Please provide a signature first.'); 
+  //   }
 
-    this.signatureImage = this.signaturePad.toDataURL();
-    //  console.log(this.signatureImage);
+  //   this.signatureImage = this.signaturePad.toDataURL(); 
+  //   //  console.log(this.signatureImage);
 
-    const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
-    console.log(atob(dataSvg.split(',')[1]));
-    this.download(dataSvg, 'signature.svg');
+  //   const dataSvg = this.signaturePad.toDataURL('image/svg+xml'); 
+  //   console.log(atob(dataSvg.split(',')[1])); 
+  //   this.download(dataSvg, 'signature.svg'); 
 
-    const dataJpeg = this.signaturePad.toDataURL('image/jpeg');
-    this.download(dataJpeg, 'signature.jpg');
+  //   const dataJpeg = this.signaturePad.toDataURL('image/jpeg'); 
+  //   this.download(dataJpeg, 'signature.jpg'); 
 
-    const dataPng = this.signaturePad.toDataURL('image/png');
-    this.download(dataPng, 'signature.png');
+  //   const dataPng = this.signaturePad.toDataURL('image/png'); 
+  //   this.download(dataPng, 'signature.png'); 
 
-    //   console.log(dataPng);
-  }
+  //   //   console.log(dataPng);
+  // }
 
-  download(dataURL, filename) {
-    const blob = this.dataURLToBlob(dataURL);
-    const url = window.URL.createObjectURL(blob);
+  // download(dataURL, filename) {
+  //   const blob = this.dataURLToBlob(dataURL); 
+  //   const url = window.URL.createObjectURL(blob); 
 
-    const a = document.createElement('a');
-    // a.style = 'display: none';
-    a.href = url;
-    a.download = filename;
+  //   const a = document.createElement('a'); 
+  //   // a.style = 'display: none';
+  //   a.href = url; 
+  //   a.download = filename; 
 
-    document.body.appendChild(a);
-    a.click();
+  //   document.body.appendChild(a); 
+  //   a.click(); 
 
-    window.URL.revokeObjectURL(url);
-  }
+  //   window.URL.revokeObjectURL(url); 
+  // }
 
   dataURLToBlob(dataURL) {
     // Code taken from https://github.com/ebidel/filer.js
-    const parts = dataURL.split(';base64,');
-    const contentType = parts[0].split(':')[1];
-    const raw = window.atob(parts[1]);
-    const rawLength = raw.length;
-    const uInt8Array = new Uint8Array(rawLength);
+    const parts = dataURL.split(';base64,'); 
+    const contentType = parts[0].split(':')[1]; 
+    const raw = window.atob(parts[1]); 
+    const rawLength = raw.length; 
+    const uInt8Array = new Uint8Array(rawLength); 
 
     for (let i = 0; i < rawLength; ++i) {
-      uInt8Array[i] = raw.charCodeAt(i);
+      uInt8Array[i] = raw.charCodeAt(i); 
     }
 
-    return new Blob([uInt8Array], { type: contentType });
+    return new Blob([uInt8Array],  {type:contentType }); 
   }
 
   drawClear() {
-    this.signaturePad.clear();
+    this.signaturePad.clear(); 
   }
   /////
 

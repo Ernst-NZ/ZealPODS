@@ -6,7 +6,7 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
   constructor() {
    // turn on jsstore log status - help you to debug
    // turn off it in production or when you dont need
-   this.connection.setLogStatus(true);
+   this.connection.setLogStatus(false);
    this.initJsStore();
   }
  get connection() {
@@ -36,65 +36,37 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
        autoIncrement: true
       },
       {
-       name: 'lastSync',
-       dataType: DATA_TYPE.String
-      },
-      {
-       name: 'name',
-       dataType: DATA_TYPE.String,
-      },
-      {
        name: 'documentId',
        dataType: DATA_TYPE.Number
       },
       {
-       name: 'lineId',
-       dataType: DATA_TYPE.Number,
-       notNull: true
-      },
-      {
-       name: 'qtyOrdered',
-       dataType: DATA_TYPE.Number
-      },
-      {
-       name: 'qtyRejected',
-       dataType: DATA_TYPE.Number
-      },
-      {
-       name: 'rejectReason',
-       dataType: DATA_TYPE.String,
-      },
-      {
        name: 'delivered',
        dataType: DATA_TYPE.String,
-       notNull: true,
        default: 'false',
       },
-      {
-       name: 'deliveryTime',
-       dataType: DATA_TYPE.String
-      },
-      {
-       name: 'signature',
-       dataType: DATA_TYPE.String
-      },
-      {
-       name: 'deliveredTo',
-       dataType: DATA_TYPE.String
-      },
-      {
-       name: 'paymentType',
-       dataType: DATA_TYPE.String
-      },
-      {
-       name: 'paymentAmount',
-       dataType: DATA_TYPE.Number
-      },
-      {
-       name: 'updated',
-       dataType: DATA_TYPE.String,
-       notNull: true,
-       default: 'false'
+       {
+         name: 'QuantityRejected',
+         dataType: DATA_TYPE.Number
+       },
+       {
+         name: 'RejectionReason',
+         dataType: DATA_TYPE.String
+       },
+       {
+         name: 'SignatureSVG',
+         dataType: DATA_TYPE.String
+       },
+       {
+         name: 'ReceivedBy',
+         dataType: DATA_TYPE.String
+       },
+       {
+         name: 'PaymentMethod',
+         dataType: DATA_TYPE.String
+       },
+       {
+         name: 'PaymentAmount',
+         dataType: DATA_TYPE.Number
        },
        {
          name: 'json',
