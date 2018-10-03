@@ -40,7 +40,7 @@
                     <td>Reason</td>
                     <td class='inPutBox'>
                       <mat-form-field class='matInput'>
-                        <mat-select placeholder='Reason' [(ngModel)]='oldItem.RRejectionReason' #RejectionReason="ngModel">
+                        <mat-select placeholder='Reason' [(ngModel)]='oldItem.RejectionReason' #RejectionReason="ngModel">
                           <mat-option *ngFor='let reject of reject' [value]='reject.value'>
                             {{reject.viewValue}}
                           </mat-option>

@@ -143,7 +143,7 @@ export class DeliveryService extends BaseService {
 
   
   // tslint:disable-next-line:max-line-length
-  // V2
+  // V2 ..
   preUpdateDelivery( type, productNo, 
     docId, lineId, delivered, 
     QuantityRejected, RejectionReason, SignatureSVG,
@@ -152,13 +152,13 @@ export class DeliveryService extends BaseService {
       let jsonTemp = json;
     // Update the Json String
     if (type === 'product' && productNo === 0) {
-      jsonTemp = this.upDateJson(docId, lineId, delivered, QuantityRejected,
+      jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
           RejectionReason, SignatureSVG, ReceivedBy,
         PaymentMethod, PaymentAmount, jsonTemp
       )
       this.productAdd(lineId,docId, lineId, RejectionReason, ReceivedBy)
     } else if (type === 'order' && productNo === 1) {
-      jsonTemp = this.upDateJson(docId, lineId, delivered, QuantityRejected,
+      jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
         RejectionReason, SignatureSVG, ReceivedBy,
         PaymentMethod, PaymentAmount, jsonTemp
       )
@@ -395,12 +395,10 @@ export class DeliveryService extends BaseService {
   // ### End
 
   /// Edit Json
-  upDateJson(docId, lineId, delivered,
+  //V2
+  upDateJson(type, docId, lineId, delivered,
     QuantityRejected, RejectionReason, SignatureSVG,
     ReceivedBy, PaymentMethod, PaymentAmount, jsonTemp ) {
-
-
-
     const drivers = jsonTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       const orderList = drivers[d]['Orders'];
@@ -411,19 +409,23 @@ export class DeliveryService extends BaseService {
         if (orderList[o].DocumentId === Number(docId)) {
           orderList[o].Delivered = 'true';
           orderList[o].DeliveryTime = 'JSON.stringify(new Date())';
-          orderList[o].ReceivedBy = 'namexzxzxz';
+          orderList[o].ReceivedBy = ReceivedBy;
           orderList[o].PaymentMethod = PaymentMethod;
           orderList[o].PaymentAmount = PaymentAmount;
           orderList[o].Updated = true;
           orderList[o].signature = SignatureSVG;
-          for (let p = 0; p < products.length; p++) {
-            if (products[p].LineId === lineId) {
-              products[p].QuantityRejected = Number(QuantityRejected);
-              products[p].RejectionReason = RejectionReason;
+          if (type === 'product') {
+            for (let p = 0; p < products.length; p++) {
+              if (products[p].LineId === lineId) {
+                products[p].QuantityRejected = Number(QuantityRejected);
+                products[p].RejectionReason = RejectionReason;
+              }
             }
-          }
+          }          
         }
+        break       
       }
+      break      
     }
     const updatedValue: IDelivery = {
       id: 0, documentId: Number(docId),
@@ -453,8 +455,10 @@ export class DeliveryService extends BaseService {
     return jsonTemp;
   }
 
+  
+
   /// Edit Json
-  // V2 
+  // V2 ??
   editJson(docId, lineId, delivered, 
     QuantityRejected, RejectionReason, SignatureSVG,
     ReceivedBy, PaymentMethod, PaymentAmount, jsonTemp  ) {  

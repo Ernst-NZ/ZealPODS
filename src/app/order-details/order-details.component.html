@@ -60,15 +60,15 @@
 
         <div *ngIf='!delivered' class='block' style='margin-bottom: 5px; border: 1px solid red;'>
           <mat-form-field style='width: 95%; color: black;'>
-            <input type='text' matInput placeholder='Name' [(ngModel)]='oldDelivery.deliveredTo'>
+            <input type='text' matInput placeholder='Name' [(ngModel)]='oldOrder.ReceivedBy'>
           </mat-form-field>
         </div>
         <div class='block' style='margin-bottom: 5px; font-weight: bold; color: black; padding-left: 5px;' *ngIf='delivered'>
-          <span>{{oldDelivery.ReceivedBy}}</span>
+          <span>{{oldOrder.ReceivedBy}}</span>
         </div>
         <div class='block' *ngIf='!delivered' style='margin-bottom: 5px;'>
           <mat-form-field style='width: 95%; color: black;'>
-            <mat-select placeholder='Payment' [(ngModel)]='oldDelivery.PaymentMethod'>
+            <mat-select placeholder='Payment' [(ngModel)]='oldOrder.PaymentMethod'>
               <mat-option *ngFor='let pay of pay' [value]='pay.value'>
                 {{pay.viewValue}}
               </mat-option>
@@ -80,8 +80,8 @@
         </div>
         <div class='block' style='margin-bottom: 5px;' *ngIf='!delivered'>
           <mat-form-field style='width: 95%; color: black;'>
-            <input type='number' matInput placeholder='Amount' [(ngModel)]='oldDelivery.PaymentAmount'>
-            <span *ngIf='delivered'>{{oldDelivery.PaymentAmount}}</span>
+            <input type='number' matInput placeholder='Amount' [(ngModel)]='oldOrder.PaymentAmount'>
+            <span *ngIf='delivered'>{{oldOrder.PaymentAmount}}</span>
           </mat-form-field>
         </div>
         <div *ngIf='!delivered' style='margin-bottom: 5px; text-align: center; max-width: 500px;'>

@@ -50,7 +50,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 
   oldItem:any =  {}; 
   oldOrder:any =  {}; 
-  dataset:any =  {}; 
+  dataset:any =  {};
+  productList: any = {}; 
 
   json:Array < IDelivery >  = []; 
   tempJson:IDelivery = new Delivery(); 
@@ -113,10 +114,10 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
         for (let o = 0; o < orderList.length; o++) {
           // Get Document ID
           if (orderList[o].DocumentId === Number(this.docID)) {
-            const productList = orderList[o]['Lines'];
+            this.productList = orderList[o]['Lines'];
             this.oldDelivery = orderList[o];
             this.oldOrder = orderList[o];
-                this.oldItem = productList[0];
+            this.oldItem = orderList[o];
             break
           }
         }
@@ -150,7 +151,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     if (this.signaturePad.isEmpty()) {
       return alert('Please provide a signature first.'); 
     }
-    if (this.oldDelivery.ReceivedBy == null) {
+    if (this.oldOrder.ReceivedBy === '') {
       return alert('Please provide a Name.'); 
     }
     const signatureData = atob(dataSvg.split(',')[1]); 
@@ -158,14 +159,14 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     
     try {
       this.i = 0; 
-      for (let d = 0; d < this.deliveries.length; d++) {
+      for (let d = 0; d < this.productList.length; d++) {
         this.oldDelivery = this.deliveries[d]; 
         this.i = this.i + 1; 
         this.updateDelivery(
           this.deliveries[d]['id'], 
           signatureData, 
           newDate, 
-          this.oldDelivery.ReceivedBy, 
+          this.oldOrder.ReceivedBy, 
           this.oldOrder.PaymentMethod, 
           this.oldOrder.PaymentAmount,); 
       }
@@ -182,22 +183,22 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 
   // V2 Update
   updateDelivery(
-    id, 
+    Lineid,
     signatureData, 
     newDate, 
-    deliveredTo, 
-    paymentType, 
-    paymentAmount) {
+    ReceivedBy, 
+    PaymentMethod, 
+    PaymentAmount) {
     this.service.preUpdateDelivery( 'order', this.i,
-      this.oldDelivery.documentId,
-       id,
+      this.docID,
+       Lineid,
+       'true',
        this.oldOrder.QuantityRejected,
        this.oldOrder.RejectionReason,
-       true,
        signatureData,
-       deliveredTo,
-       paymentType,
-       paymentAmount,
+       ReceivedBy,
+       PaymentMethod,
+       PaymentAmount,
       this.orderDetails$);
   }
 
