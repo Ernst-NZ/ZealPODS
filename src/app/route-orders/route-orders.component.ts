@@ -35,6 +35,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   addDB = false;
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
+  loading = false;
 
   constructor(private route: ActivatedRoute, private data: DataService, private globals: Globals, service: DeliveryService) {
     this.route.params.subscribe(params => this.allRoutes$ = data);
@@ -43,28 +44,22 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
-    this.data.getAllRoutes().subscribe(
-      data => this.allRoutes$ = data);
-   // this.getJson();
+    this.loading = true;
+    this.data.getAllRoutes().subscribe(data => this.allRoutes$ = data);
+    // this.getJson();
     const getOrder = (this.route.snapshot.paramMap.get('routeName'));
     this.selectedRoute = getOrder;
     this.globals.selectedRoute = this.selectedRoute;
   }
-
   ngAfterContentChecked() {
-    // if (this.deliveries.length > 0) {
-    //   if (typeof this.deliveries[0]['id'] !== 'undefined') {
+    // if (typeof this.deliveries[0] !== 'undefined' && this.addDB === false) {
+    //   this.addDB = false;
     //     this.allRoutes$ = this.deliveries[0]['json'];
     //   }
-    // }
-    // console.log(this.allRoutes$);
-    if (typeof this.allRoutes$['orderGroups'] !== 'undefined' && this.addDB === false) {
-      this.addDB = true;
-      this.service.getData(this.allRoutes$, this.selectedRoute);
-    }
+    this.loading = false;
   }
-   // ## Get Json
-   getJson() {
+  // ## Get Json
+  getJson() {
     this.service
       .getJson()
       .then(deliveries => {

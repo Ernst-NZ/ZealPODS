@@ -11,10 +11,11 @@ import { Alert } from 'selenium-webdriver';
 export class DeliveryService extends BaseService {
   orderDetails$: Object;
   updateStatus: String;
+  addJson = false;
   tempDeliveries: Array<IDelivery> = [];
   tempDelivery: IDelivery = new Delivery();
   constructor(private data: DataService, private http: HttpClient) {
-    super();
+    super();    
   }
   // ### Get funtions (SQL Actions) ####
   // ## Get Deliveries
@@ -24,11 +25,24 @@ export class DeliveryService extends BaseService {
     });
   }
 
+  // V2
+  // Ckeck for incomplete deliveries to prevent refresh of Json String
+ getIncompleteDeliveries() {
+    return this.connection.select<IDelivery>({
+      from: 'Deliveries',
+      // where: {
+      //   delivered: "product"
+      //   // , updated: 'false'
+      // }
+    });
+  }
+
+  // V2
   getJson() {
     return this.connection.select<IDelivery>({
       from: 'Deliveries',
       where: {
-        lineId: 0
+        id: 0
       }
     });
   }
@@ -87,16 +101,6 @@ export class DeliveryService extends BaseService {
   }
 
 
-  // deleteStudent(studentId: number) {
-  //   return this.connection.remove({
-  //     from: 'Students',
-  //     where: {
-  //       id: studentId
-  //     }
-  //   });
-  // }
-
-
    deleteDelivery(docId: number) {
      return this.connection.remove({
        from: 'Deliveries',
@@ -105,9 +109,7 @@ export class DeliveryService extends BaseService {
        }
      });
    }
-
   
-  // **** ####  Test Zone  #### ****
   // ## update Product for Edit purposes
   // Get Product
   getProduct(lineId) {
@@ -140,67 +142,59 @@ export class DeliveryService extends BaseService {
     console.log('done');
   }
 
-  // clearOldDelivery() {
-  //    this.oldDelivery = new Delivery();
-  // }
   
   // tslint:disable-next-line:max-line-length
+  // V2 ..
   preUpdateDelivery( type, productNo, 
-    id, lastSync, name, docId, lineId, order,
-    reject, reason, delivered, time, signature,
-    deliveredTo, payType, payAmount,
-    updated, json) {
+    docId, lineId, delivered, 
+    QuantityRejected, RejectionReason, SignatureSVG,
+    ReceivedBy, PaymentMethod, PaymentAmount,
+    json) {
       let jsonTemp = json;
     // Update the Json String
-    if (delivered === 'true' && type === 'order' && productNo === 1) {
-        jsonTemp = this.editJson(
-        lineId, json, docId, lineId, reject,
-        reason, delivered, signature, deliveredTo,
-        payType, payAmount
-      );
-      try {
-        this.postJson(jsonTemp, docId);
-      } catch (error) {
-        alert(error);
-        console.log(error);
-      }
-    } else {
-      const updatedValue: IDelivery = {
-        lastSync: lastSync,
-        name: name,
-        documentId: docId,
-        lineId: lineId,
-        qtyOrdered: order,
-        qtyRejected: reject,
-        rejectReason: reason,
-        delivered: delivered,
-        deliveryTime: time,
-        signature: signature,
-        deliveredTo: deliveredTo,
-        paymentType: payType,
-        paymentAmount: payAmount,
-        updated: updated,
-        json: jsonTemp
-      };
-      this.updateDelivery(id, updatedValue)
-        .then(rowsUpdated => {
-          if (rowsUpdated > 0) {
-            const index = this.tempDeliveries.findIndex(
-              delivery => delivery.id === id
-            );
-            this.tempDeliveries[index] = this.tempDelivery;
-       //     this.clearOldDelivery();
-            //        alert('Delivery Successfully updated');
-          }
-        })
-        .catch(error => {
-          console.error(error);
-          alert(error.message);
-        });
-    }   
+    if (type === 'product' && productNo === 0) {
+      jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
+          RejectionReason, SignatureSVG, ReceivedBy,
+        PaymentMethod, PaymentAmount, jsonTemp
+      )
+  //    this.productAdd(lineId,docId, lineId, RejectionReason, ReceivedBy)
+    } else if (type === 'order' && productNo === 1) {
+      jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
+        RejectionReason, SignatureSVG, ReceivedBy,
+        PaymentMethod, PaymentAmount, jsonTemp
+      )
+     // Delete order if exist
+    }
+    const updatedValue: IDelivery = {
+      id: Number(lineId), documentId: Number(docId),
+      delivered: 'true', 
+      QuantityRejected: Number(QuantityRejected), RejectionReason: RejectionReason,      
+      SignatureSVG: SignatureSVG, ReceivedBy: ReceivedBy,
+      PaymentMethod: PaymentMethod, PaymentAmount: Number(PaymentAmount),
+      updated: 'true', json: jsonTemp
+    };
+    this.updateDelivery(0, updatedValue)
+      .then(rowsUpdated => {
+        if (rowsUpdated > 0) {
+          const index = this.tempDeliveries.findIndex(
+            delivery => delivery.id === 0
+          );
+           this.tempDeliveries[index] = this.tempDelivery;
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
+    if (this.addJson === false && type === 'order') {
+      this.postJson(jsonTemp) 
+      this.addJson = true;
+      return
+    }      
   }
 
   // #####
+  // V2
   updateDelivery(lineId: number, updateValue: IDelivery) {
     return this.connection.update({
       in: 'Deliveries',
@@ -231,7 +225,7 @@ export class DeliveryService extends BaseService {
     description,
     productCode,
     sellPrice,
-    qtyOrdered,
+    QuantityOrdered,
     json
   ) {
     const open = indexedDB.open('Delivery_db', 1);
@@ -253,16 +247,16 @@ export class DeliveryService extends BaseService {
       //    var index = store.index('NameIndex');
 
       store.put({
-        id,
-        lastSync: lastSync,
-        name: user,
-        documentId: documentID,
+        id: id,
+        lastSync: '',
+        name: '',
+        documentId: '',
         lineId: lineID,
-        description: description,
-        productCode: productCode,
-        sellPrice: sellPrice,
-        qtyOrdered: qtyOrdered,
-        qtyRejected: 0,
+        description: '',
+        productCode: '',
+        sellPrice: '',
+        QuantityOrdered: 0,
+        QuantityRejected: 0,
         delivered: 'false',
         updated: 'false',
         json: json
@@ -274,98 +268,179 @@ export class DeliveryService extends BaseService {
     };
   }
 
-  checkAddJson(dataList) {
-    const drivers = dataList.orderGroups;
-    for (let d = 0; d < drivers.length; d++) {
-      const orderList = drivers[d]['Orders'];
-      for (let o = 0; o < orderList.length; o++) {
-        const DocumentId = orderList[o].DocumentId;
-        // check order no
-        this.getOrder(0).then(deliveries => {
-          if (deliveries.length < 1) {
-            this.dbAdd(0, dataList.LastSyncronisation, '', 0, 0, '', '', 0, 0, dataList);
-          } else if (deliveries[0].delivered === 'true' && deliveries[0].updated === 'true') {
-            this.dbAdd(
-              0, dataList.LastSyncronisation, '', 0, 0,
-              '', '', 0, 0, dataList
-            );
-          }
-        });
-      }
-    }
+  // ### Test Stuff
+  // V2
+  orderAdd(
+    id,
+    user,
+    documentID,
+    lineID,
+    QuantityOrdered,
+    description,
+    productCode,
+    sellPrice   
+  ) {
+    const open = indexedDB.open('Delivery_db', 1);
+
+    open.onupgradeneeded = function () {
+      const db = open.result;
+      const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
+      // const store = db.createObjectStore('Students', { keyPath: 'id' });
+      // const index = store.createIndex('LineIndex', ['lineID']);
+    };
+
+    open.onsuccess = function () {
+      // Start a new transaction
+      const db = open.result;
+      const tx = db.transaction('Deliveries', 'readwrite');
+      const store = tx.objectStore('Deliveries');
+      //   const tx = db.transaction('Students', 'readwrite');
+      //   const store = tx.objectStore('Students');
+      //    var index = store.index('NameIndex');
+
+      store.put({
+        id: id,
+        lastSync: '',
+        name: user,
+        documentId: documentID,
+        lineId: lineID,
+        description: description,
+        productCode: productCode,
+        sellPrice: sellPrice,
+        QuantityOrdered: QuantityOrdered,
+        QuantityRejected: 0,
+        delivered: 'false',
+        updated: 'false',
+        json: ''
+      });
+      // Close the db when the transaction is done
+      tx.oncomplete = function () {
+        db.close();
+      };
+    };
   }
 
-  getData(dataList, driverName) {
-    this.checkAddJson(dataList);
-    const lastSync = dataList.LastSyncronisation;
+  // V2 Add an enry after aproduct has been rejected
+  // This will stop the Json from refreshing
+  // DB entry is added from rejected page with status:
+  // delivered = 'product' 
+  productAdd(
+    id,
+    documentID,
+    lineID,
+    QuantityRejected,
+    deliveredTo    
+  ) {
+    const open = indexedDB.open('Delivery_db', 1);
+
+    open.onupgradeneeded = function () {
+      const db = open.result;
+      const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
+      // const store = db.createObjectStore('Students', { keyPath: 'id' });
+      // const index = store.createIndex('LineIndex', ['lineID']);
+    };
+
+    open.onsuccess = function () {
+      // Start a new transaction
+      const db = open.result;
+      const tx = db.transaction('Deliveries', 'readwrite');
+      const store = tx.objectStore('Deliveries');
+      //   const tx = db.transaction('Students', 'readwrite');
+      //   const store = tx.objectStore('Students');
+      //    var index = store.index('NameIndex');
+
+      store.put({
+        id: Number(id),
+        documentId: Number(documentID),
+        lineId: Number(lineID),
+        QuantityRejected: Number(QuantityRejected),
+        delivered: 'false',
+        deliveredTo: deliveredTo,
+        updated: 'false'
+      });
+      // Close the db when the transaction is done
+      tx.oncomplete = function () {
+        db.close();
+      };
+    };
+  }
+
+  preOrderAdd(dataList, documentId) {
+    // this.checkAddJson(dataList);
     const drivers = dataList.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
-      if (drivers[d].Name === driverName) {
+   //   if (drivers[d].Name === driverName) {
         const user = drivers[d].Name;
         const orderList = drivers[d]['Orders'];
         for (let o = 0; o < orderList.length; o++) {
           const products = orderList[o]['Lines'];
+          if (drivers[o].DocumentId === Number(documentId)) {
           const DocumentId = orderList[o].DocumentId;
           // Check for existing document ID
           this.getOrder(DocumentId).then(deliveries => {
             if (deliveries.length < 1) {
               for (let p = 0; p < products.length; p++) {
                 const LineId = products[p].LineId;
-                const QTYOrdered = products[p].QuantityOrdered;
+                const QuantityOrdered = products[p].QuantityOrdered;
                 const description = products[p].Description;
                 const productCode = products[p].ProductCode;
                 const sellPrice = products[p].SellPrice;
-                this.dbAdd(LineId, lastSync, user, DocumentId,
-                  LineId, description, productCode, sellPrice,
-                  QTYOrdered, dataList
+                this.orderAdd(LineId, user, DocumentId,
+                  LineId, QuantityOrdered, description, productCode, sellPrice 
                 );
               }
             }
           });
         }
-      }
+        }
+  //    }
     }
   }
+
   // ### End
 
   /// Edit Json
-  editJson( newId, dataTemp, docId, lineId,
-    qtyRejected, reason, delivered, signature,
-    name, payType, payAmount ) {
-
-    const drivers = dataTemp.orderGroups;
+  //V2
+  upDateJson(type, docId, lineId, delivered,
+    QuantityRejected, RejectionReason, SignatureSVG,
+    ReceivedBy, PaymentMethod, PaymentAmount, jsonTemp ) {
+    const drivers = jsonTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       const orderList = drivers[d]['Orders'];
       for (let o = 0; o < orderList.length; o++) {
         const products = orderList[o]['Lines'];
         // Get Document ID
 
-        if (orderList[o].DocumentId === docId) {
-          orderList[o].Delivered = true;
-          orderList[o].DeliveryTime = JSON.stringify(new Date());
-          orderList[o].ReceivedBy = name;
-          orderList[o].PaymentMethod = payType;
-          orderList[o].PaymentAmount = payAmount;
-          orderList[o].Updated = true;
-      //    orderList[o].signature = signature;
-          for (let p = 0; p < products.length; p++) {
-            if (products[p].LineId === lineId) {
-              products[p].QuantityRejected = qtyRejected;
-              products[p].RejectionReason = reason;
+        if (orderList[o].DocumentId === Number(docId)) {
+          orderList[o].Delivered = 'true';
+          orderList[o].DeliveryTime = 'JSON.stringify(new Date())';
+          orderList[o].ReceivedBy = ReceivedBy;
+          orderList[o].PaymentMethod = PaymentMethod;
+          orderList[o].PaymentAmount = PaymentAmount;
+          orderList[o].Updated = 'true';
+          orderList[o].SignatureSVG = SignatureSVG;
+          if (type === 'product') {
+            for (let p = 0; p < products.length; p++) {
+              if (products[p].LineId === lineId) {
+                products[p].QuantityRejected = Number(QuantityRejected);
+                products[p].RejectionReason = RejectionReason;
+              }
             }
-          }
+          }          
         }
+        break       
       }
+      break      
     }
     const updatedValue: IDelivery = {
-      lastSync: dataTemp.LastSyncronisation,
-      name: dataTemp.name, documentId: docId, 
-      lineId: lineId, qtyOrdered: dataTemp.qtyOrdered,
-      qtyRejected: qtyRejected, rejectReason: reason,
-      delivered: delivered, deliveryTime: '',
-      signature: '', deliveredTo: name,
-      paymentType: payType, paymentAmount: payAmount,
-      updated: 'True', json: dataTemp
+      id: 0, documentId: Number(docId),
+      delivered: 'true',
+      QuantityRejected: QuantityRejected,
+      RejectionReason: RejectionReason,
+      SignatureSVG: SignatureSVG,
+      ReceivedBy: name,
+      PaymentMethod: PaymentMethod, PaymentAmount: PaymentAmount,
+      updated: 'true', json: jsonTemp
     };
     this.updateDelivery(0, updatedValue)
       .then(rowsUpdated => {
@@ -374,50 +449,95 @@ export class DeliveryService extends BaseService {
             delivery => delivery.id === 0
           );
           this.tempDeliveries[index] = this.tempDelivery;
-    //      this.clearOldDelivery();
-    //      alert('Delivery Successfully updated');
+          //      this.clearOldDelivery();
+          //      alert('Delivery Successfully updated');
         }
       })
       .catch(error => {
         console.error(error);
         alert(error.message);
       });
-    return dataTemp;
+    return jsonTemp;
   }
 
-  postJson(dataString, docId) {
-    console.log(JSON.stringify(new Date()));
-    return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
-      .subscribe(
-        val => {
-                console.log("POST call successful value returned in body",val);
-               alert("POST call successful value returned in body: " && val)
-          //    Clear Indexed DB - Gete new info and populate
-            this.deleteDelivery(docId)
-        },
-        response => {
-          console.log("POST call in error", response);
-          alert("POST call in error " && response);
-        },
-        () => {
-         console.log("The POST observable is now completed.");
-//         alert("The POST observable is now completed.");
+  
+
+  /// Edit Json
+  // V2 ??
+  editJson(docId, lineId, delivered, 
+    QuantityRejected, RejectionReason, SignatureSVG,
+    ReceivedBy, PaymentMethod, PaymentAmount, jsonTemp  ) {  
+    const drivers = jsonTemp.orderGroups;
+    for (let d = 0; d < drivers.length; d++) {
+      const orderList = drivers[d]['Orders'];
+      for (let o = 0; o < orderList.length; o++) {
+        const products = orderList[o]['Lines'];
+        // Get Document ID
+        if (orderList[o].DocumentId === Number(docId)) {
+          orderList[o].Delivered = 'true';
+          orderList[o].SignatureSVG = '465'; // SignatureSVG;
+          orderList[o].ReceivedBy = '123';   // ReceivedBy;
+          orderList[o].PaymentMethod = PaymentMethod;
+          orderList[o].PaymentAmount = PaymentAmount;
+          orderList[o].Updated = 'true';          
+          for (let p = 0; p < products.length; p++) {
+            if (products[p].LineId === lineId) {
+              products[p].QuantityRejected = QuantityRejected;
+              products[p].RejectionReason = RejectionReason;
+              break
+            }
+          }
+          break
         }
-      );
+        break
+      }
+    }
+    // const updatedValue: IDelivery = {      
+    //   lastSync: '',
+    //   name: '', documentId: 0, 
+    //   lineId: 6, QuantityOrdered: 7,
+    //   QuantityRejected: 8, RejectionReason: '',
+    //   delivered: 'true', deliveryTime: '',
+    //   signature: 'zz', deliveredTo: '',
+    //   paymentType: 'payType', paymentAmount: 9,
+    //   updated: 'true', json: dataTemp
+    // };
+    // this.updateDelivery(0, updatedValue)
+    //   .then(rowsUpdated => {
+    //     if (rowsUpdated > 0) {
+    //       const index = this.tempDeliveries.findIndex(
+    //         delivery => delivery.id === 0
+    //       );
+    //       this.tempDeliveries[index] = this.tempDelivery;
+  
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //     alert(error.message);
+    //   });
+    return jsonTemp;
   }
 
-  getNewData() {
-    var DBDeleteRequest = window.indexedDB.deleteDatabase("Delivery_db");    
-    DBDeleteRequest.onerror = function (event) {
-      console.log("Error deleting database.");
-    };
-    DBDeleteRequest.onsuccess = function (event) {
-      console.log("Database deleted successfully");
-//      console.log(event.result); // should be undefined
-    };
-    this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
+  postJson(dataString) {
+    console.log(dataString)
+     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
+       .subscribe(
+         val => {
+                 console.log("POST call successful value returned in body",val);
+  //              alert("POST call successful value returned in body: " && val)
+           alert("POST call successful")
+           //    Clear Indexed DB - Gete new info and populate
+//             this.deleteDelivery(docId)
+         },
+         response => {
+//           console.log("POST call in error", response);
+           alert("POST call in error " && response);
+         },
+         () => {
+//          console.log("The POST observable is now completed.");
+// //         alert("The POST observable is now completed.");
+         }
+       );
   }
-
-
-
 }

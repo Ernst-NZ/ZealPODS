@@ -1,8 +1,7 @@
 <h3 class='headerText'>Order Details</h3>
 <hr class='devide'>
-
-<div class='theList' *ngIf='orderDetail$'>
-  <ul *ngFor='let driver of orderDetail$.orderGroups'>
+<div class='theList' *ngIf='orderDetails$'>
+  <ul *ngFor='let driver of orderDetails$.orderGroups'>
     <ul *ngFor='let order of driver.Orders'>
       <div class='justP strong headerText' *ngIf='order.DocumentId == docID'>
         <span>Order Date: {{ order.DocumentDate | date:'dd/MMM/yyyy'}}</span>
@@ -14,9 +13,9 @@
           Category1: {{ order.Category1 }}<br>
           Category2: {{ order.Category2 }}</p>
 
-        <button mat-button color='accent' (click)='toggleTable()' class='toggle-panel' *ngIf='show'>Hide Products</button>
-        <button mat-button color='warm' (click)='toggleTable()' class='toggle-panel' *ngIf='!show'>View Products</button>
-        <table style='width: 100%' [hidden]='hidden'>
+         <button type="button" class="btn btn-info toggle-panel"  style="width: 150px"(click)='toggleTable()' *ngIf='show'>Hide Products</button>
+        <button type="button" class="btn btn-info toggle-panel"  style="width: 150px"(click)='toggleTable()' *ngIf='!show'>View Products</button>
+        <table style='width: 100%; max-width: 500px;' [hidden]='hidden'>
           <thead>
             <tr id='infoBlock' class='tableHead'>
               <th>Product</th>
@@ -26,24 +25,23 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor='let delivery of deliveries; index as i' class='tableRow'>
-              <td>{{delivery.description}}<br>
-                <span>{{delivery.productCode}}</span>
-                <span [hidden]=1>{{delivery.lineId}}</span>
-                <input type='hidden' *ngIf='delivery.editing' [(ngModel)]='oldDelivery.qtyOrdered' />
+            <tr *ngFor='let line of order.Lines; index as i' class='tableRow'>
+              <td>{{line.Description}}<br>
+                 <span [hidden]=1>{{line.LineId}}</span>
               </td>
-              <td>{{delivery.qtyOrdered}}
-                <br>${{delivery.sellPrice}}
+              <td>{{line.QuantityOrdered}}
+                <br>${{line.SellPrice}}
               </td>
-              <td style='text-align: center'>{{delivery.qtyOrdered-delivery.qtyRejected}}</td>
-              <td><a *ngIf='!delivered && delivery.qtyRejected === 0' routerLink='/rejectproducts/{{docID}},{{delivery.lineId}}'>
-                  <button style='width: 100%' color='primary'>{{delivery.qtyRejected}}</button>
+              <td style='text-align: center'>{{line.QuantityOrdered-line.QuantityRejected}}</td>
+              <td>
+                <a *ngIf='!delivered && line.QuantityRejected === 0' routerLink='/rejectproducts/{{docID}},{{line.LineId}}'>
+                  <button style='width: 100%' color='primary'>{{line.QuantityRejected}}</button>
                 </a>
-                <a *ngIf='!delivered && delivery.qtyRejected !== 0' routerLink='/rejectproducts/{{docID}},{{delivery.lineId}}'>
-                  <button style='width: 100%; background-color:maroon; font-weight: bold; ' color='primary'>{{delivery.qtyRejected}}</button>
+                <a *ngIf='!delivered && line.QuantityRejected !== 0' routerLink='/rejectproducts/{{docID}},{{line.LineId}}'>
+                  <button style='width: 100%; background-color:maroon; font-weight: bold; ' color='primary'>{{line.QuantityRejected}}</button>
                 </a>
                 <span *ngIf='delivered' style='width: 100%; background-color:maroon; font-weight: bold; color: white'>
-                  {{delivery.qtyRejected}}
+                  {{line.QuantityRejected}}
                 </span>
               </td>
             </tr>
@@ -52,25 +50,24 @@
         <br>
         <span style='font-weight: bolder; text-decoration: underline;'>
           Signature</span>
-          <div id='signature-pad' class='signature-pad'>
+          <div id='signature-pad' class='signature-pad' >
             <signature-pad></signature-pad>
           </div>
         <div style='margin-top: 5px; margin-bottom: 5px;'>
-          <button mat-raised-button color='accent' (click)='drawClear()'>Clear</button>
-          <button mat-raised-button color='warm' (click)='drawComplete()'>Test Signature</button>
+          <button type="button" class="btn btn-info" style="width: 150px" (click)='drawClear()'>Clear</button>
         </div>
 
         <div *ngIf='!delivered' class='block' style='margin-bottom: 5px; border: 1px solid red;'>
           <mat-form-field style='width: 95%; color: black;'>
-            <input type='text' matInput placeholder='Name' [(ngModel)]='oldDelivery.deliveredTo'>
+            <input type='text' matInput placeholder='Name' [(ngModel)]='oldOrder.ReceivedBy'>
           </mat-form-field>
         </div>
         <div class='block' style='margin-bottom: 5px; font-weight: bold; color: black; padding-left: 5px;' *ngIf='delivered'>
-          <span>{{oldDelivery.deliveredTo}}</span>
+          <span>{{oldOrder.ReceivedBy}}</span>
         </div>
         <div class='block' *ngIf='!delivered' style='margin-bottom: 5px;'>
           <mat-form-field style='width: 95%; color: black;'>
-            <mat-select placeholder='Payment' [(ngModel)]='oldDelivery.paymentType'>
+            <mat-select placeholder='Payment' [(ngModel)]='oldOrder.PaymentMethod'>
               <mat-option *ngFor='let pay of pay' [value]='pay.value'>
                 {{pay.viewValue}}
               </mat-option>
@@ -78,16 +75,17 @@
           </mat-form-field>
         </div>
         <div class='block' style='margin-bottom: 5px;' *ngIf='delivered'>
-          <span>{{oldDelivery.paymentType}}</span>
+          <span>{{oldOrder.PaymentMethod}}</span>
         </div>
         <div class='block' style='margin-bottom: 5px;' *ngIf='!delivered'>
           <mat-form-field style='width: 95%; color: black;'>
-            <input type='number' matInput placeholder='Amount' [(ngModel)]='oldDelivery.paymentAmount'>
-            <span *ngIf='delivered'>{{oldDelivery.paymentAmount}}</span>
+            <input type='number' min='0' matInput placeholder='Amount' [(ngModel)]='oldOrder.PaymentAmount'>
+            <span *ngIf='delivered'>{{oldOrder.PaymentAmount}}</span>
           </mat-form-field>
         </div>
-        <div *ngIf='!delivered' style='margin-bottom: 5px; text-align: center;'>
-          <button color='primary' (click)='postData()'>Confirm Order</button>
+        <div *ngIf='!delivered' style='margin-bottom: 5px; text-align: center; max-width: 500px;'>
+           <button type="button" class="btn btn-info"  style="width: 150px; font-weight: bold"  (click)='postData()'>Confirm Order</button>
+            <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
         </div>
       </div>
     </ul>
