@@ -93,7 +93,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
   }
  
   updateDelivery() {
-    if (this.oldItem.QuantityRejected > this.oldItem.QuantityOrdered) {
+    if (this.oldItem.QuantityRejected > this.oldItem.QuantityOrdered || this.oldItem.QuantityRejected < 0) {
       return alert('Reject total can not be more than the Ordered total or less than zero.');
     }
     if (this.oldItem.RejectionReason === '') {

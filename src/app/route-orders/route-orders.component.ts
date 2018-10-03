@@ -35,6 +35,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   addDB = false;
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
+  loading = false;
 
   constructor(private route: ActivatedRoute, private data: DataService, private globals: Globals, service: DeliveryService) {
     this.route.params.subscribe(params => this.allRoutes$ = data);
@@ -43,6 +44,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.data.getAllRoutes().subscribe(data => this.allRoutes$ = data);
     // this.getJson();
     const getOrder = (this.route.snapshot.paramMap.get('routeName'));
@@ -54,6 +56,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
     //   this.addDB = false;
     //     this.allRoutes$ = this.deliveries[0]['json'];
     //   }
+    this.loading = false;
   }
   // ## Get Json
   getJson() {

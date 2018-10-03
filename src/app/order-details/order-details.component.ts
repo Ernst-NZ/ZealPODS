@@ -61,7 +61,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   public signatureImage:string; 
   public i:number; 
   forceView = false; 
-  delivered = false; 
+  delivered = false;
+  loading = false; 
 
   show = false; 
   hidden = true; 
@@ -107,7 +108,6 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       this.dataset = this.tempDelivery.json;
       const drivers = this.dataset['orderGroups'];            
       this.orderDetails$ = this.tempDelivery.json;
-      console.log(this.tempDelivery.json);
       for (let d = 0; d < drivers.length; d++) {
         const orderList = drivers[d]['Orders'];
         this.driver = drivers[d].Name;
@@ -115,9 +115,17 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
           // Get Document ID
           if (orderList[o].DocumentId === Number(this.docID)) {
             this.productList = orderList[o]['Lines'];
+            const products = orderList[o]['Lines'];
             this.oldDelivery = orderList[o];
             this.oldOrder = orderList[o];
             this.oldItem = orderList[o];
+            for (let p = 0; p < products.length; p++) {
+              if (products[p].QuantityRejected > 0) {
+                this.show = true;
+                this.hidden = false;
+                break
+              }
+            }
             break
           }
         }
@@ -144,9 +152,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
  
   // V2 Post data
   postData() {
-    const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
-    console.log(dataSvg); 
-    console.log(atob(dataSvg.split(',')[1]));
+    const SignatureSVG = this.signaturePad.toDataURL('image/svg+xml');
+    console.log(SignatureSVG); 
 
     if (this.signaturePad.isEmpty()) {
       return alert('Please provide a signature first.'); 
@@ -154,7 +161,6 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     if (this.oldOrder.ReceivedBy === '') {
       return alert('Please provide a Name.'); 
     }
-    const signatureData = atob(dataSvg.split(',')[1]); 
     const newDate = JSON.stringify(new Date()); 
     
     try {
@@ -163,14 +169,15 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
         this.oldDelivery = this.deliveries[d]; 
         this.i = this.i + 1; 
         this.updateDelivery(
-          this.deliveries[d]['id'], 
-          signatureData, 
+          // this.deliveries[d]['id'], 
+          0,
+          SignatureSVG, 
           newDate, 
           this.oldOrder.ReceivedBy, 
           this.oldOrder.PaymentMethod, 
           this.oldOrder.PaymentAmount,); 
       }
-//      alert('Delivery Successfully Updated');
+      alert('Delivery Successfully Updated');
       this.router.navigate(['/route-Orders/', this.driver]); 
     }catch (error) {
       alert(error); 
@@ -182,78 +189,29 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   }
 
   // V2 Update
-  updateDelivery(
+  updateDelivery(    
     Lineid,
-    signatureData, 
+    SignatureSVG, 
     newDate, 
     ReceivedBy, 
     PaymentMethod, 
     PaymentAmount) {
+    this.loading = true;
     this.service.preUpdateDelivery( 'order', this.i,
       this.docID,
        Lineid,
        'true',
        this.oldOrder.QuantityRejected,
        this.oldOrder.RejectionReason,
-       signatureData,
+       SignatureSVG,
        ReceivedBy,
        PaymentMethod,
        PaymentAmount,
       this.orderDetails$);
+    this.loading = false;
   }
 
-  /// Signature Stuff
-
-  // drawComplete() {
-  //   if (this.signaturePad.isEmpty()) {
-  //     return alert('Please provide a signature first.'); 
-  //   }
-
-  //   this.signatureImage = this.signaturePad.toDataURL(); 
-  //   //  console.log(this.signatureImage);
-
-  //   const dataSvg = this.signaturePad.toDataURL('image/svg+xml'); 
-  //   console.log(atob(dataSvg.split(',')[1])); 
-  //   this.download(dataSvg, 'signature.svg'); 
-
-  //   const dataJpeg = this.signaturePad.toDataURL('image/jpeg'); 
-  //   this.download(dataJpeg, 'signature.jpg'); 
-
-  //   const dataPng = this.signaturePad.toDataURL('image/png'); 
-  //   this.download(dataPng, 'signature.png'); 
-
-  //   //   console.log(dataPng);
-  // }
-
-  // download(dataURL, filename) {
-  //   const blob = this.dataURLToBlob(dataURL); 
-  //   const url = window.URL.createObjectURL(blob); 
-
-  //   const a = document.createElement('a'); 
-  //   // a.style = 'display: none';
-  //   a.href = url; 
-  //   a.download = filename; 
-
-  //   document.body.appendChild(a); 
-  //   a.click(); 
-
-  //   window.URL.revokeObjectURL(url); 
-  // }
-
-  dataURLToBlob(dataURL) {
-    // Code taken from https://github.com/ebidel/filer.js
-    const parts = dataURL.split(';base64,'); 
-    const contentType = parts[0].split(':')[1]; 
-    const raw = window.atob(parts[1]); 
-    const rawLength = raw.length; 
-    const uInt8Array = new Uint8Array(rawLength); 
-
-    for (let i = 0; i < rawLength; ++i) {
-      uInt8Array[i] = raw.charCodeAt(i); 
-    }
-
-    return new Blob([uInt8Array],  {type:contentType }); 
-  }
+ 
 
   drawClear() {
     this.signaturePad.clear(); 

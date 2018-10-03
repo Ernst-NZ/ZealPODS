@@ -11,10 +11,11 @@ import { Alert } from 'selenium-webdriver';
 export class DeliveryService extends BaseService {
   orderDetails$: Object;
   updateStatus: String;
+  addJson = false;
   tempDeliveries: Array<IDelivery> = [];
   tempDelivery: IDelivery = new Delivery();
   constructor(private data: DataService, private http: HttpClient) {
-    super();
+    super();    
   }
   // ### Get funtions (SQL Actions) ####
   // ## Get Deliveries
@@ -156,7 +157,7 @@ export class DeliveryService extends BaseService {
           RejectionReason, SignatureSVG, ReceivedBy,
         PaymentMethod, PaymentAmount, jsonTemp
       )
-      this.productAdd(lineId,docId, lineId, RejectionReason, ReceivedBy)
+  //    this.productAdd(lineId,docId, lineId, RejectionReason, ReceivedBy)
     } else if (type === 'order' && productNo === 1) {
       jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
         RejectionReason, SignatureSVG, ReceivedBy,
@@ -178,14 +179,18 @@ export class DeliveryService extends BaseService {
           const index = this.tempDeliveries.findIndex(
             delivery => delivery.id === 0
           );
-          this.tempDeliveries[index] = this.tempDelivery;
-
+           this.tempDeliveries[index] = this.tempDelivery;
         }
       })
       .catch(error => {
         console.error(error);
         alert(error.message);
-      });   
+      });
+    if (this.addJson === false && type === 'order') {
+      this.postJson(jsonTemp) 
+      this.addJson = true;
+      return
+    }      
   }
 
   // #####
@@ -413,7 +418,7 @@ export class DeliveryService extends BaseService {
           orderList[o].PaymentMethod = PaymentMethod;
           orderList[o].PaymentAmount = PaymentAmount;
           orderList[o].Updated = 'true';
-          orderList[o].signature = SignatureSVG;
+          orderList[o].SignatureSVG = SignatureSVG;
           if (type === 'product') {
             for (let p = 0; p < products.length; p++) {
               if (products[p].LineId === lineId) {
@@ -514,24 +519,25 @@ export class DeliveryService extends BaseService {
     return jsonTemp;
   }
 
-  postJson(dataString, docId) {
-    console.log(JSON.stringify(new Date()));
-//     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
-//       .subscribe(
-//         val => {
-//                 console.log("POST call successful value returned in body",val);
-//                alert("POST call successful value returned in body: " && val)
-//           //    Clear Indexed DB - Gete new info and populate
-             this.deleteDelivery(docId)
-//         },
-//         response => {
+  postJson(dataString) {
+    console.log(dataString)
+     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
+       .subscribe(
+         val => {
+                 console.log("POST call successful value returned in body",val);
+  //              alert("POST call successful value returned in body: " && val)
+           alert("POST call successful")
+           //    Clear Indexed DB - Gete new info and populate
+//             this.deleteDelivery(docId)
+         },
+         response => {
 //           console.log("POST call in error", response);
-//           alert("POST call in error " && response);
-//         },
-//         () => {
+           alert("POST call in error " && response);
+         },
+         () => {
 //          console.log("The POST observable is now completed.");
 // //         alert("The POST observable is now completed.");
-//         }
-//       );
+         }
+       );
   }
 }
