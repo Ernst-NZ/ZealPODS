@@ -170,7 +170,7 @@ export class DeliveryService extends BaseService {
       QuantityRejected: Number(QuantityRejected), RejectionReason: RejectionReason,      
       SignatureSVG: SignatureSVG, ReceivedBy: ReceivedBy,
       PaymentMethod: PaymentMethod, PaymentAmount: Number(PaymentAmount),
-      updated: true, json: jsonTemp
+      updated: 'true', json: jsonTemp
     };
     this.updateDelivery(0, updatedValue)
       .then(rowsUpdated => {
@@ -253,7 +253,7 @@ export class DeliveryService extends BaseService {
         QuantityOrdered: 0,
         QuantityRejected: 0,
         delivered: 'false',
-        updated: false,
+        updated: 'false',
         json: json
       });
       // Close the db when the transaction is done
@@ -305,7 +305,7 @@ export class DeliveryService extends BaseService {
         QuantityOrdered: QuantityOrdered,
         QuantityRejected: 0,
         delivered: 'false',
-        updated: false,
+        updated: 'false',
         json: ''
       });
       // Close the db when the transaction is done
@@ -351,7 +351,7 @@ export class DeliveryService extends BaseService {
         QuantityRejected: Number(QuantityRejected),
         delivered: 'false',
         deliveredTo: deliveredTo,
-        updated: false
+        updated: 'false'
       });
       // Close the db when the transaction is done
       tx.oncomplete = function () {
@@ -412,7 +412,7 @@ export class DeliveryService extends BaseService {
           orderList[o].ReceivedBy = ReceivedBy;
           orderList[o].PaymentMethod = PaymentMethod;
           orderList[o].PaymentAmount = PaymentAmount;
-          orderList[o].Updated = true;
+          orderList[o].Updated = 'true';
           orderList[o].signature = SignatureSVG;
           if (type === 'product') {
             for (let p = 0; p < products.length; p++) {
@@ -435,7 +435,7 @@ export class DeliveryService extends BaseService {
       SignatureSVG: SignatureSVG,
       ReceivedBy: name,
       PaymentMethod: PaymentMethod, PaymentAmount: PaymentAmount,
-      updated: true, json: jsonTemp
+      updated: 'true', json: jsonTemp
     };
     this.updateDelivery(0, updatedValue)
       .then(rowsUpdated => {
@@ -474,7 +474,7 @@ export class DeliveryService extends BaseService {
           orderList[o].ReceivedBy = '123';   // ReceivedBy;
           orderList[o].PaymentMethod = PaymentMethod;
           orderList[o].PaymentAmount = PaymentAmount;
-          orderList[o].Updated = true;          
+          orderList[o].Updated = 'true';          
           for (let p = 0; p < products.length; p++) {
             if (products[p].LineId === lineId) {
               products[p].QuantityRejected = QuantityRejected;

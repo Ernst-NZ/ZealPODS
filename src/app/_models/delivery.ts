@@ -8,7 +8,7 @@ export class IDelivery {
   ReceivedBy: string;
   PaymentMethod: string;
   PaymentAmount: number;
-  updated: boolean;
+  updated: string;
   json: object;
 }
 
@@ -22,7 +22,7 @@ export class Delivery implements IDelivery {
   ReceivedBy: '';
   PaymentMethod: '';
   PaymentAmount: 0;
-  updated: false;
+  updated: 'false';
   json: object;
 }
 // ## End
