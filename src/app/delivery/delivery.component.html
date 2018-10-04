@@ -76,16 +76,16 @@
 
   <tr *ngFor="let delivery of deliveries" [attr.data-id]="delivery.id">
     <td>
-      <input type="hidden" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.qtyOrdered" />
-      <span>{{delivery.qtyOrdered}}</span>
+      <input type="hidden" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.QuantityOrdered" />
+      <span>{{delivery.QuantityOrdered}}</span>
     </td>
     <td>
-      <input type="number" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.qtyRejected" />
-      <span *ngIf="!delivery.editing">{{delivery.qtyRejected}}</span>
+      <input type="number" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.QuantityRejected" />
+      <span *ngIf="!delivery.editing">{{delivery.QuantityRejected}}</span>
     </td>
      <td>
-      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.rejectReason" />
-      <span *ngIf="!delivery.editing">{{delivery.rejectReason}}</span>
+      <input type="text" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.RejectionReason" />
+      <span *ngIf="!delivery.editing">{{delivery.RejectionReason}}</span>
     </td>
     <td>
       <input type="number" *ngIf="delivery.editing" [(ngModel)]="oldDelivery.cash" />

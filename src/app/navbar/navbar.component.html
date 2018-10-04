@@ -1,11 +1,10 @@
 <nav class="navbar sticky-top navbar-dark bg-dark navbar-expand-sm">
     <i class="fa fa-truck" aria-hidden="true"></i>
-  <a routerLink="" class="navbar-brand">ZealPODS</a>
+  <a routerLink="" class="navbar-brand">ZEDS</a>
   <div class="navbar mr-auto" id="navbarFixed">
       <ul class="navbar-nav">
         <li *ngIf="globals.selectedRoute" class="nav-item">
           <a class="nav-link" routerLink="route-Orders/{{globals.selectedRoute}}" [class.activated]="currentUrl == '/route-Orders/'+globals.selectedRoute">My Orders</a>
-          <!--<a class="nav-link" routerLink="route-Orders/{{globals.selectedRoute}}" [class.activated]="currentUrl == '/route-Orders/'+globals.selectedRoute">{{globals.selectedRoute}}</a>-->
         </li>
       </ul>
     </div>
@@ -16,52 +15,9 @@
   <div class="collapse navbar-collapse" id="navbarMenu">
     <ul class="navbar-nav  ml-auto">
       <li class="nav-item"><a class="nav-link" routerLink="driver-routes" [class.activated]="currentUrl == '/driver-routes'" [class.activated]="currentUrl == '/'">Routes</a></li>
-      <!-- <li><a class="nav-link" routerLink="testapi" [class.activated]="currentUrl == '/testapi'">TestApi</a></li>
-      <li><a class="nav-link" routerLink="users" [class.activated]="currentUrl == '/users'">Users</a></li>
-      <li><a class="nav-link" routerLink="posts" [class.activated]="currentUrl == '/posts'">News</a></li>
-      <li><a class="nav-link" routerLink="login" [class.activated]="currentUrl == '/login'">Login...</a></li>       -->
+      <li><a class="nav-link" href="." (click)='refresh()'>Refresh</a></li>
       <li><a class="nav-link" [routerLink]="['/login']">Logout...</a></li>
-      <li><a class="nav-link" href=".">V10.1</a></li>
+      <li><a class="nav-link" style="font-size: 0.75em;" href=".">V10.4</a></li>
     </ul>
   </div>
 </nav>
-
-<!-- <ul>
-      <li>
-        <a routerLink="" class = "menuIcon">
-          <i class="material-icons">menu</i>
-        </a>   -->
-<!-- </li>   -->
-<!-- <li><a class="appName" href="#">&emsp;App&emsp;</a></li> -->
-
-
-
-<!-- <li class="searchBox" [class.activated]="currentUrl == '/posts'"><input type="search" id="mySearch" placeholder="Search...">-->
-<!--  -->
-
-
-
-
-
-<!-- <nav>
-  <ul>
-    <li>
-      <a routerLink="" [class.activated]="currentUrl == '/'">
-            <i class="material-icons">supervised_user_circle</i>
-      </a>
-    </li>
-    <li>
-      <a routerLink="posts" [class.activated]="currentUrl == '/posts'">
-            <i class="material-icons">message</i>
-      </a>
-    </li>
-  </ul>
-</nav>  -->
-<!-- <ul>
-    <li><a class="active" href="#home">Home</a></li>
-    <li><a href="#news">News</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#about">About</a></li>
-  </ul> -->
-<!--<i class="material-icons">supervised_user_circle</i>
-<i class="material-icons">message</i> -->
