@@ -6,12 +6,15 @@
       <div class='justP strong headerText' *ngIf='order.DocumentId == docID'>
         <span>Order Date: {{ order.DocumentDate | date:'dd/MMM/yyyy'}}</span>
         <hr>
-        <p id='infoBlock'>Customer Code: {{ order.CustomerCode }}<br>
+        <p id='infoBlock'>
+          Customer: {{ order.CustomerName }}<br>
+          
           Delivery Date: {{ order.DocumentDate | date:'dd/MMM/yyyy' }}<br>
           Packing Slip No: {{ order.PackingSlipNo }}<br>
           Order Id: {{ order.DocumentId }}<br>
           Category1: {{ order.Category1 }}<br>
-          Category2: {{ order.Category2 }}</p>
+          Category2: {{ order.Category2 }}<br>
+          Phone: {{order.PhoneNo}}<a class="phoneNo call" [href]="'tel:' + order.PhoneNo"><i class="material-icons">call</i></a></p>
 
          <button type="button" class="btn btn-info toggle-panel"  style="width: 150px"(click)='toggleTable()' *ngIf='show'>Hide Products</button>
         <button type="button" class="btn btn-info toggle-panel"  style="width: 150px"(click)='toggleTable()' *ngIf='!show'>View Products</button>
@@ -51,7 +54,7 @@
         <span style='font-weight: bolder; text-decoration: underline;'>
           Signature</span>
           <div id='signature-pad' class='signature-pad' >
-            <signature-pad></signature-pad>
+            <signature-pad [options]="signaturePadOptions"></signature-pad>
           </div>
         <div style='margin-top: 5px; margin-bottom: 5px;'>
           <button type="button" class="btn btn-info" style="width: 150px" (click)='drawClear()'>Clear</button>

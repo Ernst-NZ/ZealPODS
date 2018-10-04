@@ -1,15 +1,27 @@
-import {Component, OnInit, ViewChild, AfterContentChecked, AfterViewChecked }from '@angular/core'; 
+import {Component, OnInit, ViewChild, AfterContentChecked, AfterViewChecked, NgModule }from '@angular/core'; 
 import {ActivatedRoute, Router }from '@angular/router'; 
 import {DataService }from '../data.service'; 
 import {trigger, style, transition, animate, keyframes, query, stagger }from '@angular/animations'; 
 import {DeliveryService }from '../_services/delivery.service'; 
 import {Delivery, IDelivery }from '../_models/delivery'; 
 import {SignaturePad }from 'angular2-signaturepad/signature-pad'; 
+import {SignaturePadModule } from 'angular2-signaturepad';
+import { AppComponent } from '../app.component';
+import { AutofillMonitor } from '../../../node_modules/@angular/cdk/text-field';
+
+
 
 export interface Payment {
   value:string; 
   viewValue:string; 
 }
+
+@NgModule({
+  declarations: [ ],
+  imports: [ SignaturePadModule ],
+  providers: [ ],
+  bootstrap: [ AppComponent ],
+})
 
 @Component( {
   selector:'app-order-details', 
@@ -39,6 +51,37 @@ export interface Payment {
     ])
   ]
 })
+
+// export class SignaturePadPage{
+ 
+//   @ViewChild(SignaturePad) signaturePad: SignaturePad;
+ 
+//   private signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
+//     'minWidth': 5,
+//     'canvasWidth': 500,
+//     'canvasHeight': 300
+//   };
+ 
+
+//   ngAfterViewInit() {
+//     // this.signaturePad is now available
+//     this.signaturePad.set('minWidth', 5); // set szimek/signature_pad options at runtime
+//     this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
+//   }
+ 
+//   drawComplete() {
+//     // will be notified of szimek/signature_pad's onEnd event
+//     console.log(this.signaturePad.toDataURL());
+//   }
+ 
+//   drawStart() {
+//     // will be notified of szimek/signature_pad's onBegin event
+//     console.log('begin drawing');
+//   }
+// };
+
+
+
 export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   @ViewChild(SignaturePad)
   signaturePad:SignaturePad; 
@@ -69,15 +112,16 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   addDB = false; 
   pay:Payment[] = [ {value:'No Payment', viewValue:'No Payment'},  {value:'Cash', viewValue:'Cash'},  {value:'Cheque', viewValue:'Cheque'}
   ]; 
+
   public signaturePadOptions:Object =  {
     // passed through to szimek/signature_pad constructor
     minWidth:0.5, 
-    canvasWidth:700, 
-    canvasHeight:100, 
+    canvasWidth: 490,
+    canvasHeight:110, 
     canvasBackgroundColor:'white'
   }; 
 
-  toggleTable() {
+    toggleTable() {
     this.forceView = true; 
     this.show =  ! this.show; 
     this.hidden =  ! this.hidden; 
