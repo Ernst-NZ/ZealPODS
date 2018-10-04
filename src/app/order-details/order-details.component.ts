@@ -210,12 +210,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       this.orderDetails$);
     this.loading = false;
   }
-
- 
-
   drawClear() {
     this.signaturePad.clear(); 
   }
-  /////
 
 }
