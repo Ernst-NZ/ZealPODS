@@ -32,9 +32,9 @@
         "https://test1.zealsystems.co.nz/api/values/1"
       ],
       "cacheConfig": {
-        "maxSize": 1,
-        "maxAge": "6h",
-        "timeout": "15s",
+        "maxSize": 3,
+        "maxAge": "24h",
+        "timeout": "8s",
         "strategy": "freshness"
       }
     }

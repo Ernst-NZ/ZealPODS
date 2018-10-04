@@ -475,8 +475,8 @@ export class DeliveryService extends BaseService {
         // Get Document ID
         if (orderList[o].DocumentId === Number(docId)) {
           orderList[o].Delivered = 'true';
-          orderList[o].SignatureSVG = '465'; // SignatureSVG;
-          orderList[o].ReceivedBy = '123';   // ReceivedBy;
+          orderList[o].SignatureSVG = SignatureSVG;
+          orderList[o].ReceivedBy = ReceivedBy;
           orderList[o].PaymentMethod = PaymentMethod;
           orderList[o].PaymentAmount = PaymentAmount;
           orderList[o].Updated = 'true';          
@@ -520,24 +520,24 @@ export class DeliveryService extends BaseService {
   }
 
   postJson(dataString) {
-    console.log(dataString)
-     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
-       .subscribe(
-         val => {
-                 console.log("POST call successful value returned in body",val);
-  //              alert("POST call successful value returned in body: " && val)
-           alert("POST call successful")
-           //    Clear Indexed DB - Gete new info and populate
-//             this.deleteDelivery(docId)
-         },
-         response => {
-//           console.log("POST call in error", response);
-           alert("POST call in error " && response);
-         },
-         () => {
-//          console.log("The POST observable is now completed.");
-// //         alert("The POST observable is now completed.");
-         }
-       );
+//     console.log(dataString)
+//      return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
+//        .subscribe(
+//          val => {
+//                  console.log("POST call successful value returned in body",val);
+//   //              alert("POST call successful value returned in body: " && val)
+//            alert("Server Update successful")
+//            //    Clear Indexed DB - Gete new info and populate
+// //             this.deleteDelivery(docId)
+//          },
+//          response => {
+// //           console.log("POST call in error", response);
+//            alert("Server Update error " && response);
+//          },
+//          () => {
+// //          console.log("The POST observable is now completed.");
+// // //         alert("The POST observable is now completed.");
+//          }
+//        );
   }
 }

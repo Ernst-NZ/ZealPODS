@@ -52,35 +52,6 @@ export interface Payment {
   ]
 })
 
-// export class SignaturePadPage{
- 
-//   @ViewChild(SignaturePad) signaturePad: SignaturePad;
- 
-//   private signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
-//     'minWidth': 5,
-//     'canvasWidth': 500,
-//     'canvasHeight': 300
-//   };
- 
-
-//   ngAfterViewInit() {
-//     // this.signaturePad is now available
-//     this.signaturePad.set('minWidth', 5); // set szimek/signature_pad options at runtime
-//     this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
-//   }
- 
-//   drawComplete() {
-//     // will be notified of szimek/signature_pad's onEnd event
-//     console.log(this.signaturePad.toDataURL());
-//   }
- 
-//   drawStart() {
-//     // will be notified of szimek/signature_pad's onBegin event
-//     console.log('begin drawing');
-//   }
-// };
-
-
 
 export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   @ViewChild(SignaturePad)
@@ -153,13 +124,13 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       const drivers = this.dataset['orderGroups'];            
       this.orderDetails$ = this.tempDelivery.json;
       for (let d = 0; d < drivers.length; d++) {
-        const orderList = drivers[d]['Orders'];
-        this.driver = drivers[d].Name;
+        const orderList = drivers[d]['Orders'];        
         for (let o = 0; o < orderList.length; o++) {
           // Get Document ID
           if (orderList[o].DocumentId === Number(this.docID)) {
+            this.driver = drivers[d].Name;
             this.productList = orderList[o]['Lines'];
-            const products = orderList[o]['Lines'];
+            const products = orderList[o]['Lines'];              
             this.oldDelivery = orderList[o];
             this.oldOrder = orderList[o];
             this.oldItem = orderList[o];
@@ -197,6 +168,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   // V2 Post data
   postData() {
     const SignatureSVG = this.signaturePad.toDataURL('image/svg+xml');
+  //  const SignatureSVG = this.signaturePad.toDataURL('image/png');
     console.log(SignatureSVG); 
 
     if (this.signaturePad.isEmpty()) {
@@ -222,6 +194,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
           this.oldOrder.PaymentAmount,); 
       }
       alert('Delivery Successfully Updated');
+      
       this.router.navigate(['/route-Orders/', this.driver]); 
     }catch (error) {
       alert(error); 
@@ -257,5 +230,68 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   drawClear() {
     this.signaturePad.clear(); 
   }
+
+
+  /// Signature Stuff
+
+  drawComplete() {
+    if (this.signaturePad.isEmpty()) {
+      return alert('Please provide a signature first.');
+    }
+
+    this.signatureImage = this.signaturePad.toDataURL();
+    console.log('##### Plain Data URL');
+    console.log(this.signatureImage);
+
+    const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
+    // console.log(atob(dataSvg.split(',')[1]));
+    console.log('##### SVG');
+    console.log(dataSvg);
+     this.download(dataSvg, 'signature.svg');
+
+    const dataJpeg = this.signaturePad.toDataURL('image/jpeg');
+    console.log('##### Jpeg');
+    console.log(dataJpeg);
+
+    this.download(dataJpeg, 'signature.jpg');
+
+    const dataPng = this.signaturePad.toDataURL('image/png');
+    this.download(dataPng, 'signature.png');
+    console.log('##### PNG');
+    console.log(dataPng);
+  }
+
+  download(dataURL, filename) {
+    const blob = this.dataURLToBlob(dataURL);
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    // a.style = 'display: none';
+    a.href = url;
+    a.download = filename;
+
+    document.body.appendChild(a);
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+
+  dataURLToBlob(dataURL) {
+    // Code taken from https://github.com/ebidel/filer.js
+    const parts = dataURL.split(';base64,');
+    const contentType = parts[0].split(':')[1];
+    const raw = window.atob(parts[1]);
+    const rawLength = raw.length;
+    const uInt8Array = new Uint8Array(rawLength);
+
+    for (let i = 0; i < rawLength; ++i) {
+      uInt8Array[i] = raw.charCodeAt(i);
+    }
+
+    return new Blob([uInt8Array], { type: contentType });
+  }
+
+  /////
+
 
 }
