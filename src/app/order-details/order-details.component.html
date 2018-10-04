@@ -57,7 +57,7 @@
           <button type="button" class="btn btn-info" style="width: 150px" (click)='drawClear()'>Clear</button>
         </div>
 
-        <div *ngIf='!delivered' class='block' style='margin-bottom: 5px; border: 1px solid red;'>
+        <div *ngIf='!delivered' class='block' style='margin-bottom: 5px; border: 2px solid red;'>
           <mat-form-field style='width: 95%; color: black;'>
             <input type='text' matInput placeholder='Name' [(ngModel)]='oldOrder.ReceivedBy'>
           </mat-form-field>
