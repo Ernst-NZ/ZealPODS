@@ -25,30 +25,17 @@
         ]
       }
     }],
-    "dataGroups": [
-    {
-      "name": "posts",
-      "urls": [
-        "https://newsapi.org/v2/sources?apiKey=4b3758d2803a4ea8bb066ec648fd14ba"
-      ],
-
-      "cacheConfig": {
-        "maxSize": 5,
-        "maxAge": "10m",
-        "timeout": "7s",
-        "strategy": "freshness"
-      }
-    },
+    "dataGroups": [   
     {
       "name": "orders",
       "urls": [
         "https://test1.zealsystems.co.nz/api/values/1"
       ],
       "cacheConfig": {
-        "maxSize": 5,
+        "maxSize": 1,
         "maxAge": "6h",
-        "timeout": "10s",
-        "strategy": "performance"
+        "timeout": "15s",
+        "strategy": "freshness"
       }
     }
 

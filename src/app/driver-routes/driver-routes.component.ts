@@ -82,16 +82,6 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   }
 
   checkJson() {
-    // this.service
-    //   .getIncompleteDeliveries()
-    //   .then(deliveries => {
-    //     if (deliveries.length > 0) {
-    //       this.oldDelivery = deliveries[0];
-    //     }
-    //   }).catch(error => {
-    //     console.error(error);
-    //     alert(error.message);
-    //   });
     if (this.pendingSync === true && this.addJson === false) {
       this.service.postJson(this.allRoutes$);
       this.service.dbAdd(

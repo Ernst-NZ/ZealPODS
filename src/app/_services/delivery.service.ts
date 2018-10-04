@@ -228,7 +228,11 @@ export class DeliveryService extends BaseService {
     QuantityOrdered,
     json
   ) {
+<<<<<<< HEAD
     const open = indexedDB.open('Delivery_db', 1);
+=======
+    const open = indexedDB.open('ZEDS_db', 1);
+>>>>>>> Master-V3
 
     open.onupgradeneeded = function() {
       const db = open.result;
@@ -280,7 +284,7 @@ export class DeliveryService extends BaseService {
     productCode,
     sellPrice   
   ) {
-    const open = indexedDB.open('Delivery_db', 1);
+    const open = indexedDB.open('ZEDS_db', 1);
 
     open.onupgradeneeded = function () {
       const db = open.result;
@@ -331,7 +335,7 @@ export class DeliveryService extends BaseService {
     QuantityRejected,
     deliveredTo    
   ) {
-    const open = indexedDB.open('Delivery_db', 1);
+    const open = indexedDB.open('ZEDS_db', 1);
 
     open.onupgradeneeded = function () {
       const db = open.result;

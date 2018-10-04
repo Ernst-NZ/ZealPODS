@@ -57,7 +57,7 @@
           <button type="button" class="btn btn-info" style="width: 150px" (click)='drawClear()'>Clear</button>
         </div>
 
-        <div *ngIf='!delivered' class='block' style='margin-bottom: 5px; border: 1px solid red;'>
+        <div *ngIf='!delivered' class='block' style='margin-bottom: 5px; border: 2px solid red;'>
           <mat-form-field style='width: 95%; color: black;'>
             <input type='text' matInput placeholder='Name' [(ngModel)]='oldOrder.ReceivedBy'>
           </mat-form-field>
@@ -84,7 +84,7 @@
           </mat-form-field>
         </div>
         <div *ngIf='!delivered' style='margin-bottom: 5px; text-align: center; max-width: 500px;'>
-           <button type="button" class="btn btn-info"  style="width: 150px; font-weight: bold"  (click)='postData()'>Confirm Order</button>
+           <button type="button" class="btn btn-info btn-lg"  style="font-weight: bold"  (click)='postData()'>Confirm Order</button>
             <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
         </div>
       </div>
