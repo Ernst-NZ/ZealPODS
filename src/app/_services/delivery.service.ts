@@ -234,8 +234,7 @@ export class DeliveryService extends BaseService {
     qtyOrdered,
     json
   ) {
-    // const open = indexedDB.open('Student_db', 1);
-    const open = indexedDB.open('Delivery1_db', 1);
+    const open = indexedDB.open('Delivery_db', 1);
 
     open.onupgradeneeded = function() {
       const db = open.result;
