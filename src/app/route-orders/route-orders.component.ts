@@ -43,6 +43,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
     this.service = service;
   }
 
+
   ngOnInit() {
     this.loading = true;
  //   this.data.getAllRoutes().subscribe(data => this.allRoutes$ = data);
@@ -71,3 +72,6 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
       });
   }
 }
+
+
+
