@@ -219,7 +219,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
        ReceivedBy,
        PaymentMethod,
        PaymentAmount,
-       'false',
+       'true',
       this.orderDetails$);
     this.loading = false;
   }
