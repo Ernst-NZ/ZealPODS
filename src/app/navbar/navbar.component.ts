@@ -80,11 +80,23 @@ refresh() {
   }
 
   goToHome() {
-    this.router.navigate(['.']);
+    if (this.globals.incomplete === true) {
+      if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
+        this.router.navigate(['/']);
+      }
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
   goToRoutes() {
-    this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
-  }
+    if (this.globals.incomplete === true) {
+      if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
+        this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
+      }
+    } else {
+      this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
+    }
+     }
 
 }
