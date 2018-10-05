@@ -1,13 +1,8 @@
 import { IdbService } from '../_services/idb.service';
 import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
  export class BaseService {
-<<<<<<< HEAD
-  dbname = 'Delivery_db';
-  dbDelivery = 'dbDelivery';
-=======
   dbname = 'ZEDS_db';
   dbDelivery = 'dbZEDS';
->>>>>>> Master-V3
   constructor() {
    // turn on jsstore log status - help you to debug
    // turn off it in production or when you dont need

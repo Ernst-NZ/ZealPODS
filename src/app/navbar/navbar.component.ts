@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
 refresh() {
@@ -40,14 +40,12 @@ refresh() {
       if (this.tempDelivery.delivered === 'true') {
         this.pendingSync = true;
         this.addDB = true;
-      };
-
+      }
     }
     this.checkJson();
     this.addDB = true;
   }
   console.log(this.tempDelivery);
-  
 }
   // ## Get Json
   getJson() {
@@ -63,7 +61,7 @@ refresh() {
         alert(error.message);
       });
   }
-  
+
   checkJson() {
     if (this.pendingSync === true && this.addJson === false) {
       this.service.postJson(this.allRoutes$);
@@ -71,23 +69,28 @@ refresh() {
         0, '', '', 0, 0,
         '', '', 0, 0, this.allRoutes$
       );
-      this.addJson = true
+      this.addJson = true;
 
     } else {
       this.service.dbAdd(
         0, '', '', 0, 0,
         '', '', 0, 0, this.allRoutes$
       );
-      this.addJson = true
+      this.addJson = true;
     }
   }
 
   goToHome() {
-    this.router.navigate(['.']); 
+    if (this.globals.incomplete = true) {
+      if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
+        alert('22123');
+        this.router.navigate(['/']);
+      }
+    }
   }
 
   goToRoutes() {
-    this.router.navigate(['/route-Orders/', this.globals.selectedRoute]); 
+    this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
   }
 
 }
