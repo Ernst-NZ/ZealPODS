@@ -74,22 +74,20 @@ refresh() {
       this.addJson = true
 
     } else {
-      // var DBDeleteRequest = window.indexedDB.deleteDatabase("ZEDS_db");
-      // DBDeleteRequest.onerror = function (event) {
-      //   console.log("Error deleting database.");
-      //   alert("Error deleting database.")
-      // };
-      // DBDeleteRequest.onsuccess = function (event) {
-      //   console.log("Database deleted successfully");
-      //   alert("Error deleting database.")
-      //   //      console.log(event.result); // should be undefined
-      // };
       this.service.dbAdd(
         0, '', '', 0, 0,
         '', '', 0, 0, this.allRoutes$
       );
       this.addJson = true
     }
+  }
+
+  goToHome() {
+    this.router.navigate(['.']); 
+  }
+
+  goToRoutes() {
+    this.router.navigate(['/route-Orders/', this.globals.selectedRoute]); 
   }
 
 }
