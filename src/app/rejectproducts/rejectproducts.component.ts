@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../data.service';
 import { DeliveryService } from '../_services/delivery.service';
 import { Delivery, IDelivery } from '../_models/delivery';
+import { Globals } from '../globals';
 
 export interface Reason {
   value: string;
@@ -35,10 +36,12 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
   QuantityRejected: number;
   QuantityOrdered: number;
   Reason: string;
+  public incomplete: boolean;
 
-  constructor(private route: ActivatedRoute, private data: DataService, service: DeliveryService, private router: Router) {
+  constructor(private route: ActivatedRoute, private data: DataService, service: DeliveryService, private router: Router, private globals: Globals ) {
     this.route.params.subscribe(params => this.productDetails$ = params.DocumentId);
     this.service = service;
+    this.incomplete = globals.incomplete;
   }
 
   ngOnInit() {
@@ -99,6 +102,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
     if (this.oldItem.RejectionReason === '') {
       return alert('Please provide a reason for rejection.');
     }
+    this.globals.incomplete = true;
     this.service.preUpdateDelivery('product', 0,
       this.docID,
       this.lineID,
@@ -109,9 +113,9 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
       this.oldOrder.ReceivedBy,
       this.oldOrder.PaymentMethod,
       this.oldOrder.PaymentAmount,
+      'false',
       this.productDetails$);
     alert('Delivery Successfully updated');
     this.router.navigate(['/order-details/', this.docID]);
   }
-
 }

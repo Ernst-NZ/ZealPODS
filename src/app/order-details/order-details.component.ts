@@ -52,36 +52,6 @@ export interface Payment {
   ]
 })
 
-// export class SignaturePadPage{
- 
-//   @ViewChild(SignaturePad) signaturePad: SignaturePad;
- 
-//   private signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
-//     'minWidth': 5,
-//     'canvasWidth': 500,
-//     'canvasHeight': 300
-//   };
- 
-
-//   ngAfterViewInit() {
-//     // this.signaturePad is now available
-//     this.signaturePad.set('minWidth', 5); // set szimek/signature_pad options at runtime
-//     this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
-//   }
- 
-//   drawComplete() {
-//     // will be notified of szimek/signature_pad's onEnd event
-//     console.log(this.signaturePad.toDataURL());
-//   }
- 
-//   drawStart() {
-//     // will be notified of szimek/signature_pad's onBegin event
-//     console.log('begin drawing');
-//   }
-// };
-
-
-
 export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   @ViewChild(SignaturePad)
   signaturePad:SignaturePad; 
@@ -167,13 +137,11 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
               if (products[p].QuantityRejected > 0) {
                 this.show = true;
                 this.hidden = false;
-                break
+                break;
               }
             }
-            break
           }
         }
-        break
       }
     }
   }
@@ -251,6 +219,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
        ReceivedBy,
        PaymentMethod,
        PaymentAmount,
+       'false',
       this.orderDetails$);
     this.loading = false;
   }

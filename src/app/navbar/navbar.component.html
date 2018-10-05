@@ -4,7 +4,8 @@
   <div class="navbar mr-auto" id="navbarFixed">
       <ul class="navbar-nav">
         <li *ngIf="globals.selectedRoute" class="nav-item">
-          <a class="nav-link" routerLink="route-Orders/{{globals.selectedRoute}}" [class.activated]="currentUrl == '/route-Orders/'+globals.selectedRoute">My Orders</a>
+          <!-- <a class="nav-link" routerLink="route-Orders/{{globals.selectedRoute}}" [class.activated]="currentUrl == '/route-Orders/'+globals.selectedRoute">My Orders</a> -->
+          <a class="nav-link" (click)='goToRoutes()'>My Orders</a>
         </li>
       </ul>
     </div>

@@ -1,26 +1,22 @@
 <h3 class="headerText">Orders</h3>
 <hr class="devide">
 <br>
-<img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
 <div class="theList" *ngIf = "allRoutes$">
     <ul [@listStagger]="allRoutes$" style="list-style-type:none">
       <div *ngFor="let orderGroup$ of allRoutes$.orderGroups" >
         <div *ngFor="let order of orderGroup$.Orders" >
           <div *ngIf="orderGroup$.Name === selectedRoute" >
-            <li>
+            <li  *ngIf = 'order.Updated !== "true"'>
               <ul style="list-style-type:none">
                 <a routerLink="/order-details/{{order.DocumentId}}">{{order.CustomerName}}
                 <p>&emsp;{{order.DeliveryAddress1}}, {{order.DeliveryAddress2}}, {{order.DeliveryAddress3}}, {{order.PostCode}}</p>
                 <p style="float:right; font-size:12px; padding-right:0px">{{order.selectedRoute}}</p>
-                <!-- <p><a class="phoneNo" [href]="'tel:' + order.PhoneNo">{{order.PhoneNo}}</a></p> -->
-                
                 <div *ngIf = order.Subtitle>
                   <p><strong>&emsp;{{order.Subtitle}}</strong></p>
                 </div>
-                <p><a class="phoneNo call" [href]="'tel:' + order.PhoneNo"><i class="material-icons">call</i>
-                    <i Subtitle class="sync material-icons">sync</i></a></p>
-                </a>              
-                
+                <p><a class="phoneNo call" [href]="'tel:' + order.PhoneNo"><i class="material-icons">call</i>                   
+                    <i *ngIf = 'order.Delivered === "true"' Subtitle class="sync material-icons">sync</i></a></p>
+                </a>                
               </ul>
             </li>
           </div>
