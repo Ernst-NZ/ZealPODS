@@ -33,8 +33,8 @@
       ],
       "cacheConfig": {
         "maxSize": 1,
-        "maxAge": "6h",
-        "timeout": "15s",
+        "maxAge": "1h",
+        "timeout": "6s",
         "strategy": "freshness"
       }
     }

@@ -144,24 +144,24 @@ export class DeliveryService extends BaseService {
 
   
   // tslint:disable-next-line:max-line-length
-  // V2 ..
+  // V2 .. Step 3
   preUpdateDelivery( type, productNo, 
     docId, lineId, delivered, 
     QuantityRejected, RejectionReason, SignatureSVG,
-    ReceivedBy, PaymentMethod, PaymentAmount,
+    ReceivedBy, PaymentMethod, PaymentAmount, Updated,
     json) {
       let jsonTemp = json;
     // Update the Json String
     if (type === 'product' && productNo === 0) {
       jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
           RejectionReason, SignatureSVG, ReceivedBy,
-        PaymentMethod, PaymentAmount, jsonTemp
+        PaymentMethod, PaymentAmount, Updated, jsonTemp
       )
   //    this.productAdd(lineId,docId, lineId, RejectionReason, ReceivedBy)
     } else if (type === 'order' && productNo === 1) {
       jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
         RejectionReason, SignatureSVG, ReceivedBy,
-        PaymentMethod, PaymentAmount, jsonTemp
+        PaymentMethod, PaymentAmount, Updated, jsonTemp
       )
      // Delete order if exist
     }
@@ -171,7 +171,7 @@ export class DeliveryService extends BaseService {
       QuantityRejected: Number(QuantityRejected), RejectionReason: RejectionReason,      
       SignatureSVG: SignatureSVG, ReceivedBy: ReceivedBy,
       PaymentMethod: PaymentMethod, PaymentAmount: Number(PaymentAmount),
-      updated: 'true', json: jsonTemp
+      updated: Updated, json: jsonTemp
     };
     this.updateDelivery(0, updatedValue)
       .then(rowsUpdated => {
@@ -228,11 +228,7 @@ export class DeliveryService extends BaseService {
     QuantityOrdered,
     json
   ) {
-<<<<<<< HEAD
-    const open = indexedDB.open('Delivery_db', 1);
-=======
     const open = indexedDB.open('ZEDS_db', 1);
->>>>>>> Master-V3
 
     open.onupgradeneeded = function() {
       const db = open.result;
@@ -407,7 +403,7 @@ export class DeliveryService extends BaseService {
   //V2
   upDateJson(type, docId, lineId, delivered,
     QuantityRejected, RejectionReason, SignatureSVG,
-    ReceivedBy, PaymentMethod, PaymentAmount, jsonTemp ) {
+    ReceivedBy, PaymentMethod, PaymentAmount, Updated, jsonTemp ) {
     const drivers = jsonTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       const orderList = drivers[d]['Orders'];
@@ -421,20 +417,21 @@ export class DeliveryService extends BaseService {
           orderList[o].ReceivedBy = ReceivedBy;
           orderList[o].PaymentMethod = PaymentMethod;
           orderList[o].PaymentAmount = PaymentAmount;
-          orderList[o].Updated = 'true';
+          orderList[o].Updated = Updated;
           orderList[o].SignatureSVG = SignatureSVG;
           if (type === 'product') {
             for (let p = 0; p < products.length; p++) {
               if (products[p].LineId === lineId) {
                 products[p].QuantityRejected = Number(QuantityRejected);
                 products[p].RejectionReason = RejectionReason;
+                break;              
               }
             }
-          }          
+          }
+      
         }
-        break       
+              
       }
-      break      
     }
     const updatedValue: IDelivery = {
       id: 0, documentId: Number(docId),
@@ -465,64 +462,6 @@ export class DeliveryService extends BaseService {
   }
 
   
-
-  /// Edit Json
-  // V2 ??
-  editJson(docId, lineId, delivered, 
-    QuantityRejected, RejectionReason, SignatureSVG,
-    ReceivedBy, PaymentMethod, PaymentAmount, jsonTemp  ) {  
-    const drivers = jsonTemp.orderGroups;
-    for (let d = 0; d < drivers.length; d++) {
-      const orderList = drivers[d]['Orders'];
-      for (let o = 0; o < orderList.length; o++) {
-        const products = orderList[o]['Lines'];
-        // Get Document ID
-        if (orderList[o].DocumentId === Number(docId)) {
-          orderList[o].Delivered = 'true';
-          orderList[o].SignatureSVG = '465'; // SignatureSVG;
-          orderList[o].ReceivedBy = '123';   // ReceivedBy;
-          orderList[o].PaymentMethod = PaymentMethod;
-          orderList[o].PaymentAmount = PaymentAmount;
-          orderList[o].Updated = 'true';          
-          for (let p = 0; p < products.length; p++) {
-            if (products[p].LineId === lineId) {
-              products[p].QuantityRejected = QuantityRejected;
-              products[p].RejectionReason = RejectionReason;
-              break
-            }
-          }
-          break
-        }
-        break
-      }
-    }
-    // const updatedValue: IDelivery = {      
-    //   lastSync: '',
-    //   name: '', documentId: 0, 
-    //   lineId: 6, QuantityOrdered: 7,
-    //   QuantityRejected: 8, RejectionReason: '',
-    //   delivered: 'true', deliveryTime: '',
-    //   signature: 'zz', deliveredTo: '',
-    //   paymentType: 'payType', paymentAmount: 9,
-    //   updated: 'true', json: dataTemp
-    // };
-    // this.updateDelivery(0, updatedValue)
-    //   .then(rowsUpdated => {
-    //     if (rowsUpdated > 0) {
-    //       const index = this.tempDeliveries.findIndex(
-    //         delivery => delivery.id === 0
-    //       );
-    //       this.tempDeliveries[index] = this.tempDelivery;
-  
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //     alert(error.message);
-    //   });
-    return jsonTemp;
-  }
-
   postJson(dataString) {
     console.log(dataString)
      return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
@@ -530,13 +469,13 @@ export class DeliveryService extends BaseService {
          val => {
                  console.log("POST call successful value returned in body",val);
   //              alert("POST call successful value returned in body: " && val)
-           alert("POST call successful")
+//           alert("Server Update successful")
            //    Clear Indexed DB - Gete new info and populate
 //             this.deleteDelivery(docId)
          },
          response => {
 //           console.log("POST call in error", response);
-           alert("POST call in error " && response);
+           alert("Server Update error " && response);
          },
          () => {
 //          console.log("The POST observable is now completed.");
