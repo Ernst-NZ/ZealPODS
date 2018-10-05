@@ -388,6 +388,7 @@ export class DeliveryService extends BaseService {
                 this.orderAdd(LineId, user, DocumentId,
                   LineId, QuantityOrdered, description, productCode, sellPrice 
                 );
+                break;
               }
             }
           });
@@ -427,7 +428,7 @@ export class DeliveryService extends BaseService {
                 break;              
               }
             }
-          }
+          } else {break;}
       
         }
               
