@@ -144,7 +144,7 @@ export class DeliveryService extends BaseService {
 
   
   // tslint:disable-next-line:max-line-length
-  // V2 ..
+  // V2 .. Step 3
   preUpdateDelivery( type, productNo, 
     docId, lineId, delivered, 
     QuantityRejected, RejectionReason, SignatureSVG,
@@ -422,15 +422,16 @@ export class DeliveryService extends BaseService {
           if (type === 'product') {
             for (let p = 0; p < products.length; p++) {
               if (products[p].LineId === lineId) {
-                products[p].QuantityRejected = Number(QuantityRejected);
+                products[p].QuantityRejected = 233; // Number(QuantityRejected);
                 products[p].RejectionReason = RejectionReason;
+                break;              
               }
             }
-          }          
+          }
+      
         }
-        break       
+              
       }
-      break      
     }
     const updatedValue: IDelivery = {
       id: 0, documentId: Number(docId),
@@ -463,61 +464,61 @@ export class DeliveryService extends BaseService {
   
 
   /// Edit Json
-  // V2 ??
-  editJson(docId, lineId, delivered, 
-    QuantityRejected, RejectionReason, SignatureSVG,
-    ReceivedBy, PaymentMethod, PaymentAmount, jsonTemp  ) {  
-    const drivers = jsonTemp.orderGroups;
-    for (let d = 0; d < drivers.length; d++) {
-      const orderList = drivers[d]['Orders'];
-      for (let o = 0; o < orderList.length; o++) {
-        const products = orderList[o]['Lines'];
-        // Get Document ID
-        if (orderList[o].DocumentId === Number(docId)) {
-          orderList[o].Delivered = 'true';
-          orderList[o].SignatureSVG = '465'; // SignatureSVG;
-          orderList[o].ReceivedBy = '123';   // ReceivedBy;
-          orderList[o].PaymentMethod = PaymentMethod;
-          orderList[o].PaymentAmount = PaymentAmount;
-          orderList[o].Updated = 'true';          
-          for (let p = 0; p < products.length; p++) {
-            if (products[p].LineId === lineId) {
-              products[p].QuantityRejected = QuantityRejected;
-              products[p].RejectionReason = RejectionReason;
-              break
-            }
-          }
-          break
-        }
-        break
-      }
-    }
-    // const updatedValue: IDelivery = {      
-    //   lastSync: '',
-    //   name: '', documentId: 0, 
-    //   lineId: 6, QuantityOrdered: 7,
-    //   QuantityRejected: 8, RejectionReason: '',
-    //   delivered: 'true', deliveryTime: '',
-    //   signature: 'zz', deliveredTo: '',
-    //   paymentType: 'payType', paymentAmount: 9,
-    //   updated: 'true', json: dataTemp
-    // };
-    // this.updateDelivery(0, updatedValue)
-    //   .then(rowsUpdated => {
-    //     if (rowsUpdated > 0) {
-    //       const index = this.tempDeliveries.findIndex(
-    //         delivery => delivery.id === 0
-    //       );
-    //       this.tempDeliveries[index] = this.tempDelivery;
+  // // V2 ??
+  // editJson(docId, lineId, delivered, 
+  //   QuantityRejected, RejectionReason, SignatureSVG,
+  //   ReceivedBy, PaymentMethod, PaymentAmount, jsonTemp  ) {  
+  //   const drivers = jsonTemp.orderGroups;
+  //   for (let d = 0; d < drivers.length; d++) {
+  //     const orderList = drivers[d]['Orders'];
+  //     for (let o = 0; o < orderList.length; o++) {
+  //       const products = orderList[o]['Lines'];
+  //       // Get Document ID
+  //       if (orderList[o].DocumentId === Number(docId)) {
+  //         orderList[o].Delivered = 'true';
+  //         orderList[o].SignatureSVG = '465'; // SignatureSVG;
+  //         orderList[o].ReceivedBy = '123';   // ReceivedBy;
+  //         orderList[o].PaymentMethod = PaymentMethod;
+  //         orderList[o].PaymentAmount = PaymentAmount;
+  //         orderList[o].Updated = 'true';          
+  //         for (let p = 0; p < products.length; p++) {
+  //           if (products[p].LineId === lineId) {
+  //             products[p].QuantityRejected = QuantityRejected;
+  //             products[p].RejectionReason = RejectionReason;
+  //             break
+  //           }
+  //         }
+  //         break
+  //       }
+  //       break
+  //     }
+  //   }
+  //   // const updatedValue: IDelivery = {      
+  //   //   lastSync: '',
+  //   //   name: '', documentId: 0, 
+  //   //   lineId: 6, QuantityOrdered: 7,
+  //   //   QuantityRejected: 8, RejectionReason: '',
+  //   //   delivered: 'true', deliveryTime: '',
+  //   //   signature: 'zz', deliveredTo: '',
+  //   //   paymentType: 'payType', paymentAmount: 9,
+  //   //   updated: 'true', json: dataTemp
+  //   // };
+  //   // this.updateDelivery(0, updatedValue)
+  //   //   .then(rowsUpdated => {
+  //   //     if (rowsUpdated > 0) {
+  //   //       const index = this.tempDeliveries.findIndex(
+  //   //         delivery => delivery.id === 0
+  //   //       );
+  //   //       this.tempDeliveries[index] = this.tempDelivery;
   
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //     alert(error.message);
-    //   });
-    return jsonTemp;
-  }
+  //   //     }
+  //   //   })
+  //   //   .catch(error => {
+  //   //     console.error(error);
+  //   //     alert(error.message);
+  //   //   });
+  //   return jsonTemp;
+  // }
 
   postJson(dataString) {
     console.log(dataString)

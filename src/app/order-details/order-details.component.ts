@@ -194,7 +194,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       });
   }
  
-  // V2 Post data
+  // V2 Post data  Step 1 -> 235
   postData() {
     const SignatureSVG = this.signaturePad.toDataURL('image/svg+xml');
     console.log(SignatureSVG); 
@@ -209,8 +209,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     
     try {
       this.i = 0; 
-      for (let d = 0; d < this.productList.length; d++) {
-        this.oldDelivery = this.deliveries[d]; 
+    //  for (let d = 0; d < this.productList.length; d++) {
+        this.oldDelivery = this.deliveries[0]; 
         this.i = this.i + 1; 
         this.updateDelivery(
           // this.deliveries[d]['id'], 
@@ -220,7 +220,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
           this.oldOrder.ReceivedBy, 
           this.oldOrder.PaymentMethod, 
           this.oldOrder.PaymentAmount,); 
-      }
+   //   }
       alert('Delivery Successfully Updated');
       this.router.navigate(['/route-Orders/', this.driver]); 
     }catch (error) {
@@ -232,7 +232,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     this.oldDelivery = new Delivery(); 
   }
 
-  // V2 Update
+  // V2 Update Step 2
   updateDelivery(    
     Lineid,
     SignatureSVG, 
@@ -257,5 +257,60 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   drawClear() {
     this.signaturePad.clear(); 
   }
+
+  /// Signature Stuff
+
+  // drawComplete() {
+  //   if (this.signaturePad.isEmpty()) {
+  //     return alert('Please provide a signature first.'); 
+  //   }
+
+  //   this.signatureImage = this.signaturePad.toDataURL(); 
+  //   //  console.log(this.signatureImage);
+
+  //   const dataSvg = this.signaturePad.toDataURL('image/svg+xml'); 
+  //   console.log(atob(dataSvg.split(',')[1])); 
+  //   this.download(dataSvg, 'signature.svg'); 
+
+  //   const dataJpeg = this.signaturePad.toDataURL('image/jpeg'); 
+  //   this.download(dataJpeg, 'signature.jpg'); 
+
+  //   const dataPng = this.signaturePad.toDataURL('image/png'); 
+  //   this.download(dataPng, 'signature.png'); 
+
+  //   //   console.log(dataPng);
+  // }
+
+  // download(dataURL, filename) {
+  //   const blob = this.dataURLToBlob(dataURL); 
+  //   const url = window.URL.createObjectURL(blob); 
+
+  //   const a = document.createElement('a'); 
+  //   // a.style = 'display: none';
+  //   a.href = url; 
+  //   a.download = filename; 
+
+  //   document.body.appendChild(a); 
+  //   a.click(); 
+
+  //   window.URL.revokeObjectURL(url); 
+  // }
+
+  dataURLToBlob(dataURL) {
+    // Code taken from https://github.com/ebidel/filer.js
+    const parts = dataURL.split(';base64,');
+    const contentType = parts[0].split(':')[1];
+    const raw = window.atob(parts[1]);
+    const rawLength = raw.length;
+    const uInt8Array = new Uint8Array(rawLength);
+
+    for (let i = 0; i < rawLength; ++i) {
+      uInt8Array[i] = raw.charCodeAt(i);
+    }
+
+    return new Blob([uInt8Array], { type: contentType });
+  }
+
+  /////
 
 }

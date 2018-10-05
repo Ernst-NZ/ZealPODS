@@ -153,6 +153,23 @@ body {
           color:white;
         }
       }
+       a .sync {
+         color: red;
+         border-radius: 0px 8px 8px 0px;
+         background: black;
+         width: 30px;
+         height: 50%;
+         position: absolute;
+         top: 50%;
+         right: 0;
+         margin: 0;
+         padding: 0;
+         border: none;
+
+         :hover {
+           color: maroon;
+         }
+       }
 
       a:hover:not(.phoneNo) {
         // background-color: #d4d4d4;
