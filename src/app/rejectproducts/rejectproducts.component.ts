@@ -116,7 +116,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
       this.oldOrder.PaymentAmount,
       'false',
       this.productDetails$);
-    alert('Delivery Successfully updated');
+    //alert('Delivery Successfully updated');
     this.router.navigate(['/order-details/', this.docID]);
   }
 }

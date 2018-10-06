@@ -8,6 +8,7 @@ import {SignaturePad } from 'angular2-signaturepad/signature-pad';
 import {SignaturePadModule } from 'angular2-signaturepad';
 import { AppComponent } from '../app.component';
 import { AutofillMonitor } from '../../../node_modules/@angular/cdk/text-field';
+import { NotifierService } from 'angular-notifier';
 
 
 
@@ -60,6 +61,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   deliveries: Array < IDelivery >  = [];
   oldDelivery: IDelivery = new Delivery();
   tempDelivery: IDelivery = new Delivery();
+  public notifier: NotifierService;
 
   oldItem: any =  {};
   oldOrder: any =  {};
@@ -100,15 +102,17 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   }
 
   constructor(
-    private route: ActivatedRoute,
-    private data: DataService,
-    service: DeliveryService,
-    private router: Router
+    private route:ActivatedRoute, 
+    private data:DataService, 
+    service:DeliveryService, 
+    private router:Router,
+    notifier: NotifierService
   ) {
     this.route.params.subscribe(
       params => (this.orderDetails$ = params.DocumentId)
-    );
-    this.service = service;
+    ); 
+    this.service = service; 
+    this.notifier = notifier;
   }
 
   ngOnInit() {
@@ -191,10 +195,12 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
           this.oldOrder.PaymentMethod,
           this.oldOrder.PaymentAmount);
    //   }
-      alert('Delivery Successfully Updated');
-      this.router.navigate(['/route-Orders/', this.driver]);
-    } catch (error) {
-      alert(error);
+      //alert('Delivery Successfully Updated');
+      //Available showNotification types are default,info,success,warning,error//
+      this.showNotification( 'success', 'Delivery Successfully Updated' );
+      this.router.navigate(['/route-Orders/', this.driver]); 
+    }catch (error) {
+      alert(error); 
     }
   }
 
@@ -283,5 +289,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   }
 
   /////
-
+	public showNotification( type: string, message: string ): void {
+		this.notifier.notify( type, message );
+  }
+  
 }

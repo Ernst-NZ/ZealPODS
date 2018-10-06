@@ -27,6 +27,7 @@
     "@ng-bootstrap/ng-bootstrap": "^2.2.1",
     "@ng-bootstrap/schematics": "^2.0.0-alpha.1",
     "angular-epic-spinners": "^1.0.9",
+    "angular-notifier": "^4.1.1",
     "angular-signature-pad": "0.0.14",
     "angular2-signaturepad": "^2.8.0",
     "await-sleep": "0.0.1",
