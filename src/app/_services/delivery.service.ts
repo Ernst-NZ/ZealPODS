@@ -388,6 +388,7 @@ export class DeliveryService extends BaseService {
                 this.orderAdd(LineId, user, DocumentId,
                   LineId, QuantityOrdered, description, productCode, sellPrice
                 );
+                break;
               }
             }
           });
@@ -427,7 +428,12 @@ export class DeliveryService extends BaseService {
                 break;
               }
             }
+<<<<<<< HEAD
           }
+=======
+          } else {break;}
+      
+>>>>>>> Sept-26-KD
         }
       }
     }

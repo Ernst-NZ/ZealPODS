@@ -61,7 +61,10 @@ refresh() {
         alert(error.message);
       });
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> Sept-26-KD
   checkJson() {
     if (this.pendingSync === true && this.addJson === false) {
       this.service.postJson(this.allRoutes$);
@@ -81,16 +84,36 @@ refresh() {
   }
 
   goToHome() {
+<<<<<<< HEAD
     if (this.globals.incomplete = true) {
       if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
         alert('22123');
         this.router.navigate(['/']);
       }
+=======
+    if (this.globals.incomplete === true) {
+      if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
+        this.router.navigate(['/']);
+      }
+    } else {
+      this.router.navigate(['/']);
+>>>>>>> Sept-26-KD
     }
   }
 
   goToRoutes() {
+<<<<<<< HEAD
     this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
   }
+=======
+    if (this.globals.incomplete === true) {
+      if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
+        this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
+      }
+    } else {
+      this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
+    }
+     }
+>>>>>>> Sept-26-KD
 
 }
