@@ -17,6 +17,9 @@ export class DeliveryComponent implements OnInit, AfterContentChecked {
   oldDelivery: IDelivery = new Delivery();
   jsonFile$: object;
   id: number;
+  lat: number;
+  lng: number;
+  locationChosen = false;
 
   constructor(service: DeliveryService) {
     this.service = service;
@@ -25,6 +28,9 @@ export class DeliveryComponent implements OnInit, AfterContentChecked {
   ngOnInit() {
   // this.getDeliveries();
   this.getJson();
+  // this.lat = -37.7729;
+  // this.lng = 176.7842;
+  this.getLocation();
 
   // this.jsonFile$ = this.deliveries[0].json;
   }
@@ -33,9 +39,28 @@ export class DeliveryComponent implements OnInit, AfterContentChecked {
         if (typeof this.deliveries[0]['id'] !== 'undefined') {
           this.id = this.deliveries[0]['id'];
            this.jsonFile$ = this.deliveries[0]['json'];
-           console.log(this.jsonFile$);
+ //          console.log(this.jsonFile$);
         }
       }
+  }
+ getLocation() {
+  navigator.geolocation.getCurrentPosition((position) => {
+    this.lat = position.coords.latitude;
+    this.lng = position.coords.longitude;
+   });
+  }
+
+  onChooseLocation(event) {
+    this.lat = event.coords.lat;
+    this.lng = event.coords.lng;
+    this.locationChosen = true;
+    console.log(event);
+  }
+
+  test() {
+    this.lat = -41.2829;
+    this.lng = 174.7842;
+    this.locationChosen = true;
   }
 
   getOrder(documentId) {
