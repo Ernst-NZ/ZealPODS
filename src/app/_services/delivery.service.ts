@@ -428,12 +428,7 @@ export class DeliveryService extends BaseService {
                 break;
               }
             }
-<<<<<<< HEAD
-          }
-=======
           } else {break;}
-      
->>>>>>> Sept-26-KD
         }
       }
     }

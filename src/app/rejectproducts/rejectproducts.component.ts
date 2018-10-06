@@ -27,15 +27,10 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
   dataset: any = {};
   addDB = false;
 
-<<<<<<< HEAD
   reject: Reason[] = [
     { value: 'Damaged', viewValue: 'Damaged' },
     { value: 'Wrong Product', viewValue: 'Wrong Product' },
     { value: 'Spoiled', viewValue: 'Spoiled' }
-=======
-  reject: Reason[] = [{ value: 'Damaged', viewValue: 'Damaged' },
-  { value: 'Wrong Product', viewValue: 'Wrong Product' }, { value: 'Spoiled', viewValue: 'Spoiled' }
->>>>>>> Sept-26-KD
   ];
   productDetails$: Object;
   public lineID: number;
@@ -46,14 +41,9 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
   Reason: string;
   public incomplete: boolean;
 
-<<<<<<< HEAD
   constructor(private route: ActivatedRoute,
     private data: DataService, service: DeliveryService,
     private router: Router, private globals: Globals ) {
-=======
-  constructor(private route: ActivatedRoute, private data: DataService,
-    service: DeliveryService, private router: Router, private globals: Globals ) {
->>>>>>> Sept-26-KD
     this.route.params.subscribe(params => this.productDetails$ = params.DocumentId);
     this.service = service;
     this.incomplete = globals.incomplete;
@@ -88,11 +78,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
                 break;
               }
             }
-<<<<<<< HEAD
-         }
-=======
           }
->>>>>>> Sept-26-KD
         }
       }
     }
@@ -133,7 +119,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
       this.oldOrder.PaymentAmount,
       'false',
       this.productDetails$);
-    //alert('Delivery Successfully updated');
+    // alert('Delivery Successfully updated');
     this.router.navigate(['/order-details/', this.docID]);
   }
 }
