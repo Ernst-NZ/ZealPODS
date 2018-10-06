@@ -38,6 +38,7 @@ import { RejectproductsComponent } from './rejectproducts/rejectproducts.compone
 import { DeliveryComponent } from './delivery/delivery.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';   // agm-direction
 // import * as $ from 'jquery'
 
 const customNotifierOptions: NotifierOptions = {
@@ -122,7 +123,8 @@ const customNotifierOptions: NotifierOptions = {
     AgmCoreModule.forRoot({
       // tslint:disable-next-line:max-line-length
       apiKey: 'AIzaSyCdiuA3wZZ17bbnUYj_lU_UHlJal6GqS9g'
-    })
+    }),
+    AgmDirectionModule      // agm-direction
   //  $,
   ],
   providers: [

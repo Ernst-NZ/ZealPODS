@@ -19,7 +19,11 @@ export class DeliveryComponent implements OnInit, AfterContentChecked {
   id: number;
   lat: number;
   lng: number;
+  zoom: number;
   locationChosen = false;
+  // public origin: string;
+  public origin: any;
+  public destination: string;
 
   constructor(service: DeliveryService) {
     this.service = service;
@@ -47,7 +51,18 @@ export class DeliveryComponent implements OnInit, AfterContentChecked {
   navigator.geolocation.getCurrentPosition((position) => {
     this.lat = position.coords.latitude;
     this.lng = position.coords.longitude;
+    this.zoom = 13;
    });
+  }
+
+  getDirection() {
+ //   this.getLocation();
+    this.origin = { lat: this.lat, lng: this.lng };
+//   this.origin = '8 Amy Place, Pyes Pa, Tauranga';
+   this.destination = '29A Sheffield Street, Matamata';
+  //  this.getLocation();
+  //  this.origin = { lat: this.lat, lng: this.lng };
+  //  this.destination = '8 Amy Place pyes Pa Tauranga';
   }
 
   onChooseLocation(event) {
