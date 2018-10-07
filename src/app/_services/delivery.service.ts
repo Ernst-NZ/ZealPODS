@@ -4,6 +4,7 @@ import { DataService } from '../data.service';
 import { Delivery, IDelivery } from '../_models/delivery';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Alert } from 'selenium-webdriver';
+import { NotifierService } from 'angular-notifier';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,11 @@ export class DeliveryService extends BaseService {
   addJson = false;
   tempDeliveries: Array<IDelivery> = [];
   tempDelivery: IDelivery = new Delivery();
-  constructor(private data: DataService, private http: HttpClient) {
+  public notifier: NotifierService;
+  constructor(private data: DataService, private http: HttpClient,
+    notifier: NotifierService) {
     super();
+    this.notifier = notifier;
   }
   // ### Get funtions (SQL Actions) ####
   // ## Get Deliveries
@@ -465,7 +469,9 @@ export class DeliveryService extends BaseService {
        .subscribe(
          val => {
  //                console.log('POST call successful value returned in body', val);
-           alert('Server Update successful');
+ //          alert('Server Update successful');
+           this.showNotification('success', 'Delivery Posted to Main Server');
+
            //    Clear Indexed DB - Gete new info and populate
 //             this.deleteDelivery(docId)
          },
@@ -475,5 +481,9 @@ export class DeliveryService extends BaseService {
          () => {
          }
        );
+  }
+
+  public showNotification(type: string, message: string): void {
+    this.notifier.notify(type, message);
   }
 }
