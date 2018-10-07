@@ -43,6 +43,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
     this.service = service;
   }
 
+
   ngOnInit() {
     this.loading = true;
  //   this.data.getAllRoutes().subscribe(data => this.allRoutes$ = data);
@@ -50,6 +51,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
     const getOrder = (this.route.snapshot.paramMap.get('routeName'));
     this.selectedRoute = getOrder;
     this.globals.selectedRoute = this.selectedRoute;
+    this.globals.incomplete = false;
   }
   ngAfterContentChecked() {
     if (typeof this.deliveries[0] !== 'undefined' && this.addDB === false) {
@@ -71,3 +73,6 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
       });
   }
 }
+
+
+

@@ -4,7 +4,7 @@
 
   <div id='main'>
     <ul *ngFor='let driver of productDetails$.orderGroups'>
-      <ul *ngFor='let order of driver.Orders'>       
+      <ul *ngFor='let order of driver.Orders'>
         <div class='blackFont fontSmall1 strong' *ngIf='order.DocumentId == docID'>
           <ul *ngFor='let oeLine of order.Lines'>
             <div class='blackFont fontSmall1 strong' *ngIf='oeLine.LineId === lineID'>
@@ -50,10 +50,10 @@
                   </tr>
                 </tbody>
               </table>
-              <div style='text-align: center;'>
-                <button type="button" class="btn btn-info" style="width: 150px" (click)='updateDelivery()'>Add Rejected</button>                
-                <a routerLink='/order-details/{{docID}}'> 
-                  <button type="button" class="btn btn-info" style="width: 150px">Back to Order</button>
+              <div style='text-align: center; display: flex; justify-content: space-around;'>
+                <button type="button" class="btn btn-info" (click)='updateDelivery()'>Add Rejected</button>
+                <a routerLink='/order-details/{{docID}}'>
+                  <button type="button" class="btn btn-info" >Back to Order</button>
                 </a>
               </div>
             </div>
