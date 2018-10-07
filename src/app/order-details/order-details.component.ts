@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, AfterContentChecked, AfterViewChecked, NgModule } from '@angular/core';
+import {Component, OnInit, ViewChild, AfterContentChecked, AfterViewChecked, NgModule, HostListener } from '@angular/core';
 import {ActivatedRoute, Router } from '@angular/router';
 import {DataService } from '../data.service';
 import {trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
@@ -62,7 +62,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   oldDelivery: IDelivery = new Delivery();
   tempDelivery: IDelivery = new Delivery();
   public notifier: NotifierService;
-
+  innerWidth: any;
   oldItem: any =  {};
   oldOrder: any =  {};
   dataset: any =  {};
@@ -77,7 +77,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   public i: number;
   forceView = false;
   delivered = false;
-  loading = false;
+  loading = false;s
 
   show = false;
   hidden = true;
@@ -90,7 +90,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   public signaturePadOptions: Object =  {
     // passed through to szimek/signature_pad constructor
     minWidth: 0.5,
-    canvasWidth: 300,
+    canvasWidth: this.innerWidth,
     canvasHeight: 110,
     canvasBackgroundColor: 'white'
   };
@@ -120,9 +120,16 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     const getOrder = this.route.snapshot.paramMap.get('DocumentId');
     this.docID = getOrder;
     this.getJson();
+      this.innerWidth = window.innerWidth;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
   }
 
   ngAfterContentChecked() {
+ //   alert(this.innerWidth)
     if (this.deliveries.length > 0 && this.addDB === false) {
       this.addDB = true;
       this.dataset = this.tempDelivery.json;

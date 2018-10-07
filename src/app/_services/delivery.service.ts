@@ -13,6 +13,7 @@ export class DeliveryService extends BaseService {
   orderDetails$: Object;
   updateStatus: String;
   addJson = false;
+  addDB = false;
   tempDeliveries: Array<IDelivery> = [];
   tempDelivery: IDelivery = new Delivery();
   public notifier: NotifierService;
@@ -487,10 +488,13 @@ export class DeliveryService extends BaseService {
   }
 
   checkJson() {
+    if (this.addJson = false) {
       this.dbAdd(
         0, '', '', 0, 0,
         '', '', 0, 0, this.orderDetails$
       );
       this.addJson = true;
+    }
+      
   }
 }

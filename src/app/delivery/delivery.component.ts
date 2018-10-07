@@ -41,7 +41,7 @@ export class DeliveryComponent implements OnInit, AfterContentChecked {
     this.devAddress = getAddress;
   // this.getDeliveries();
   // this.getJson();
-  this.getLocation();
+  this.getLocation();  
   }
   ngAfterContentChecked() {
 
@@ -81,7 +81,7 @@ export class DeliveryComponent implements OnInit, AfterContentChecked {
     this.lat = -41.2829;
     this.lng = 174.7842;
 //    const destination = this.lat + ',' + this.lng;
-alert(this.devAddress);
+// alert(this.devAddress);
     const destination = '11 Brown St,  Tauranga';
 //    this.destination = this.devAddress;
 
@@ -89,7 +89,7 @@ alert(this.devAddress);
 // 	window.open('maps://?q=' + destination, '_system');
 // } else {
   const label = encodeURI('Destination');
-  window.open('geo:0,0?q=' + this.devAddress + '(' + label + ')', '_system');
+    window.open('https://www.google.com/maps/place/' + this.devAddress + '_system');
 // }
   }
 
