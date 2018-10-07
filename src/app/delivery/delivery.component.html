@@ -62,7 +62,9 @@
     </td>
   </tr>
 </table> -->
-<button type="button" (click)="getDirection()">Get</button>
+<button type="button" (click)="getDirection()">View Route</button>
+<button type="button" (click)="test2()">Get Directions</button>
+
 <div class="component">
   <agm-map [latitude]="lat" [longitude]="lng" [zoom] = "zoom" (mapClick)="onChooseLocation($event)">
     <agm-marker
