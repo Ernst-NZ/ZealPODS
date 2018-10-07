@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { DeliveryService } from '../_services/delivery.service';
 import { Delivery, IDelivery } from '../_models/delivery';
+import { ActivatedRoute } from '@angular/router';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-delivery',
@@ -16,26 +18,79 @@ export class DeliveryComponent implements OnInit, AfterContentChecked {
   newDelivery: IDelivery = new Delivery();
   oldDelivery: IDelivery = new Delivery();
   jsonFile$: object;
+  getAddress$: object;
+  public devAddress: string;
   id: number;
+  lat: number;
+  lng: number;
+  zoom: number;
+  locationChosen = false;
+  // public origin: string;
+  public origin: any;
+  public destination: string;
 
-  constructor(service: DeliveryService) {
+  constructor(private route: ActivatedRoute, service: DeliveryService, private data: DataService) {
+    this.route.params.subscribe(params => this.getAddress$ = data);
     this.service = service;
   }
 
   ngOnInit() {
+    this.lat = -37.7729;
+   this.lng = 176.7842;
+    const getAddress = (this.route.snapshot.paramMap.get('devAddress'));
+    this.devAddress = getAddress;
   // this.getDeliveries();
-  this.getJson();
-
-  // this.jsonFile$ = this.deliveries[0].json;
+  // this.getJson();
+  this.getLocation();  
   }
   ngAfterContentChecked() {
-      if (this.deliveries.length > 0) {
-        if (typeof this.deliveries[0]['id'] !== 'undefined') {
-          this.id = this.deliveries[0]['id'];
-           this.jsonFile$ = this.deliveries[0]['json'];
-           console.log(this.jsonFile$);
-        }
-      }
+
+  }
+ getLocation() {
+  navigator.geolocation.getCurrentPosition((position) => {
+    this.lat = position.coords.latitude;
+    this.lng = position.coords.longitude;
+    this.zoom = 18;
+   });
+  }
+
+  getDirection() {
+ //   this.getLocation();
+    this.origin = { lat: this.lat, lng: this.lng };
+//   this.origin = '8 Amy Place, Pyes Pa, Tauranga';
+   this.destination = this.devAddress;
+  //  this.getLocation();
+  //  this.origin = { lat: this.lat, lng: this.lng };
+  //  this.destination = '8 Amy Place pyes Pa Tauranga';
+  }
+
+  onChooseLocation(event) {
+    this.lat = event.coords.lat;
+    this.lng = event.coords.lng;
+    this.locationChosen = true;
+    console.log(event);
+  }
+
+  test() {
+    this.lat = -41.2829;
+    this.lng = 174.7842;
+    this.locationChosen = true;
+  }
+
+  test2() {
+    this.lat = -41.2829;
+    this.lng = 174.7842;
+//    const destination = this.lat + ',' + this.lng;
+// alert(this.devAddress);
+    const destination = '11 Brown St,  Tauranga';
+//    this.destination = this.devAddress;
+
+// if ( this.platform.is('ios')) {
+// 	window.open('maps://?q=' + destination, '_system');
+// } else {
+  const label = encodeURI('Destination');
+    window.open('https://www.google.com/maps/place/' + this.devAddress + '_system');
+// }
   }
 
   getOrder(documentId) {

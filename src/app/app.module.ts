@@ -37,20 +37,22 @@ import { SignatureComponent } from './signature/signature.component';
 import { RejectproductsComponent } from './rejectproducts/rejectproducts.component';
 import { DeliveryComponent } from './delivery/delivery.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';   // agm-direction
 // import * as $ from 'jquery'
 
 const customNotifierOptions: NotifierOptions = {
   position: {
-		horizontal: {
-			position: 'middle',
-			distance: 12
-		},
-		vertical: {
-			position: 'top',
-			distance: 12,
-			gap: 10
-		}
-	},
+  horizontal: {
+  position: 'middle',
+  distance: 12
+  },
+  vertical: {
+  position: 'top',
+  distance: 12,
+  gap: 10
+  }
+},
   theme: 'material',
   behaviour: {
     autoHide: 2000,
@@ -118,6 +120,11 @@ const customNotifierOptions: NotifierOptions = {
     MatSelectModule,
     MatButtonModule,
     NotifierModule.withConfig(customNotifierOptions),
+    AgmCoreModule.forRoot({
+      // tslint:disable-next-line:max-line-length
+      apiKey: 'AIzaSyCdiuA3wZZ17bbnUYj_lU_UHlJal6GqS9g'
+    }),
+    AgmDirectionModule      // agm-direction
   //  $,
   ],
   providers: [

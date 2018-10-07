@@ -62,11 +62,21 @@
     </td>
   </tr>
 </table> -->
-<hr>
+<button type="button" (click)="getDirection()">View Route</button>
+<button type="button" (click)="test2()">Get Directions</button>
 
-<button mat-raised-button color="warm" (click)="xxx()">Test</button>
-{{ id }}
-<table>
+<div class="component">
+  <agm-map [latitude]="lat" [longitude]="lng" [zoom] = "zoom" (mapClick)="onChooseLocation($event)">
+    <agm-marker
+    [latitude]="lat"
+    [longitude]="lng"
+    ></agm-marker>
+    <agm-direction [origin]="origin" [destination]="destination">
+    </agm-direction>
+  </agm-map>
+</div>
+
+<!-- <table>
   <tr>
     <th>QTY Ordered</th>
     <th>QTY Rejected</th>
@@ -99,5 +109,5 @@
 
   </tr>
 </table>
-
+ -->
 

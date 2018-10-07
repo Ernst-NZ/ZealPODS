@@ -47,7 +47,7 @@ const routes: Routes = [
     component: RejectproductsComponent
   },
   {
-    path: 'delivery',
+    path: 'delivery/:devAddress',
     component: DeliveryComponent
   },
   {

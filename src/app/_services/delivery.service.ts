@@ -4,6 +4,7 @@ import { DataService } from '../data.service';
 import { Delivery, IDelivery } from '../_models/delivery';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Alert } from 'selenium-webdriver';
+import { NotifierService } from 'angular-notifier';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,14 @@ export class DeliveryService extends BaseService {
   orderDetails$: Object;
   updateStatus: String;
   addJson = false;
+  addDB = false;
   tempDeliveries: Array<IDelivery> = [];
   tempDelivery: IDelivery = new Delivery();
-  constructor(private data: DataService, private http: HttpClient) {
-    super();    
+  public notifier: NotifierService;
+  constructor(private data: DataService, private http: HttpClient,
+    notifier: NotifierService) {
+    super();
+    this.notifier = notifier;
   }
   // ### Get funtions (SQL Actions) ####
   // ## Get Deliveries
@@ -31,7 +36,7 @@ export class DeliveryService extends BaseService {
     return this.connection.select<IDelivery>({
       from: 'Deliveries',
       // where: {
-      //   delivered: "product"
+      //   delivered: 'product'
       //   // , updated: 'false'
       // }
     });
@@ -109,7 +114,7 @@ export class DeliveryService extends BaseService {
        }
      });
    }
-  
+
   // ## update Product for Edit purposes
   // Get Product
   getProduct(lineId) {
@@ -124,7 +129,7 @@ export class DeliveryService extends BaseService {
         alert(error.message);
       });
   }
- 
+
   serviceTest() {
     const re = /-/gi;
     const str = '2018-09-20T00:00:00+12:00';
@@ -142,11 +147,11 @@ export class DeliveryService extends BaseService {
     console.log('done');
   }
 
-  
+
   // tslint:disable-next-line:max-line-length
   // V2 .. Step 3
-  preUpdateDelivery( type, productNo, 
-    docId, lineId, delivered, 
+  preUpdateDelivery( type, productNo,
+    docId, lineId, delivered,
     QuantityRejected, RejectionReason, SignatureSVG,
     ReceivedBy, PaymentMethod, PaymentAmount, Updated,
     json) {
@@ -156,19 +161,19 @@ export class DeliveryService extends BaseService {
       jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
           RejectionReason, SignatureSVG, ReceivedBy,
         PaymentMethod, PaymentAmount, Updated, jsonTemp
-      )
+      );
   //    this.productAdd(lineId,docId, lineId, RejectionReason, ReceivedBy)
     } else if (type === 'order' && productNo === 1) {
       jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
         RejectionReason, SignatureSVG, ReceivedBy,
         PaymentMethod, PaymentAmount, Updated, jsonTemp
-      )
+      );
      // Delete order if exist
     }
     const updatedValue: IDelivery = {
       id: Number(lineId), documentId: Number(docId),
-      delivered: 'true', 
-      QuantityRejected: Number(QuantityRejected), RejectionReason: RejectionReason,      
+      delivered: 'true',
+      QuantityRejected: Number(QuantityRejected), RejectionReason: RejectionReason,
       SignatureSVG: SignatureSVG, ReceivedBy: ReceivedBy,
       PaymentMethod: PaymentMethod, PaymentAmount: Number(PaymentAmount),
       updated: Updated, json: jsonTemp
@@ -187,10 +192,10 @@ export class DeliveryService extends BaseService {
         alert(error.message);
       });
     if (this.addJson === false && type === 'order') {
-      this.postJson(jsonTemp) 
+      this.postJson(jsonTemp);
       this.addJson = true;
-      return
-    }      
+      return;
+    }
   }
 
   // #####
@@ -278,7 +283,7 @@ export class DeliveryService extends BaseService {
     QuantityOrdered,
     description,
     productCode,
-    sellPrice   
+    sellPrice
   ) {
     const open = indexedDB.open('ZEDS_db', 1);
 
@@ -323,13 +328,13 @@ export class DeliveryService extends BaseService {
   // V2 Add an enry after aproduct has been rejected
   // This will stop the Json from refreshing
   // DB entry is added from rejected page with status:
-  // delivered = 'product' 
+  // delivered = 'product'
   productAdd(
     id,
     documentID,
     lineID,
     QuantityRejected,
-    deliveredTo    
+    deliveredTo
   ) {
     const open = indexedDB.open('ZEDS_db', 1);
 
@@ -386,7 +391,7 @@ export class DeliveryService extends BaseService {
                 const productCode = products[p].ProductCode;
                 const sellPrice = products[p].SellPrice;
                 this.orderAdd(LineId, user, DocumentId,
-                  LineId, QuantityOrdered, description, productCode, sellPrice 
+                  LineId, QuantityOrdered, description, productCode, sellPrice
                 );
                 break;
               }
@@ -401,7 +406,7 @@ export class DeliveryService extends BaseService {
   // ### End
 
   /// Edit Json
-  //V2
+  // V2
   upDateJson(type, docId, lineId, delivered,
     QuantityRejected, RejectionReason, SignatureSVG,
     ReceivedBy, PaymentMethod, PaymentAmount, Updated, jsonTemp ) {
@@ -425,13 +430,11 @@ export class DeliveryService extends BaseService {
               if (products[p].LineId === lineId) {
                 products[p].QuantityRejected = Number(QuantityRejected);
                 products[p].RejectionReason = RejectionReason;
-                break;              
+                break;
               }
             }
           } else {break;}
-      
         }
-              
       }
     }
     const updatedValue: IDelivery = {
@@ -461,27 +464,37 @@ export class DeliveryService extends BaseService {
       });
     return jsonTemp;
   }
-
-  
   postJson(dataString) {
-    console.log(dataString)
+    console.log(dataString);
      return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
        .subscribe(
          val => {
-                 console.log("POST call successful value returned in body",val);
-  //              alert("POST call successful value returned in body: " && val)
-//           alert("Server Update successful")
+           this.showNotification('success', 'Delivery Posted to Main Server');
+           this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
+           this.checkJson();
            //    Clear Indexed DB - Gete new info and populate
 //             this.deleteDelivery(docId)
          },
          response => {
-//           console.log("POST call in error", response);
-           alert("Server Update error " && response);
+           alert('Server Update error ' && response);
          },
          () => {
-//          console.log("The POST observable is now completed.");
-// //         alert("The POST observable is now completed.");
          }
        );
+  }
+
+  public showNotification(type: string, message: string): void {
+    this.notifier.notify(type, message);
+  }
+
+  checkJson() {
+    if (this.addJson = false) {
+      this.dbAdd(
+        0, '', '', 0, 0,
+        '', '', 0, 0, this.orderDetails$
+      );
+      this.addJson = true;
+    }
+      
   }
 }
