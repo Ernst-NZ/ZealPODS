@@ -90,7 +90,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   public signaturePadOptions: Object =  {
     // passed through to szimek/signature_pad constructor
     minWidth: 0.5,
-    canvasWidth: 480,
+    canvasWidth: 300,
     canvasHeight: 110,
     canvasBackgroundColor: 'white'
   };

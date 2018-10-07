@@ -468,10 +468,9 @@ export class DeliveryService extends BaseService {
      return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
        .subscribe(
          val => {
- //                console.log('POST call successful value returned in body', val);
- //          alert('Server Update successful');
            this.showNotification('success', 'Delivery Posted to Main Server');
-
+           this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
+           this.checkJson();
            //    Clear Indexed DB - Gete new info and populate
 //             this.deleteDelivery(docId)
          },
@@ -485,5 +484,13 @@ export class DeliveryService extends BaseService {
 
   public showNotification(type: string, message: string): void {
     this.notifier.notify(type, message);
+  }
+
+  checkJson() {
+      this.dbAdd(
+        0, '', '', 0, 0,
+        '', '', 0, 0, this.orderDetails$
+      );
+      this.addJson = true;
   }
 }
