@@ -38,7 +38,8 @@ import { RejectproductsComponent } from './rejectproducts/rejectproducts.compone
 import { DeliveryComponent } from './delivery/delivery.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { AgmCoreModule } from '@agm/core';
-import { AgmDirectionModule } from 'agm-direction';   // agm-direction
+import { AgmDirectionModule } from 'agm-direction';
+import { JtestComponent } from './jtest/jtest.component';   // agm-direction
 // import * as $ from 'jquery'
 
 const customNotifierOptions: NotifierOptions = {
@@ -100,6 +101,8 @@ const customNotifierOptions: NotifierOptions = {
     SignatureComponent,
     RejectproductsComponent,
     DeliveryComponent,
+    JtestComponent,
+    JtestComponent,
   ],
   imports: [
     BrowserModule,
