@@ -1,6 +1,6 @@
 {
   "name": "design-course",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -30,11 +30,13 @@
     "agm-direction": "^0.7.3",
     "angular-epic-spinners": "^1.0.9",
     "angular-notifier": "^4.1.1",
+    "angular-signature": "^1.0.3",
     "angular-signature-pad": "0.0.14",
     "angular2-signaturepad": "^2.8.0",
     "await-sleep": "0.0.1",
     "bootstrap": "^4.1.3",
-    "core-js": "^2.5.4",
+    "core-js": "^2.5.7",
+    "direction": "^1.0.2",
     "g": "^2.0.1",
     "jquery": "^3.3.1",
     "json.date-extensions": "^1.2.2",

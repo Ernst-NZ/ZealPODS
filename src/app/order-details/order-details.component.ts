@@ -126,6 +126,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.innerWidth = window.innerWidth;
+    alert('resizing'+ this.innerWidth);
   }
 
   ngAfterContentChecked() {
