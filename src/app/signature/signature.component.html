@@ -1,12 +1,13 @@
-<div class="block">
-  <div  id="myCanvas">
-      <signature-pad >
-
-      </signature-pad> </div>
+<div id=sigContainer>
+  <div class="modal-header">
+    <h3 class="modal-title">Sign</h3>
+  </div>
+  <div class="modal-body">
+    <signature-pad #sigPad accept="accept" clear="clear" [options]="signaturePadOptions"></signature-pad>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default pull-left" (click)="sigPad.clear()">Clear signature</button>
+    <button class="btn btn-default" ng-click="$dismiss()">Cancel</button>
+    <button class="btn btn-primary" ng-click="done()">Sign</button>
+  </div>
 </div>
-<hr>
-    <div class="row">
-        <br>
-        <button mat-raised-button color="warm" (click)="drawClear()">Clear</button>
-        <button mat-raised-button color="warm" (click)="drawComplete()">Test Signature</button>
-      </div>
