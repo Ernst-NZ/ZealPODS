@@ -1,6 +1,6 @@
 <nav class="navbar sticky-top navbar-dark bg-dark navbar-expand-sm">
     <i class="fa fa-truck" aria-hidden="true"></i>
-  <a routerLink="" class="navbar-brand">ZEDS</a>
+  <a (click)='goToHome()' class="navbar-brand nav-item" style='color:white; font-weight: bold; cursor: pointer;' >ZEDS</a>
   <div class="navbar mr-auto" id="navbarFixed">
       <ul class="navbar-nav">
         <li *ngIf="globals.selectedRoute" class="nav-item">
@@ -18,7 +18,7 @@
       <li class="nav-item"><a class="nav-link" routerLink="driver-routes" [class.activated]="currentUrl == '/driver-routes'" [class.activated]="currentUrl == '/'">Routes</a></li>
       <li><a class="nav-link" href="." (click)='refresh()'>Refresh</a></li>
       <li><a class="nav-link" [routerLink]="['/login']">Logout...</a></li>
-      <li><a class="nav-link" style="font-size: 0.75em;" href=".">V10.4</a></li>
+      <li><a class="nav-link" style="font-size: 0.75em;" href=".">V10.8</a></li>
     </ul>
   </div>
 </nav>

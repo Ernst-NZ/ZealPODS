@@ -3,6 +3,7 @@ import { DataService } from '../data.service';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 import { DeliveryService } from '../_services/delivery.service';
 import { Delivery, IDelivery } from '../_models/delivery';
+import { Globals } from '../globals';
 
 @Component({
   selector: 'app-driver-routes',
@@ -42,13 +43,14 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
   tempDelivery: IDelivery = new Delivery();
-  constructor(private data: DataService, service: DeliveryService) {
+  constructor(private data: DataService, service: DeliveryService, private globals: Globals, ) {
     this.service = service;
   }
 
   ngOnInit() {
     this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
     this.getJson();
+    this.globals.incomplete = false;
   }
 
   ngAfterContentChecked() {
@@ -57,9 +59,8 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
         this.addDB = true;
         if (this.tempDelivery.delivered === 'true') {
           this.pendingSync = true;
-          this.addDB = true;         
-        };
-        
+          this.addDB = true;
+        }
       }
       this.checkJson();
       this.addDB = true;
@@ -88,14 +89,14 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
         0, '', '', 0, 0,
         '', '', 0, 0, this.allRoutes$
       );
-      this.addJson = true
+      this.addJson = true;
 
     } else {
       this.service.dbAdd(
         0, '', '', 0, 0,
         '', '', 0, 0, this.allRoutes$
       );
-      this.addJson = true
+      this.addJson = true;
     }
   }
 }

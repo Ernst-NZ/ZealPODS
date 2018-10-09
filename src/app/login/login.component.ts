@@ -5,32 +5,32 @@ import { AlertService } from '../_services/alert.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ERROR_COLLECTOR_TOKEN } from '../../../node_modules/@angular/platform-browser-dynamic/src/compiler_factory';
 import { ERROR_COMPONENT_TYPE } from '../../../node_modules/@angular/compiler';
- 
- 
+
+
 @Component({
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
- 
+
 export class LoginComponent implements OnInit {
     model: any = {};
     loading = false;
     returnUrl: string;
- 
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService){}
- 
+        private alertService: AlertService) {}
+
     ngOnInit() {
         // reset login status
         this.authenticationService.logout();
- 
+
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
- 
+
     login() {
         this.loading = true;
         this.authenticationService.login(this.model.username, this.model.password)
@@ -43,5 +43,5 @@ export class LoginComponent implements OnInit {
                     this.loading = false;
                 });
     }
-    
+
 }

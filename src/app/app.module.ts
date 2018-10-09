@@ -36,7 +36,49 @@ import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignatureComponent } from './signature/signature.component';
 import { RejectproductsComponent } from './rejectproducts/rejectproducts.component';
 import { DeliveryComponent } from './delivery/delivery.component';
-// import * as $ from 'jquery'
+import { NotifierModule, NotifierOptions } from 'angular-notifier';
+
+const customNotifierOptions: NotifierOptions = {
+  position: {
+  horizontal: {
+  position: 'middle',
+  distance: 12,
+  },
+  vertical: {
+  position: 'top',
+  distance: 12,
+  gap: 10
+  }
+},
+  theme: 'material',
+  behaviour: {
+    autoHide: 2000,
+    onClick: 'hide',
+    onMouseover: 'pauseAutoHide',
+    showDismissButton: true,
+    stacking: 4
+  },
+  animations: {
+    enabled: true,
+    show: {
+      preset: 'slide',
+      speed: 300,
+      easing: 'ease'
+    },
+    hide: {
+      preset: 'fade',
+      speed: 300,
+      easing: 'ease',
+      offset: 50
+    },
+    shift: {
+      speed: 300,
+      easing: 'ease'
+    },
+    overlap: 150
+  }
+};
+
 
 @NgModule({
   declarations: [
@@ -74,7 +116,13 @@ import { DeliveryComponent } from './delivery/delivery.component';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-  //  $,
+    NotifierModule.withConfig(customNotifierOptions),
+  //   AgmCoreModule.forRoot({
+  //     // tslint:disable-next-line:max-line-length
+  //     apiKey: 'AIzaSyCdiuA3wZZ17bbnUYj_lU_UHlJal6GqS9g'
+  //   }),
+  //   AgmDirectionModule      // agm-direction
+  // //  $,
   ],
   providers: [
     Globals,

@@ -27,7 +27,10 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
   dataset: any = {};
   addDB = false;
 
-  reject: Reason[] = [{ value: 'Damaged', viewValue: 'Damaged' }, { value: 'Wrong Product', viewValue: 'Wrong Product' }, { value: 'Spoiled', viewValue: 'Spoiled' }
+  reject: Reason[] = [
+    { value: 'Damaged', viewValue: 'Damaged' },
+    { value: 'Wrong Product', viewValue: 'Wrong Product' },
+    { value: 'Spoiled', viewValue: 'Spoiled' }
   ];
   productDetails$: Object;
   public lineID: number;
@@ -38,7 +41,9 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
   Reason: string;
   public incomplete: boolean;
 
-  constructor(private route: ActivatedRoute, private data: DataService, service: DeliveryService, private router: Router, private globals: Globals ) {
+  constructor(private route: ActivatedRoute,
+    private data: DataService, service: DeliveryService,
+    private router: Router, private globals: Globals ) {
     this.route.params.subscribe(params => this.productDetails$ = params.DocumentId);
     this.service = service;
     this.incomplete = globals.incomplete;
@@ -56,7 +61,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
   ngAfterContentChecked() {
     if (this.deliveries.length > 0 && this.addDB === false) {
       this.addDB = true;
-      this.dataset = this.tempDelivery.json;      
+      this.dataset = this.tempDelivery.json;
       const drivers = this.dataset['orderGroups'];
       this.productDetails$ = this.tempDelivery.json;
        for (let d = 0; d < drivers.length; d++) {
@@ -70,10 +75,9 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
             for (let p = 0; o < productList.length; p++) {
               if (productList[p].LineId === Number(this.lineID)) {
                 this.oldItem = productList[p];
-                break
+                break;
               }
             }
-            break
           }
         }
       }
@@ -94,7 +98,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
         alert(error.message);
       });
   }
- 
+
   updateDelivery() {
     if (this.oldItem.QuantityRejected > this.oldItem.QuantityOrdered || this.oldItem.QuantityRejected < 0) {
       return alert('Reject total can not be more than the Ordered total or less than zero.');
@@ -115,7 +119,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
       this.oldOrder.PaymentAmount,
       'false',
       this.productDetails$);
-    alert('Delivery Successfully updated');
+    // alert('Delivery Successfully updated');
     this.router.navigate(['/order-details/', this.docID]);
   }
 }

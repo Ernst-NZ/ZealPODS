@@ -1,19 +1,20 @@
-import {Component, OnInit, ViewChild, AfterContentChecked, AfterViewChecked, NgModule }from '@angular/core'; 
-import {ActivatedRoute, Router }from '@angular/router'; 
-import {DataService }from '../data.service'; 
-import {trigger, style, transition, animate, keyframes, query, stagger }from '@angular/animations'; 
-import {DeliveryService }from '../_services/delivery.service'; 
-import {Delivery, IDelivery }from '../_models/delivery'; 
-import {SignaturePad }from 'angular2-signaturepad/signature-pad'; 
+import {Component, OnInit, ViewChild, AfterContentChecked, AfterViewChecked, NgModule, HostListener } from '@angular/core';
+import {ActivatedRoute, Router } from '@angular/router';
+import {DataService } from '../data.service';
+import {trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
+import {DeliveryService } from '../_services/delivery.service';
+import {Delivery, IDelivery } from '../_models/delivery';
+import {SignaturePad } from 'angular2-signaturepad/signature-pad';
 import {SignaturePadModule } from 'angular2-signaturepad';
 import { AppComponent } from '../app.component';
 import { AutofillMonitor } from '../../../node_modules/@angular/cdk/text-field';
+import { NotifierService } from 'angular-notifier';
 
 
 
 export interface Payment {
-  value:string; 
-  viewValue:string; 
+  value: string;
+  viewValue: string;
 }
 
 @NgModule({
@@ -24,28 +25,28 @@ export interface Payment {
 })
 
 @Component( {
-  selector:'app-order-details', 
-  templateUrl:'./order-details.component.html', 
-  styleUrls:['./order-details.component.scss'], 
-  providers:[DeliveryService], 
-  animations:[
+  selector: 'app-order-details',
+  templateUrl: './order-details.component.html',
+  styleUrls: ['./order-details.component.scss'],
+  providers: [DeliveryService],
+  animations: [
     trigger('listStagger', [
       transition('* <=> *', [
         query(
-          ':enter', 
+          ':enter',
           [
-            style( {opacity:0, transform:'translateY(-15px)'}), 
+            style( {opacity: 0, transform: 'translateY(-15px)'}),
             stagger(
-              '50ms', 
+              '50ms',
               animate(
-                '550ms ease-out', 
-                style( {opacity:1, transform:'translateY(0px)'})
+                '550ms ease-out',
+                style( {opacity: 1, transform: 'translateY(0px)'})
               )
             )
-          ],  {optional:true }
-        ), 
-        query(':leave', animate('50ms', style( {opacity:0 })),  {
-          optional:true
+          ],  {optional: true }
+        ),
+        query(':leave', animate('50ms', style( {opacity: 0 })),  {
+          optional: true
         })
       ])
     ])
@@ -54,73 +55,86 @@ export interface Payment {
 
 export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   @ViewChild(SignaturePad)
-  signaturePad:SignaturePad; 
-  orderDetails$:Object; 
-  allRoutes$:object; 
-  deliveries:Array < IDelivery >  = []; 
-  oldDelivery:IDelivery = new Delivery(); 
-  tempDelivery:IDelivery = new Delivery(); 
+  signaturePad: SignaturePad;
+  orderDetails$: Object;
+  allRoutes$: object;
+  deliveries: Array < IDelivery >  = [];
+  oldDelivery: IDelivery = new Delivery();
+  tempDelivery: IDelivery = new Delivery();
+  public notifier: NotifierService;
+  innerWidth: any;
+  oldItem: any =  {};
+  oldOrder: any =  {};
+  dataset: any =  {};
+  productList: any = {};
 
-  oldItem:any =  {}; 
-  oldOrder:any =  {}; 
-  dataset:any =  {};
-  productList: any = {}; 
-
-  json:Array < IDelivery >  = []; 
-  tempJson:IDelivery = new Delivery(); 
-  private service:DeliveryService; 
+  json: Array < IDelivery >  = [];
+  tempJson: IDelivery = new Delivery();
+  private service: DeliveryService;
   public docID;
   public driver;
-  public signatureImage:string; 
-  public i:number; 
-  forceView = false; 
+  public signatureImage: string;
+  public i: number;
+  forceView = false;
   delivered = false;
-  loading = false; 
+  loading = false;s
 
-  show = false; 
-  hidden = true; 
-  addDB = false; 
-  pay:Payment[] = [ {value:'No Payment', viewValue:'No Payment'},  {value:'Cash', viewValue:'Cash'},  {value:'Cheque', viewValue:'Cheque'}
-  ]; 
+  show = false;
+  hidden = true;
+  addDB = false;
+  pay: Payment[] = [ {value: 'No Payment', viewValue: 'No Payment'},
+  {value: 'Cash', viewValue: 'Cash'},
+  {value: 'Cheque', viewValue: 'Cheque'}
+  ];
 
-  public signaturePadOptions:Object =  {
+  public signaturePadOptions: Object =  {
     // passed through to szimek/signature_pad constructor
-    minWidth:0.5, 
-    canvasWidth: 490,
-    canvasHeight:110, 
-    canvasBackgroundColor:'white'
-  }; 
+    minWidth: 0.5,
+    canvasWidth: this.innerWidth,
+    canvasHeight: 110,
+    canvasBackgroundColor: 'white'
+  };
 
     toggleTable() {
-    this.forceView = true; 
-    this.show =  ! this.show; 
-    this.hidden =  ! this.hidden; 
+    this.forceView = true;
+    this.show =  ! this.show;
+    this.hidden =  ! this.hidden;
   }
 
   constructor(
     private route:ActivatedRoute, 
     private data:DataService, 
     service:DeliveryService, 
-    private router:Router
+    private router:Router,
+    notifier: NotifierService
   ) {
     this.route.params.subscribe(
       params => (this.orderDetails$ = params.DocumentId)
     ); 
     this.service = service; 
+    this.notifier = notifier;
   }
 
   ngOnInit() {
   //  this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
-    const getOrder = this.route.snapshot.paramMap.get('DocumentId'); 
-    this.docID = getOrder; 
-    this.getJson(); 
+    const getOrder = this.route.snapshot.paramMap.get('DocumentId');
+    this.docID = getOrder;
+    this.getJson();
+      this.innerWidth = window.innerWidth;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
+    alert('resizing'+ this.innerWidth);
   }
 
   ngAfterContentChecked() {
+ //   alert(this.innerWidth)
     if (this.deliveries.length > 0 && this.addDB === false) {
       this.addDB = true;
       this.dataset = this.tempDelivery.json;
-      const drivers = this.dataset['orderGroups'];            
+      const drivers = this.dataset['orderGroups'];
       this.orderDetails$ = this.tempDelivery.json;
       for (let d = 0; d < drivers.length; d++) {
         const orderList = drivers[d]['Orders'];
@@ -158,38 +172,40 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       })
       .catch(error => {
         console.error(error);
-        alert(error.message);     
+        alert(error.message);
       });
   }
- 
+
   // V2 Post data  Step 1 -> 235
   postData() {
     const SignatureSVG = this.signaturePad.toDataURL('image/svg+xml');
-    console.log(SignatureSVG); 
+    console.log(SignatureSVG);
 
     if (this.signaturePad.isEmpty()) {
-      return alert('Please provide a signature first.'); 
+      return alert('Please provide a signature first.');
     }
     if (this.oldOrder.ReceivedBy === '') {
-      return alert('Please provide a Name.'); 
+      return alert('Please provide a Name.');
     }
-    const newDate = JSON.stringify(new Date()); 
-    
+    const newDate = JSON.stringify(new Date());
+
     try {
-      this.i = 0; 
+      this.i = 0;
     //  for (let d = 0; d < this.productList.length; d++) {
-        this.oldDelivery = this.deliveries[0]; 
-        this.i = this.i + 1; 
+        this.oldDelivery = this.deliveries[0];
+        this.i = this.i + 1;
         this.updateDelivery(
-          // this.deliveries[d]['id'], 
+          // this.deliveries[d]['id'],
           0,
-          SignatureSVG, 
-          newDate, 
-          this.oldOrder.ReceivedBy, 
-          this.oldOrder.PaymentMethod, 
-          this.oldOrder.PaymentAmount,); 
+          SignatureSVG,
+          newDate,
+          this.oldOrder.ReceivedBy,
+          this.oldOrder.PaymentMethod,
+          this.oldOrder.PaymentAmount);
    //   }
-      alert('Delivery Successfully Updated');
+      //alert('Delivery Successfully Updated');
+      //Available showNotification types are default,info,success,warning,error//
+      this.showNotification( 'success', 'Delivery Successfully Updated' );
       this.router.navigate(['/route-Orders/', this.driver]); 
     }catch (error) {
       alert(error); 
@@ -197,16 +213,16 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   }
 
   clearOldDelivery() {
-    this.oldDelivery = new Delivery(); 
+    this.oldDelivery = new Delivery();
   }
 
   // V2 Update Step 2
-  updateDelivery(    
+  updateDelivery(
     Lineid,
-    SignatureSVG, 
-    newDate, 
-    ReceivedBy, 
-    PaymentMethod, 
+    SignatureSVG,
+    newDate,
+    ReceivedBy,
+    PaymentMethod,
     PaymentAmount) {
     this.loading = true;
     this.service.preUpdateDelivery( 'order', this.i,
@@ -219,50 +235,50 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
        ReceivedBy,
        PaymentMethod,
        PaymentAmount,
-       'false',
+       'true',
       this.orderDetails$);
     this.loading = false;
   }
   drawClear() {
-    this.signaturePad.clear(); 
+    this.signaturePad.clear();
   }
 
   /// Signature Stuff
 
   // drawComplete() {
   //   if (this.signaturePad.isEmpty()) {
-  //     return alert('Please provide a signature first.'); 
+  //     return alert('Please provide a signature first.');
   //   }
 
-  //   this.signatureImage = this.signaturePad.toDataURL(); 
+  //   this.signatureImage = this.signaturePad.toDataURL();
   //   //  console.log(this.signatureImage);
 
-  //   const dataSvg = this.signaturePad.toDataURL('image/svg+xml'); 
-  //   console.log(atob(dataSvg.split(',')[1])); 
-  //   this.download(dataSvg, 'signature.svg'); 
+  //   const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
+  //   console.log(atob(dataSvg.split(',')[1]));
+  //   this.download(dataSvg, 'signature.svg');
 
-  //   const dataJpeg = this.signaturePad.toDataURL('image/jpeg'); 
-  //   this.download(dataJpeg, 'signature.jpg'); 
+  //   const dataJpeg = this.signaturePad.toDataURL('image/jpeg');
+  //   this.download(dataJpeg, 'signature.jpg');
 
-  //   const dataPng = this.signaturePad.toDataURL('image/png'); 
-  //   this.download(dataPng, 'signature.png'); 
+  //   const dataPng = this.signaturePad.toDataURL('image/png');
+  //   this.download(dataPng, 'signature.png');
 
   //   //   console.log(dataPng);
   // }
 
   // download(dataURL, filename) {
-  //   const blob = this.dataURLToBlob(dataURL); 
-  //   const url = window.URL.createObjectURL(blob); 
+  //   const blob = this.dataURLToBlob(dataURL);
+  //   const url = window.URL.createObjectURL(blob);
 
-  //   const a = document.createElement('a'); 
+  //   const a = document.createElement('a');
   //   // a.style = 'display: none';
-  //   a.href = url; 
-  //   a.download = filename; 
+  //   a.href = url;
+  //   a.download = filename;
 
-  //   document.body.appendChild(a); 
-  //   a.click(); 
+  //   document.body.appendChild(a);
+  //   a.click();
 
-  //   window.URL.revokeObjectURL(url); 
+  //   window.URL.revokeObjectURL(url);
   // }
 
   dataURLToBlob(dataURL) {
@@ -281,5 +297,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   }
 
   /////
-
+	public showNotification( type: string, message: string ): void {
+		this.notifier.notify( type, message );
+  }
+  
 }
