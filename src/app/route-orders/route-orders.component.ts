@@ -52,6 +52,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
     this.selectedRoute = getOrder;
     this.globals.selectedRoute = this.selectedRoute;
     this.globals.incomplete = false;
+    this.getDimensions();
   }
   ngAfterContentChecked() {
     if (typeof this.deliveries[0] !== 'undefined' && this.addDB === false) {
@@ -71,6 +72,14 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
         console.error(error);
         alert(error.message);
       });
+  }
+  private getDimensions(){
+    if(innerWidth >= 500) {
+      this.globals.cWidth = 490;
+    } else {
+      this.globals.cWidth = innerWidth - 50;
+    }
+
   }
 }
 

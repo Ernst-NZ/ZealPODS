@@ -9,8 +9,8 @@ import {SignaturePadModule } from 'angular2-signaturepad';
 import { AppComponent } from '../app.component';
 import { AutofillMonitor } from '../../../node_modules/@angular/cdk/text-field';
 import { NotifierService } from 'angular-notifier';
-
-
+import { SignatureComponent } from '../signature/signature.component';
+import { Globals } from '../globals';
 
 export interface Payment {
   value: string;
@@ -62,11 +62,14 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   oldDelivery: IDelivery = new Delivery();
   tempDelivery: IDelivery = new Delivery();
   public notifier: NotifierService;
-  innerWidth: any;
   oldItem: any =  {};
   oldOrder: any =  {};
   dataset: any =  {};
   productList: any = {};
+
+  innerWidth: any;
+  cWidth: number;
+
 
   json: Array < IDelivery >  = [];
   tempJson: IDelivery = new Delivery();
@@ -77,7 +80,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   public i: number;
   forceView = false;
   delivered = false;
-  loading = false;s
+  loading = false;
 
   show = false;
   hidden = true;
@@ -89,9 +92,11 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 
   public signaturePadOptions: Object =  {
     // passed through to szimek/signature_pad constructor
+    
     minWidth: 0.5,
-    canvasWidth: this.innerWidth,
-    canvasHeight: 110,
+    
+    canvasWidth: this.globals.cWidth,
+    canvasHeight: 190,
     canvasBackgroundColor: 'white'
   };
 
@@ -106,7 +111,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     private data:DataService, 
     service:DeliveryService, 
     private router:Router,
-    notifier: NotifierService
+    notifier: NotifierService,
+    private globals: Globals
   ) {
     this.route.params.subscribe(
       params => (this.orderDetails$ = params.DocumentId)
@@ -120,14 +126,29 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     const getOrder = this.route.snapshot.paramMap.get('DocumentId');
     this.docID = getOrder;
     this.getJson();
-      this.innerWidth = window.innerWidth;
+    this.innerWidth = window.innerWidth;
+    this.cWidth = this.globals.cWidth;
+
+
+    // $(document).ready(function() {
+    //   var canvas = document.getElementById("signatureContainer");
+    //   canvas.clientWidth = $("#parent").width();
+    //   canvas.height = $("#parent").height();
+    //   console.log(canvas.width)
+    // });
+
+   // }
+  // });
+
+
+
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.innerWidth = window.innerWidth;
-    alert('resizing'+ this.innerWidth);
-  }
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event) {
+  //   this.innerWidth = window.innerWidth;
+  //   alert('resizing'+ this.innerWidth);
+  // }
 
   ngAfterContentChecked() {
  //   alert(this.innerWidth)
@@ -245,41 +266,41 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 
   /// Signature Stuff
 
-  // drawComplete() {
-  //   if (this.signaturePad.isEmpty()) {
-  //     return alert('Please provide a signature first.');
-  //   }
+  drawComplete() {
+    if (this.signaturePad.isEmpty()) {
+      return alert('Please provide a signature first.');
+    }
 
-  //   this.signatureImage = this.signaturePad.toDataURL();
-  //   //  console.log(this.signatureImage);
+    this.signatureImage = this.signaturePad.toDataURL();
+    //  console.log(this.signatureImage);
 
-  //   const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
-  //   console.log(atob(dataSvg.split(',')[1]));
-  //   this.download(dataSvg, 'signature.svg');
+    const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
+    console.log(atob(dataSvg.split(',')[1]));
+    this.download(dataSvg, 'signature.svg');
 
-  //   const dataJpeg = this.signaturePad.toDataURL('image/jpeg');
-  //   this.download(dataJpeg, 'signature.jpg');
+    const dataJpeg = this.signaturePad.toDataURL('image/jpeg');
+    this.download(dataJpeg, 'signature.jpg');
 
-  //   const dataPng = this.signaturePad.toDataURL('image/png');
-  //   this.download(dataPng, 'signature.png');
+    const dataPng = this.signaturePad.toDataURL('image/png');
+    this.download(dataPng, 'signature.png');
 
-  //   //   console.log(dataPng);
-  // }
+    //   console.log(dataPng);
+  }
 
-  // download(dataURL, filename) {
-  //   const blob = this.dataURLToBlob(dataURL);
-  //   const url = window.URL.createObjectURL(blob);
+  download(dataURL, filename) {
+    const blob = this.dataURLToBlob(dataURL);
+    const url = window.URL.createObjectURL(blob);
 
-  //   const a = document.createElement('a');
-  //   // a.style = 'display: none';
-  //   a.href = url;
-  //   a.download = filename;
+    const a = document.createElement('a');
+    // a.style = 'display: none';
+    a.href = url;
+    a.download = filename;
 
-  //   document.body.appendChild(a);
-  //   a.click();
+    document.body.appendChild(a);
+    a.click();
 
-  //   window.URL.revokeObjectURL(url);
-  // }
+    window.URL.revokeObjectURL(url);
+  }
 
   dataURLToBlob(dataURL) {
     // Code taken from https://github.com/ebidel/filer.js
@@ -300,5 +321,6 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 	public showNotification( type: string, message: string ): void {
 		this.notifier.notify( type, message );
   }
-  
+
 }
+

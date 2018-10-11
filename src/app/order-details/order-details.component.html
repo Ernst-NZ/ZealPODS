@@ -52,17 +52,19 @@
         </table>
         <br>
         <span style='font-weight: bolder; text-decoration: underline;'>
-          Signature</span>
+          Signature {{cWidth}}</span>
           <!-- <button mat-raised-button color='warm' (click)='addSignature()'>Add Signature</button> -->
-          <div id='signature-pad' class='signature-pad' >
-            <signature-pad [options]="signaturePadOptions"></signature-pad>
-            <button type="button" class="btn btn-info ml-auto" routerLink="/signature"><i class="material-icons">fullscreen</i></button>
+          <div id="signatureContainer" style="max-width:500px; position: relative;">
+            <div id='signature-pad' class='signature-pad' >
+              <signature-pad [options]="signaturePadOptions"></signature-pad>
+            </div>
+            <div style='margin-top: 5px; margin-bottom: 5px'>
+              <button type="button" class="btn btn-info" style="width: 150px" (click)='drawClear()'>Clear</button>
+              <button type="button" class="btn btn-info" style="width: 120px; float:right;" routerLink="/signature">Fullscreen</button>                    
+              <!-- <i class="material-icons">fullscreen</i> -->
+              <button mat-raised-button color='warm' (click)='drawComplete()'>Test Signature</button>
+            </div>
           </div>
-        <div style='margin-top: 5px; margin-bottom: 5px;'>
-          <button type="button" class="btn btn-info" style="width: 150px" (click)='drawClear()'>Clear</button>
-          
-          <!-- <button mat-raised-button color='warm' (click)='drawComplete()'>Test Signature</button> -->
-        </div>
 
         <div *ngIf='!delivered' class='block' style='margin-bottom: 5px; border: 2px solid red;'>
           <mat-form-field style='width: 95%; color: black;'>
