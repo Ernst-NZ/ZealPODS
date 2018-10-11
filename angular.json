@@ -38,12 +38,7 @@
               }
             ],
             "scripts": [
-              "./node_modules/jquery/dist/jquery.min.js",
-              "./node_modules/jquery/dist/jSignature.js",
-              "./node_modules/jquery/dist/jSignature.min.js",
-              "./node_modules/jquery/dist/CompressorBase30.js",
-              "./node_modules/jquery/dist/CompressorSVG.js",
-              "./node_modules/jquery/dist/UndoButton.js"
+              "./node_modules/jquery/dist/jquery.min.js"
             ]
           },
           "configurations": {
