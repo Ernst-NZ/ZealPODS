@@ -44,7 +44,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   oldDelivery: IDelivery = new Delivery();
   tempDelivery: IDelivery = new Delivery();
   constructor(private data: DataService, service: DeliveryService, private globals: Globals, ) {
-    this.service = service;
+  this.service = service;
   }
 
   ngOnInit() {

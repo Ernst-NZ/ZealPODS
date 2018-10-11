@@ -488,13 +488,9 @@ export class DeliveryService extends BaseService {
   }
 
   checkJson() {
-    if (this.addJson = false) {
       this.dbAdd(
         0, '', '', 0, 0,
         '', '', 0, 0, this.orderDetails$
-      );
-      this.addJson = true;
-    }
-      
+      );      
   }
 }
