@@ -260,6 +260,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       this.orderDetails$);
     this.loading = false;
   }
+  
   drawClear() {
     this.signaturePad.clear();
   }
@@ -279,10 +280,10 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     this.download(dataSvg, 'signature.svg');
 
     const dataJpeg = this.signaturePad.toDataURL('image/jpeg');
-    this.download(dataJpeg, 'signature.jpg');
+   // this.download(dataJpeg, 'signature.jpg');
 
     const dataPng = this.signaturePad.toDataURL('image/png');
-    this.download(dataPng, 'signature.png');
+  //  this.download(dataPng, 'signature.png');
 
     //   console.log(dataPng);
   }
