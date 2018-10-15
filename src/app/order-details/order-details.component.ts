@@ -85,8 +85,9 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   ];
   public signaturePadOptions: Object = {
     // passed through to szimek/signature_pad constructor
-    minWidth: 0.5,
+    // canvasWidth: this.globals.cWidth,
     canvasWidth: this.globals.cWidth,
+    minWidth: 0.5,    
     canvasHeight: 100,
     canvasBackgroundColor: 'white'
   };
@@ -183,6 +184,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     const newDate = JSON.stringify(new Date());
 
     try {
+      this.loading = true;
       this.i = 0;
       for (let d = 0; d < this.productList.length; d++) {
         this.oldDelivery = this.deliveries[d];
@@ -198,7 +200,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       }
     //  alert('Delivery Successfully Updated');
       this.showNotification('success', 'Delivery Successfully Updated');
-      this.router.navigate(['/route-Orders/', this.globals.driver ]);
+      this.loading = false;
+ //     this.router.navigate(['/route-Orders/', this.globals.driver ]);
     } catch (error) {
       alert(error);
     }

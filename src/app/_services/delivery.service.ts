@@ -5,6 +5,9 @@ import { Delivery, IDelivery } from '../_models/delivery';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Alert } from 'selenium-webdriver';
 import { NotifierService } from 'angular-notifier';
+import { Globals } from '../globals';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +21,8 @@ export class DeliveryService extends BaseService {
   tempDelivery: IDelivery = new Delivery();
   public notifier: NotifierService;
   constructor(private data: DataService, private http: HttpClient,
-    notifier: NotifierService) {
+    notifier: NotifierService, private route: ActivatedRoute,
+    private router: Router, private globals: Globals,) {
     super();
     this.notifier = notifier;
   }
@@ -472,11 +476,14 @@ export class DeliveryService extends BaseService {
            this.showNotification('success', 'Delivery Posted to Main Server');
            this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
            this.checkJson();
+       //    this.router.navigate(['/route-Orders/', this.globals.driver]);
+           this.router.navigate(['/']);
            //    Clear Indexed DB - Gete new info and populate
 //             this.deleteDelivery(docId)
          },
          response => {
            alert('Server Update error ' && response);
+           this.router.navigate(['/']);
          },
          () => {
          }
