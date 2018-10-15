@@ -5,4 +5,5 @@ export class Globals {
   selectedRoute: string;
   incomplete: boolean;
   cWidth: number;
+  driver: string;
 }

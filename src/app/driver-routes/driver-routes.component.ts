@@ -59,7 +59,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
         this.addDB = true;
         if (this.tempDelivery.delivered === 'true') {
           this.pendingSync = true;
-          this.addDB = true;
+          this.addDB = true;          
         }
       }
       this.checkJson();

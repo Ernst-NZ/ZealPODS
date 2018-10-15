@@ -40,7 +40,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   constructor(private route: ActivatedRoute, private data: DataService, private globals: Globals, service: DeliveryService) {
     this.route.params.subscribe(params => this.allRoutes$ = data);
     this.selectedRoute = globals.selectedRoute;
-    this.service = service;
+    this.service = service;   
   }
 
 
@@ -53,6 +53,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
     this.globals.selectedRoute = this.selectedRoute;
     this.globals.incomplete = false;
     this.getDimensions();
+    this.globals.driver = this.selectedRoute;
   }
   ngAfterContentChecked() {
     if (typeof this.deliveries[0] !== 'undefined' && this.addDB === false) {
