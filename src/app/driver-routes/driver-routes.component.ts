@@ -39,6 +39,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   addDB = false;
   addJson = false;
   pendingSync = false;
+  isOnline = false;
   private service: DeliveryService;
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
@@ -51,6 +52,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
     this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
     this.getJson();
     this.globals.incomplete = false;
+    alert(window.ononline);
   }
 
   ngAfterContentChecked() {

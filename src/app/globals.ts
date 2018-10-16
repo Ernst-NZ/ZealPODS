@@ -6,4 +6,5 @@ export class Globals {
   incomplete: boolean;
   cWidth: number;
   driver: string;
+  status = 'OFFLINE';
 }
