@@ -473,7 +473,7 @@ export class DeliveryService extends BaseService {
      return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
        .subscribe(
          val => {
-           this.showNotification('success', 'Delivery Posted to Main Server');
+      //     this.showNotification('success', 'Delivery Posted to Main Server');
            this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
            this.checkJson();
        //    this.router.navigate(['/route-Orders/', this.globals.driver]);
