@@ -482,7 +482,7 @@ export class DeliveryService extends BaseService {
 //             this.deleteDelivery(docId)
          },
          response => {
-           alert('Server Update error ' && response);
+   //        alert('Server Update error ' && response);
            this.router.navigate(['/']);
          },
          () => {
