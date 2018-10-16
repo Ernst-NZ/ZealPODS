@@ -49,12 +49,33 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
     this.service = service;
   }
 
-  ngOnInit() {    
+  // ngOnInit() {    
+  //   this.getJson();
+  //   this.globals.incomplete = false;
+  //   if (this.emptyDatabase && this.addDB === false) {
+  //     this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
+  //   }
+  // }
+
+  // ngAfterContentChecked() {
+  //   if (typeof this.allRoutes$ !== 'undefined' && this.addDB === false) {
+  //     if (this.deliveries.length > 0 && this.addDB === false) {
+  //       this.addDB = true;
+  //       if (this.tempDelivery.delivered === 'true') {
+  //         this.pendingSync = true;
+  //         this.addDB = true;
+  //       }
+  //     }
+  //     this.checkJson();
+  //     this.addDB = true;
+  //   }
+  // }
+
+
+  ngOnInit() {
+    this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
     this.getJson();
     this.globals.incomplete = false;
-    if (this.emptyDatabase && this.addDB === false) {
-      this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
-    }
   }
 
   ngAfterContentChecked() {
@@ -70,6 +91,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
       this.addDB = true;
     }
   }
+
 
   // ## Get Json
   getJson() {
