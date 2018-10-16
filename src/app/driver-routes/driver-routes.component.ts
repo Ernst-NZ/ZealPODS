@@ -39,7 +39,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   addDB = false;
   addJson = false;
   pendingSync = false;
-  emptyDatabase = false;
+  isOnline = false;
   private service: DeliveryService;
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
@@ -49,23 +49,23 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
-  //  this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
+    this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
     this.getJson();
-    this.globals.incomplete = false;    
+    this.globals.incomplete = false;
   }
 
   ngAfterContentChecked() {
-    if (this.emptyDatabase && this.addDB === false) {
-      this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
-      this.addDB = true;
-      this.checkJson();
-    } else{
-      if (typeof this.deliveries[0] !== 'undefined' && this.addDB === false) {
+    if (typeof this.allRoutes$ !== 'undefined' && this.addDB === false) {
+      if (this.deliveries.length > 0 && this.addDB === false) {
         this.addDB = true;
-        this.allRoutes$ = this.deliveries[0]['json'];
-        console.log(this.allRoutes$);
-      } 
-    }    
+        if (this.tempDelivery.delivered === 'true') {
+          this.pendingSync = true;
+          this.addDB = true;
+        }
+      }
+      this.checkJson();
+      this.addDB = true;
+    }
   }
 
   // ## Get Json
@@ -75,7 +75,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
         this.deliveries = deliveries;
         if (deliveries.length > 0) {
           this.tempDelivery = deliveries[0];
-        } else { this.emptyDatabase = true}
+        }
       })
       .catch(error => {
         console.error(error);
