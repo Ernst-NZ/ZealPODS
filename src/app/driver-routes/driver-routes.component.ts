@@ -49,10 +49,12 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
     this.service = service;
   }
 
-  ngOnInit() {
-    this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
+  ngOnInit() {    
     this.getJson();
     this.globals.incomplete = false;
+    if (this.emptyDatabase && this.addDB === false) {
+      this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
+    }
   }
 
   ngAfterContentChecked() {
