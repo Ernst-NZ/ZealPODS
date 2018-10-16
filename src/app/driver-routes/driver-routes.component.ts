@@ -40,6 +40,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   addJson = false;
   pendingSync = false;
   isOnline = false;
+  emptyDatabase = false;
   private service: DeliveryService;
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
@@ -75,7 +76,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
         this.deliveries = deliveries;
         if (deliveries.length > 0) {
           this.tempDelivery = deliveries[0];
-        }
+        } else { this.emptyDatabase = true }
       })
       .catch(error => {
         console.error(error);

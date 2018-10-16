@@ -34,13 +34,14 @@
     {
       "name": "orders",
       "urls": [
-        "https://test1.zealsystems.co.nz/api/values/1"
+        "https://test1.zealsystems.co.nz/api/values/1",
+        "https: //test1.zealsystems.co.nz/api/values/1"
       ],
       "cacheConfig": {
-        "maxSize": 1,
-        "maxAge": "1h",
-        "timeout": "6s",
-        "strategy": "freshness"
+        "maxSize": 5,
+        "maxAge": "6h",
+        "timeout": "2s",
+        "strategy": "performance"
       }
     }
 
