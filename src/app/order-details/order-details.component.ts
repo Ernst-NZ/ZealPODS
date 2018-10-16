@@ -182,9 +182,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       return alert('Please provide a Name.');
     }
     const newDate = JSON.stringify(new Date());
-
+    this.loading = true;
     try {
-      this.loading = true;
       this.i = 0;
       for (let d = 0; d < this.productList.length; d++) {
         this.oldDelivery = this.deliveries[d];
@@ -201,6 +200,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     //  alert('Delivery Successfully Updated');
       this.showNotification('success', 'Delivery Successfully Updated');
       this.loading = false;
+      this.router.navigate(['/']);
  //     this.router.navigate(['/route-Orders/', this.globals.driver ]);
     } catch (error) {
       alert(error);

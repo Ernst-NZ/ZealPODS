@@ -477,13 +477,14 @@ export class DeliveryService extends BaseService {
            this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
            this.checkJson();
        //    this.router.navigate(['/route-Orders/', this.globals.driver]);
-           this.router.navigate(['/']);
+     //      this.router.navigate(['/']);
            //    Clear Indexed DB - Gete new info and populate
 //             this.deleteDelivery(docId)
          },
          response => {
    //        alert('Server Update error ' && response);
-           this.router.navigate(['/']);
+           this.showNotification('success', 'Delivery Successfully Updated');
+   //        this.router.navigate(['/']);
          },
          () => {
          }
