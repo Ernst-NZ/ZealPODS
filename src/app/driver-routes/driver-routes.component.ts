@@ -58,6 +58,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
     if (this.emptyDatabase && this.addDB === false) {
       this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
       this.addDB = true;
+      this.checkJson();
     } else{
       if (typeof this.deliveries[0] !== 'undefined' && this.addDB === false) {
         this.addDB = true;
