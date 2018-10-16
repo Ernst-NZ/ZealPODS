@@ -437,7 +437,7 @@ export class DeliveryService extends BaseService {
                 break;
               }
             }
-          } else {break;}
+          } else { break; }
         }
       }
     }
@@ -498,6 +498,11 @@ export class DeliveryService extends BaseService {
       this.dbAdd(
         0, '', '', 0, 0,
         '', '', 0, 0, this.orderDetails$
+<<<<<<< HEAD
       );      
   }
+=======
+      );
+    }
+>>>>>>> 840cc246efd35ae96f79374800770a2640b99f86
 }

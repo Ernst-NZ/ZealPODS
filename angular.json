@@ -38,7 +38,12 @@
               }
             ],
             "scripts": [
+<<<<<<< HEAD
               "./node_modules/jquery/dist/jquery.min.js"            ]
+=======
+              "./node_modules/jquery/dist/jquery.min.js"
+            ]
+>>>>>>> 840cc246efd35ae96f79374800770a2640b99f86
           },
           "configurations": {
             "production": {
