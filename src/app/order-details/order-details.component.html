@@ -61,7 +61,7 @@
             <div style='margin-top: 5px; margin-bottom: 5px'>
               <button type="button" class="btn btn-info" style="width: 150px" (click)='drawClear()'>Clear</button>
               <!-- <button type="button" class="btn btn-info" style="width: 120px; float:right;" routerLink="/signature">Fullscreen</button>  -->
-              <button mat-raised-button color='warm' (click)='drawComplete()'>Test Signature</button>
+              <!-- <button mat-raised-button color='warm' (click)='drawComplete()'>Test Signature</button> -->
             </div>
           </div>
 
@@ -87,7 +87,7 @@
         </div>
         <div class='block' style='margin-bottom: 5px;' *ngIf='!delivered'>
           <mat-form-field style='width: 95%; color: black;'>
-            <input type='number' min='0' matInput placeholder='Amount' [(ngModel)]='oldOrder.PaymentAmount'>
+            <input type='number' min='0' onfocus="this.value=''" matInput placeholder='Amount' [(ngModel)]='oldOrder.PaymentAmount'>
             <span *ngIf='delivered'>{{oldOrder.PaymentAmount}}</span>
           </mat-form-field>
         </div>

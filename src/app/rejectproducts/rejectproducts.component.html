@@ -1,7 +1,6 @@
 <h3 class='headerText'>Product Details</h3>
 <hr class='devide'>
 <div *ngIf='productDetails$' style="width: 100%; max-width: 500px; ">
-
   <div id='main'>
     <ul *ngFor='let driver of productDetails$.orderGroups'>
       <ul *ngFor='let order of driver.Orders'>
@@ -31,8 +30,8 @@
                     <td>QTY Rejected</td>
                     <td class='strong inPutBox'>
                       <mat-form-field class='matInput'>
-                        <input type='number' min="0" max={{oldItem.QuantityOrdered}} matInput placeholder='Number' [(ngModel)]='oldItem.QuantityRejected'
-                          #QuantityRejected="ngModel">
+                        <input type='number' min="0" onfocus="this.value=''" max={{oldItem.QuantityOrdered}} matInput placeholder='Number' [(ngModel)]='oldItem.QuantityRejected'
+                          #QuantityRejected="ngModel" autofocus>
                       </mat-form-field>
                     </td>
                   </tr>

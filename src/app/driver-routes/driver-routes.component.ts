@@ -4,6 +4,9 @@ import { trigger, style, transition, animate, keyframes, query, stagger } from '
 import { DeliveryService } from '../_services/delivery.service';
 import { Delivery, IDelivery } from '../_models/delivery';
 import { Globals } from '../globals';
+import { NotifierService } from 'angular-notifier';
+import { isFulfilled } from '../../../node_modules/@types/q';
+import { timeout } from '../../../node_modules/rxjs/operators';
 
 @Component({
   selector: 'app-driver-routes',
@@ -38,6 +41,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   allRoutes$: object;
   addDB = false;
   addJson = false;
+  loading = true;
   pendingSync = false;
   isOnline = false;
   emptyDatabase = false;
@@ -45,8 +49,10 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
   tempDelivery: IDelivery = new Delivery();
-  constructor(private data: DataService, service: DeliveryService, private globals: Globals, ) {
+  public notifier: NotifierService;
+  constructor(private data: DataService, service: DeliveryService, private globals: Globals, notifier: NotifierService) {
     this.service = service;
+    this.notifier = notifier;
   }
 
   // ngOnInit() {    
@@ -73,8 +79,17 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
 
 
   ngOnInit() {
-    this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
+    console.log("getting routes...");
+    this.loading = true
+    this.data.getAllRoutes()
+    .subscribe(
+      data => {
+        (this.allRoutes$ = data, this.loading = false)
+      },
+    error => {
+      console.log('Error: ' + error),this.showNotification('error',error)});
     this.getJson();
+       
     this.globals.incomplete = false;
   }
 
@@ -124,5 +139,9 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
       );
       this.addJson = true;
     }
+  }
+
+  public showNotification(type: string, message: string): void {
+    this.notifier.notify(type, message);
   }
 }
