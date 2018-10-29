@@ -126,3 +126,20 @@ export class DataService {
 }
 
 
+
+"dataGroups": [
+    {
+        "name": "orders",
+        "urls": [
+            "https://deliveryapi.completefoodservices.com.au:8095/api/values"
+        ],
+        "cacheConfig": {
+            "maxSize": 5,
+            "maxAge": "6h",
+            "timeout": "2s",
+            "strategy": "performance"
+        }
+    }
+
+]
+

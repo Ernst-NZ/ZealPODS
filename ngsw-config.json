@@ -33,14 +33,14 @@
     "dataGroups": [   
     {
       "name": "orders",
-      "urls": [
+      "urls": [ 
         "https://deliveryapi.completefoodservices.com.au:8095/api/values"
       ],
       "cacheConfig": {
         "maxSize": 5,
-        "maxAge": "6h",
-        "timeout": "2s",
-        "strategy": "performance"
+        "maxAge": "24h",
+        "timeout": "30s",
+        "strategy": "freshness"
       }
     }
 
