@@ -5,6 +5,7 @@
     <ul *ngFor='let order of driver.Orders'>
       <div class='justP strong headerText' *ngIf='order.DocumentId == docID'>
         <span>Order Date: {{ order.DocumentDate | date:'dd/MMM/yyyy'}}</span>
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
         <hr>
         <p id='infoBlock'>
           Customer: {{ order.CustomerName }}<br>
@@ -16,7 +17,7 @@
           Category2: {{ order.Category2 }}<br>
           Phone: {{order.PhoneNo}}<a class="phoneNo call" [href]="'tel:' + order.PhoneNo"><i class="material-icons">call</i></a></p>
 
-         <button type="button" class="btn btn-info toggle-panel"  style="width: 150px"(click)='toggleTable()' *ngIf='show'>Hide Products</button>
+        <button type="button" class="btn btn-info toggle-panel"  style="width: 150px"(click)='toggleTable()' *ngIf='show'>Hide Products</button>
         <button type="button" class="btn btn-info toggle-panel"  style="width: 150px"(click)='toggleTable()' *ngIf='!show'>View Products</button>
         <table style='width: 100%; max-width: 500px;' [hidden]='hidden'>
           <thead>
@@ -52,17 +53,17 @@
         </table>
         <br>
         <span style='font-weight: bolder; text-decoration: underline;'>
-          Signature</span>
-          <!-- <button mat-raised-button color='warm' (click)='addSignature()'>Add Signature</button> -->
-          <div id='signature-pad' class='signature-pad' >
-            <signature-pad [options]="signaturePadOptions"></signature-pad>
-            <button type="button" class="btn btn-info ml-auto" routerLink="/signature"><i class="material-icons">fullscreen</i></button>
+          Signature </span>
+          <div id="signatureContainer" style="max-width:500px; position: relative;">
+            <div id='signature-pad' class='signature-pad' >
+              <signature-pad [options]="signaturePadOptions"></signature-pad>
+            </div>
+            <div style='margin-top: 5px; margin-bottom: 5px'>
+              <button type="button" class="btn btn-info" style="width: 150px" (click)='drawClear()'>Clear</button>
+              <!-- <button type="button" class="btn btn-info" style="width: 120px; float:right;" routerLink="/signature">Fullscreen</button>  -->
+              <!-- <button mat-raised-button color='warm' (click)='drawComplete()'>Test Signature</button> -->
+            </div>
           </div>
-        <div style='margin-top: 5px; margin-bottom: 5px;'>
-          <button type="button" class="btn btn-info" style="width: 150px" (click)='drawClear()'>Clear</button>
-          
-          <!-- <button mat-raised-button color='warm' (click)='drawComplete()'>Test Signature</button> -->
-        </div>
 
         <div *ngIf='!delivered' class='block' style='margin-bottom: 5px; border: 2px solid red;'>
           <mat-form-field style='width: 95%; color: black;'>
@@ -86,7 +87,7 @@
         </div>
         <div class='block' style='margin-bottom: 5px;' *ngIf='!delivered'>
           <mat-form-field style='width: 95%; color: black;'>
-            <input type='number' min='0' matInput placeholder='Amount' [(ngModel)]='oldOrder.PaymentAmount'>
+            <input type='number' min='0' onfocus="this.value=''" matInput placeholder='Amount' [(ngModel)]='oldOrder.PaymentAmount'>
             <span *ngIf='delivered'>{{oldOrder.PaymentAmount}}</span>
           </mat-form-field>
         </div>

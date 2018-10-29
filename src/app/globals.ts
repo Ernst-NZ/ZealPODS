@@ -4,4 +4,6 @@ import { Injectable } from '@angular/core';
 export class Globals {
   selectedRoute: string;
   incomplete: boolean;
+  cWidth: number;
+  driver: string;
 }

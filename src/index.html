@@ -3,7 +3,7 @@
 <head>
   <title>ZEDS - Zeal Systems Electronic Delivery System</title>
   <link rel="stylesheet" href="bootstrap.min.css" type="text/html" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 
   <link rel="apple-touch-startup-image" sizes="1242x2208" href="./assets/apple_splash_1242.png" />
@@ -26,12 +26,18 @@
       height: 100%;
     }
     .app-loading {
-      position: relative;
-      display: flex;
+      /* position: relative; */
+      position: absolute;
+      /* display: flex; */
+      display: block;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100%;
+      /* height: 100%; */
+      left: 50%;
+      top: 50%;
+      margin-top: -100px;
+      margin-left: -100px;
     }
     .app-loading .spinner {
       height: 200px;
@@ -46,6 +52,36 @@
       margin: auto;
     }
     .app-loading .spinner .path {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+      animation: dash 1.5s ease-in-out infinite;
+      stroke-linecap: round;
+      stroke: #ddd;
+    }
+    .app-loading-routes {
+      position: absolute;
+      display: block;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      left: 50%;
+      top: 50%;
+      margin-top: -100px;
+      margin-left: -100px;
+    }
+    .app-loading-routes .spinner {
+      height: 200px;
+      width: 200px;
+      animation: rotate 2s linear infinite;
+      transform-origin: center center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+    .app-loading-routes .spinner .path {
       stroke-dasharray: 1, 200;
       stroke-dashoffset: 0;
       animation: dash 1.5s ease-in-out infinite;
@@ -97,5 +133,6 @@
         </svg>
       </div>
   </app-root>
+  <!-- <script src="../node_modules/jquery/dist/jquery.min.js"></script> -->
 </body>
 </html>

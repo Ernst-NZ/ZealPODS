@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, Directive } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../data.service';
 import { DeliveryService } from '../_services/delivery.service';
@@ -9,6 +9,7 @@ export interface Reason {
   value: string;
   viewValue: string;
 }
+
 @Component({
   selector: 'app-rejectproducts',
   templateUrl: './rejectproducts.component.html',
@@ -28,9 +29,22 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
   addDB = false;
 
   reject: Reason[] = [
-    { value: 'Damaged', viewValue: 'Damaged' },
-    { value: 'Wrong Product', viewValue: 'Wrong Product' },
-    { value: 'Spoiled', viewValue: 'Spoiled' }
+    { value: 'Customer Error', viewValue: 'Customer Error'},
+    { value: 'Damaged Goods', viewValue: 'Damaged Goods'},
+    { value: 'Not On Truck', viewValue: 'Not On Truck'},
+    { value: 'Out of Date', viewValue: 'Out of Date'},
+    { value: 'Picking Error', viewValue: 'Picking Error'},
+    { value: 'Typing Error Description', viewValue: 'Typing Error Description'},
+    { value: 'Typing Error Quantity', viewValue: 'Typing Error Quantity'},
+    { value: 'Incorrect Stock', viewValue: 'Incorrect Stock'},
+    { value: 'Pricing Issue', viewValue: 'Pricing Issue'},
+    { value: 'Customer Didnt Want', viewValue: 'Customer Didnt Want'},
+    { value: 'No Label/Date', viewValue: 'No Label/Date'},  
+    { value: 'Did not Order', viewValue: 'Did not Order'},      
+    { value: 'Rep Error', viewValue: 'Rep Error'},     
+    { value: 'Value Credit', viewValue: 'Value Credit'},             
+          
+
   ];
   productDetails$: Object;
   public lineID: number;

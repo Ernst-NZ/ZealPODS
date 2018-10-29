@@ -2,6 +2,13 @@
 <hr class="devide">
 <br>
 
+<div *ngIf='loading' class="app-loading-routes">
+  <svg class="spinner" viewBox="25 25 50 50">
+    <circle class="path" cx="50" cy="50" r="10" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+  </svg>
+  <h6 class="loadingText" style="margin-top: 120px; margin-left: 40px">Loading Routes...</h6>
+</div>
+
 <div class="theList" *ngIf = "allRoutes$">
   <ul [@listStagger]="allRoutes$" style="list-style-type:none">
     <div *ngFor="let route of allRoutes$.orderGroups">
@@ -13,7 +20,5 @@
         </li>
       </ul>
   </div>
-
-
   </ul>
 </div>

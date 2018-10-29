@@ -5,6 +5,9 @@ import { Delivery, IDelivery } from '../_models/delivery';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Alert } from 'selenium-webdriver';
 import { NotifierService } from 'angular-notifier';
+import { Globals } from '../globals';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +21,8 @@ export class DeliveryService extends BaseService {
   tempDelivery: IDelivery = new Delivery();
   public notifier: NotifierService;
   constructor(private data: DataService, private http: HttpClient,
-    notifier: NotifierService) {
+    notifier: NotifierService, private route: ActivatedRoute,
+    private router: Router, private globals: Globals,) {
     super();
     this.notifier = notifier;
   }
@@ -466,17 +470,23 @@ export class DeliveryService extends BaseService {
   }
   postJson(dataString) {
     console.log(dataString);
-     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
+      return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values', dataString)
+     //return this.http.post('http://test1.zealsystems.co.nz/api/values', dataString)
        .subscribe(
          val => {
-           this.showNotification('success', 'Delivery Posted to Main Server');
+      //     this.showNotification('success', 'Delivery Posted to Main Server');
            this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
            this.checkJson();
+           
+       //    this.router.navigate(['/route-Orders/', this.globals.driver]);
+     //      this.router.navigate(['/']);
            //    Clear Indexed DB - Gete new info and populate
 //             this.deleteDelivery(docId)
          },
          response => {
-           alert('Server Update error ' && response);
+   //        alert('Server Update error ' && response);
+   //        this.showNotification('success', 'Delivery Successfully Updated');
+   //        this.router.navigate(['/']);
          },
          () => {
          }
@@ -488,13 +498,9 @@ export class DeliveryService extends BaseService {
   }
 
   checkJson() {
-    if (this.addJson = false) {
       this.dbAdd(
         0, '', '', 0, 0,
         '', '', 0, 0, this.orderDetails$
-      );
-      this.addJson = true;
-    }
-      
+      );      
   }
 }

@@ -5,10 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DriverRoutesComponent } from './driver-routes/driver-routes.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { PostsComponent } from './posts/posts.component';
+// import { PostsComponent } from './posts/posts.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { UsersComponent } from './users/users.component';
-import { DetailsComponent } from './details/details.component';
+// import { UsersComponent } from './users/users.component';
+// import { DetailsComponent } from './details/details.component';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,7 +24,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 
 import { Globals } from './globals';
-import { TestapiComponent } from './testapi/testapi.component';
+// import { TestapiComponent } from './testapi/testapi.component';
 import { JwtInterceptor } from 'src/app/_helpers/jwt.interceptor';
 import { ErrorInterceptor } from 'src/app/_helpers/error.interceptor';
 import { LoginComponent } from './login/login.component';
@@ -42,7 +42,8 @@ const customNotifierOptions: NotifierOptions = {
   position: {
   horizontal: {
   position: 'middle',
-  distance: 12,
+  distance: 4,
+  
   },
   vertical: {
   position: 'top',
@@ -52,11 +53,11 @@ const customNotifierOptions: NotifierOptions = {
 },
   theme: 'material',
   behaviour: {
-    autoHide: 2000,
+    autoHide: 3500,
     onClick: 'hide',
     onMouseover: 'pauseAutoHide',
     showDismissButton: true,
-    stacking: 4
+    stacking: 2
   },
   animations: {
     enabled: true,
@@ -84,13 +85,9 @@ const customNotifierOptions: NotifierOptions = {
   declarations: [
     AppComponent,
     NavbarComponent,
-    PostsComponent,
-    UsersComponent,
-    DetailsComponent,
     DriverRoutesComponent,
     RouteOrdersComponent,
     OrderDetailsComponent,
-    TestapiComponent,
     LoginComponent,
     AlertComponent,
     FooterComponent,
