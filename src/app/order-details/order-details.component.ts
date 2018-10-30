@@ -172,8 +172,14 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 
   // V2 Post data
   postData() {
-    const SignatureSVG = this.signaturePad.toDataURL('image/svg+xml');
-    console.log(SignatureSVG);
+    // const SignatureSVG = this.signaturePad.toDataURL('image/svg+xml');
+    // console.log(SignatureSVG);
+
+    const SignaturePNG = this.signaturePad.toDataURL('image/png');
+    console.log(SignaturePNG);
+    
+    // const dataPng = this.signaturePad.toDataURL('image/png');
+    // this.download(dataPng, 'signature.png');
 
     if (this.signaturePad.isEmpty()) {
       return alert('Please provide a signature first.');
@@ -191,7 +197,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
         this.updateDelivery(
           // this.deliveries[d]['id'], 
           0,
-          SignatureSVG,
+          SignaturePNG,
           newDate,
           this.oldOrder.ReceivedBy,
           this.oldOrder.PaymentMethod,
@@ -250,15 +256,15 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 
     const dataSvg = this.signaturePad.toDataURL('image/svg+xml');
     console.log(atob(dataSvg.split(',')[1]));
-    this.download(dataSvg, 'signature.svg');
+    //this.download(dataSvg, 'signature.svg');
 
     const dataJpeg = this.signaturePad.toDataURL('image/jpeg');
     // this.download(dataJpeg, 'signature.jpg');
 
     const dataPng = this.signaturePad.toDataURL('image/png');
-    //  this.download(dataPng, 'signature.png');
+    this.download(dataPng, 'signature.png');
 
-    //   console.log(dataPng);
+    console.log(dataPng);
   }
 
   download(dataURL, filename) {
