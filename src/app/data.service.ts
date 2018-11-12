@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Globals } from './globals'
+import { headersToString } from 'selenium-webdriver/http';
+import {RequestOptions } from '@angular/http';
+import {Headers } from '@angular/http'
+import { HttpClientModule } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +13,15 @@ export class DataService {
 
   searchText: String = '';
   myToken: String = ''; 
-
-
-  constructor(private http: HttpClient) { }
+  
+  constructor(private http: HttpClient,
+    private globals: Globals) { }
 
   getAllRoutes() {
-    return this.http.get('https://deliveryapi.completefoodservices.com.au:8095/api/values/1');
-    //return this.http.get('http://test1.zealsystems.co.nz/api/values/1') ;
+  //  return this.http.get(this.globals.connectionString && '/api/values/1');
+    return this.http.get(this.globals.connectionString);
+   //  return this.http.get('https://deliveryapi.completefoodservices.com.au:8095/api/values/1');
+   // return this.http.get('https://test1.zealsystems.co.nz/api/values/1') ;
 
   }
 
@@ -24,21 +31,29 @@ export class DataService {
 
 // #####################################################################
   getAllRoutes1() {
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json'
-    //     , 'Authorization': 'Bearer aRA39yf4N8J-DhTNCVRXptKywROwFCi6meGgAhafP9SGy96ReXmnwZYNTkqA_-vHcYOtNLgk0wCKTw1gkFfWj8S8A6j073XCcHeqlW7R-ahC3jOQ70iRcINbOsVsUWHqQ-YRi5u6bUZz9ECWruJ6vsIymMqBj9Lvk839h-9-F3iKQjOvXBmIA1j3ymGpO-FeuiXeQ3OnGxuUjWCCg6faVARQplX00GjoEgW1fgOJkvOxqgGlV5zWFUxfYh-oMlRfLSx7z4ZSm-OCKEmI5CIV1zzFodwp6n_mMrWy5AeOD0cu2mdDHBlqEp1E72s16Wi2liVW0dCcmoozZyJ0lhEy4SD-3_tkjW3-ShlZdCZ1niaIL5D6NBXeN1YeLFiEPGwYnmTV2j6f6PM9jUKCR9EWDODJejgVV8iDyAGFHuNDaO5IInQSzLyDCPmRq3QNeCTRuFV4tB0CJ1_Okj8wxkFdRg0jqU3o9oFq5_szZ47sV3tz-U2lIb0OFXl4kz-oWDpz'
-    //     , 'Access-Control-Allow-Origin': '*'
-    //   })
-    // };
-    // return this.http.get('https://test1.zealsystems.co.nz/api/values/1',httpOptions);
-    return this.http.get('https://test1.zealsystems.co.nz/api/values/1');
+
+    // let jsonString = 'Bearer ' + localStorage.getItem('JSONToken');
+    // console.log('jsonString: ' + jsonString);
+
+    //'Content-Type': 'application/json',
+    // const httpOptions = {headers: new HttpHeaders({
+    //   'Accept': 'application/json, text/plain, */*',
+    //   'Authorization': 'Bearer \'c5qPccZPhLQsOcFy-dQ97LQMF1ax_lqbywegj23TC024rSxXL4UHuQRUUJhrYAkwfwKG6yUingJKOZG9kd1U_X3YTco_Il5LurZygw2pVI8qFGmX8lgwirkqGX_axPwQmX8eiEqtG-nvB-W_KAJSUB2U28om-yF3cFWbT00vmkSBcY18s0CiIec0V3wXKuWN5JNl-gc9nBsKquNwZWhbQhFXjUEaPyZWr9Mqz2UrixCEbUatrXATCqfiO_Qb14TUZ76TNfEq3x7pvb7_e3ZyBmJsdVWbXsGSEueqvEKO_wMpTut0mH4Xopw3_5mDF43NaNn-zpea7OH4HPWteuKL0oKL8jga2reN95OjQIdaBUzuhHOg48swjLhm5lUdAr4jxtDww6fiJUKxATBFwCxembbnCCZ49TgCckI-iU-n5X871W5jlK2OiZ-niJg5dIvrgD_5oh3xWxVE8LUXy8bpQ5vaPG9j3Zaip1oUpgCUheAGJV5FJMIUMukArQJlw9lS\'',
+    //   'Access-Control-Allow-Origin':'*'})};           
+
+    //   console.log(httpOptions);
+    //   console.log(HttpHeaders);
+    //   // console.log(httpOptions.headers.get('Authorization'));
+    //   console.log('Authorization: ' + httpOptions.headers.get('Authorization'));
+    //return this.http.get('http://test1.zealsystems.co.nz/api/values/1');
+    
+   // return this.http.get('https://deliveryapi.completefoodservices.com.au:8095/api/values/1');
   }
 
   
 
   // ###  111  #############
-  postJson(dataString) {
+  postJson2(dataString) {
     console.log('Data Before Post 35')
 
     console.log("Test 1 Line 41")
@@ -95,22 +110,37 @@ export class DataService {
 
 
   // ### 222 #############
-  postJson2(dataString) {
+  postJson(dataString) {
     console.log('Data Before Post 35')
     console.log("Test 2 Line 91")
     this.myToken = localStorage.getItem('JSONToken');
     console.log(this.myToken);
+  }
 
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-          , 'Authorization': 'Bearer 5m7lk9e5cMrMlMBNPGkRjLiZXCTqxPjJb2z7fenczHwJeJhvYGmNzPO6ldKgynAGPU-ct2rGy1NtxWaRgBza26-y3ffqdr3Whk8XEBWXoJUk8cFnPmsO0_CLVI6F-qHIl2I0sA1V8Z8TUBBoTqEV2haya_PXvR_YP_TfCYG1GjiUoRLmUei9VqjwhxRFDtVaUm4Ow2aYqXuYCtOg86wXFZJmPn4H5rOCLxpn-iup2FH0RLnFNo6Cp7C-i1Q4d8ld3xT3mIkX5Yq0Bb1noCd9zjxKJg0yAdaRi8JVkm7m3zRkp4C7XdtwzWPYUstsrRDFePLOeFug7bQJIJDXkbX3VhhecMPdtkcVeZwuqyCOjRbKFbYVOi5JRNEq4EUhg0IplscIkEC181c5b_UyXaElXlzS1RdErWQkl_CAZvHLRJl93U_itxSDAz-xSeRQj0zQsYgyXJEWFSFDjhkGEVx-SV559WOmX2dgJ0_wMQPK3bub3pCDdGO0Ykjdj60taPDv'
-          , 'Access-Control-Allow-Origin': '*'
-          //    , 'Authorization': 'Bearer aRA39yf4N8J-DhTNCVRXptKywROwFCi6meGgAhafP9SGy96ReXmnwZYNTkqA_-vHcYOtNLgk0wCKTw1gkFfWj8S8A6j073XCcHeqlW7R-ahC3jOQ70iRcINbOsVsUWHqQ-YRi5u6bUZz9ECWruJ6vsIymMqBj9Lvk839h-9-F3iKQjOvXBmIA1j3ymGpO-FeuiXeQ3OnGxuUjWCCg6faVARQplX00GjoEgW1fgOJkvOxqgGlV5zWFUxfYh-oMlRfLSx7z4ZSm-OCKEmI5CIV1zzFodwp6n_mMrWy5AeOD0cu2mdDHBlqEp1E72s16Wi2liVW0dCcmoozZyJ0lhEy4SD-3_tkjW3-ShlZdCZ1niaIL5D6NBXeN1YeLFiEPGwYnmTV2j6f6PM9jUKCR9EWDODJejgVV8iDyAGFHuNDaO5IInQSzLyDCPmRq3QNeCTRuFV4tB0CJ1_Okj8wxkFdRg0jqU3o9oFq5_szZ47sV3tz-U2lIb0OFXl4kz-oWDpz'
-          //    , 'Access-Control-Allow-Origin': '*'
-        })
-      };
-    }
+    //   const httpOptions = {
+    //     headers: new HttpHeaders({
+    //       'Content-Type': 'application/json'
+    //       , 'Authorization': 'Bearer VIn055LKCjzQLT-2yWUNZbc4ecy18PMQkEWy4LWTCF68hZovZt2LSPHoPAvJzSRCicucSolYMuCj9GCS5MaTavb0LCUSoAT2lLjqcfd7cOK6fZW3fJGPZwkv7apaJLJZ6nSpm4IpzOf-WceewqtiS94nXFRhQN0m-49-1K6WZ10-Z7-AAJy2s2R4wb4OTpUTqHlCfVEJh3hzk-1zY5G8bNzTCUpX_hBqLx-dI7Ig1HhJhhKf3KNIYfAOWYyxSImCpOoA2cecvUAkA8jBa8XM8aQJlsX6FnKuvf4DL4bSZfXJddGivfkYA2O3ovYnfygdO-iWiVuYhuhixdSYnOYBWHwkg-RKMbrPYZvT3AhbYr82Ej9CCPw1OE-NTMe7-yvxz_T58wmntxvM0qNOc9tXpKbfQien8f4ZseR82YVj7TZbDz1TKVoE8TewmDpfM3qjSbyCb-jDLu7-U4yGz901xA8aAYo_x7OxQ4_2KEdyFGPhA3QlaubkmTW6xRN5n3Y7'
+    //       , 'Access-Control-Allow-Origin': '*'
+    //       //    , 'Authorization': 'Bearer aRA39yf4N8J-DhTNCVRXptKywROwFCi6meGgAhafP9SGy96ReXmnwZYNTkqA_-vHcYOtNLgk0wCKTw1gkFfWj8S8A6j073XCcHeqlW7R-ahC3jOQ70iRcINbOsVsUWHqQ-YRi5u6bUZz9ECWruJ6vsIymMqBj9Lvk839h-9-F3iKQjOvXBmIA1j3ymGpO-FeuiXeQ3OnGxuUjWCCg6faVARQplX00GjoEgW1fgOJkvOxqgGlV5zWFUxfYh-oMlRfLSx7z4ZSm-OCKEmI5CIV1zzFodwp6n_mMrWy5AeOD0cu2mdDHBlqEp1E72s16Wi2liVW0dCcmoozZyJ0lhEy4SD-3_tkjW3-ShlZdCZ1niaIL5D6NBXeN1YeLFiEPGwYnmTV2j6f6PM9jUKCR9EWDODJejgVV8iDyAGFHuNDaO5IInQSzLyDCPmRq3QNeCTRuFV4tB0CJ1_Okj8wxkFdRg0jqU3o9oFq5_szZ47sV3tz-U2lIb0OFXl4kz-oWDpz'
+    //       //    , 'Access-Control-Allow-Origin': '*'
+          
+    //     });
+    //   };
+      
+    // }
+
+    //   const httpOptions = {
+    //     headers: new HttpHeaders({
+    //       'Content-Type': 'application/json'
+    //       , 'Authorization': 'Bearer VIn055LKCjzQLT-2yWUNZbc4ecy18PMQkEWy4LWTCF68hZovZt2LSPHoPAvJzSRCicucSolYMuCj9GCS5MaTavb0LCUSoAT2lLjqcfd7cOK6fZW3fJGPZwkv7apaJLJZ6nSpm4IpzOf-WceewqtiS94nXFRhQN0m-49-1K6WZ10-Z7-AAJy2s2R4wb4OTpUTqHlCfVEJh3hzk-1zY5G8bNzTCUpX_hBqLx-dI7Ig1HhJhhKf3KNIYfAOWYyxSImCpOoA2cecvUAkA8jBa8XM8aQJlsX6FnKuvf4DL4bSZfXJddGivfkYA2O3ovYnfygdO-iWiVuYhuhixdSYnOYBWHwkg-RKMbrPYZvT3AhbYr82Ej9CCPw1OE-NTMe7-yvxz_T58wmntxvM0qNOc9tXpKbfQien8f4ZseR82YVj7TZbDz1TKVoE8TewmDpfM3qjSbyCb-jDLu7-U4yGz901xA8aAYo_x7OxQ4_2KEdyFGPhA3QlaubkmTW6xRN5n3Y7'
+    //       , 'Access-Control-Allow-Origin': '*'
+    //       //    , 'Authorization': 'Bearer aRA39yf4N8J-DhTNCVRXptKywROwFCi6meGgAhafP9SGy96ReXmnwZYNTkqA_-vHcYOtNLgk0wCKTw1gkFfWj8S8A6j073XCcHeqlW7R-ahC3jOQ70iRcINbOsVsUWHqQ-YRi5u6bUZz9ECWruJ6vsIymMqBj9Lvk839h-9-F3iKQjOvXBmIA1j3ymGpO-FeuiXeQ3OnGxuUjWCCg6faVARQplX00GjoEgW1fgOJkvOxqgGlV5zWFUxfYh-oMlRfLSx7z4ZSm-OCKEmI5CIV1zzFodwp6n_mMrWy5AeOD0cu2mdDHBlqEp1E72s16Wi2liVW0dCcmoozZyJ0lhEy4SD-3_tkjW3-ShlZdCZ1niaIL5D6NBXeN1YeLFiEPGwYnmTV2j6f6PM9jUKCR9EWDODJejgVV8iDyAGFHuNDaO5IInQSzLyDCPmRq3QNeCTRuFV4tB0CJ1_Okj8wxkFdRg0jqU3o9oFq5_szZ47sV3tz-U2lIb0OFXl4kz-oWDpz'
+    //       //    , 'Access-Control-Allow-Origin': '*'
+    //     })
+    //   };
+    // }
+    
 
 
       // ### 33 #############

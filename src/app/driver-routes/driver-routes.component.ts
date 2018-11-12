@@ -82,14 +82,17 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
     console.log("getting routes...");
     this.loading = true
     this.data.getAllRoutes()
+    
     .subscribe(
       data => {
         (this.allRoutes$ = data, this.loading = false)
       },
     error => {
       console.log('Error: ' + error),this.showNotification('error',error)});
+    // console.log("Finished getting routes")
+    // console.log("Getting JSON...");
     this.getJson();
-       
+    // console.log("Finished getting JSON")       
     this.globals.incomplete = false;
   }
 

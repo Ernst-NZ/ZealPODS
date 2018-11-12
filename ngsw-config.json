@@ -34,7 +34,8 @@
     {
       "name": "orders",
       "urls": [ 
-        "https://deliveryapi.completefoodservices.com.au:8095/api/values"
+        "https://deliveryapi.completefoodservices.com.au:8095/api/values/1",
+        "https://test1.zealsystems.co.nz/api/values/1"
       ],
       "cacheConfig": {
         "maxSize": 5,

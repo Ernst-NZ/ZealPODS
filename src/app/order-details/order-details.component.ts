@@ -11,6 +11,7 @@ import { AutofillMonitor } from '../../../node_modules/@angular/cdk/text-field';
 import { NotifierService } from 'angular-notifier';
 import { SignatureComponent } from '../signature/signature.component';
 import { Globals } from '../globals';
+import { ARIA_DESCRIBER_PROVIDER_FACTORY } from '@angular/cdk/a11y';
 
 export interface Payment {
   value: string;
@@ -61,6 +62,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   oldDelivery: IDelivery = new Delivery();
   tempDelivery: IDelivery = new Delivery();
   public notifier: NotifierService;
+  selectedPaymentMethod: string;
+  selectedPaymentAmount: number;
   oldItem: any = {};
   oldOrder: any = {};
   dataset: any = {};
@@ -69,6 +72,15 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   cWidth: number;
   json: Array<IDelivery> = [];
   tempJson: IDelivery = new Delivery();
+
+    changePaymentMethod(event){
+      this.selectedPaymentMethod = event;
+  }
+
+    changePaymentAmount(event){
+      this.selectedPaymentAmount = event.target.value;
+    }
+  
   private service: DeliveryService;
   public docID;
   public driver;
@@ -176,17 +188,26 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     // console.log(SignatureSVG);
 
     const SignaturePNG = this.signaturePad.toDataURL('image/png');
-    console.log(SignaturePNG);
+     console.log(SignaturePNG);
     
     // const dataPng = this.signaturePad.toDataURL('image/png');
     // this.download(dataPng, 'signature.png');
 
+    if (this.selectedPaymentMethod == null) {
+      return alert('Please provide a payment method')
+    }
+
+    console.log(this.selectedPaymentAmount);
+    if (this.selectedPaymentMethod !== 'No Payment' && (this.selectedPaymentAmount == 0 || this.selectedPaymentAmount == null)) {
+      return alert('Please provide a payment amount')
+    }
     if (this.signaturePad.isEmpty()) {
       return alert('Please provide a signature first.');
     }
     if (this.oldOrder.ReceivedBy === '') {
       return alert('Please provide a Name.');
     }
+
     const newDate = JSON.stringify(new Date());
     this.loading = true;
     try {
@@ -206,8 +227,9 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     //  alert('Delivery Successfully Updated');
       this.showNotification('success', 'Delivery Successfully Updated');
       this.loading = false;
-      this.router.navigate(['/']);
- //     this.router.navigate(['/route-Orders/', this.globals.driver ]);
+      this.router.navigate(['/route-Orders/', this.globals.driver ]);
+      // this.router.navigate(['/']);
+     
     } catch (error) {
       alert(error);
     }
@@ -302,6 +324,5 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   public showNotification(type: string, message: string): void {
     this.notifier.notify(type, message);
   }
-
 
 }

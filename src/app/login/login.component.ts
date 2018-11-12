@@ -2,9 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
 import { AlertService } from '../_services/alert.service';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { ERROR_COLLECTOR_TOKEN } from '../../../node_modules/@angular/platform-browser-dynamic/src/compiler_factory';
-import { ERROR_COMPONENT_TYPE } from '../../../node_modules/@angular/compiler';
+import { Globals } from '../globals';
 
 
 @Component({
@@ -21,7 +19,8 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService) {}
+        private alertService: AlertService,
+        private globals: Globals) {}
 
     ngOnInit() {
         // reset login status
@@ -32,6 +31,8 @@ export class LoginComponent implements OnInit {
     }
 
     login() {
+        this.globals.connectionString = 'https://deliveryapi.completefoodservices.com.au:8095/api/values/1';
+        this.globals.connectionToken = 'https://deliveryapi.completefoodservices.com.au:8095/token';
         this.loading = true;
         this.authenticationService.login(this.model.username, this.model.password)
             .subscribe(
@@ -43,5 +44,22 @@ export class LoginComponent implements OnInit {
                     this.loading = false;
                 });
     }
+
+
+    test() {
+        this.loading = true;
+        this.globals.connectionString = 'https://test1.zealsystems.co.nz/api/values/1';
+        this.globals.connectionToken =  'https://test1.zealsystems.co.nz/token';
+        this.authenticationService.login(this.model.username, this.model.password)
+            .subscribe(
+                data => {
+                    this.router.navigate([this.returnUrl]);
+                },
+                error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                });
+    }
+
 
 }

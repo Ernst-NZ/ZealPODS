@@ -61,7 +61,7 @@
             <div style='margin-top: 5px; margin-bottom: 5px'>
               <button type="button" class="btn btn-info" style="width: 150px" (click)='drawClear()'>Clear</button>
               <!-- <button type="button" class="btn btn-info" style="width: 120px; float:right;" routerLink="/signature">Fullscreen</button>  -->
-              <button mat-raised-button color='warm' (click)='drawComplete()'>Test Signature</button>
+              <!-- <button mat-raised-button color='warm' (click)='drawComplete()'>Test Signature</button> -->
             </div>
           </div>
 
@@ -73,9 +73,9 @@
         <div class='block' style='margin-bottom: 5px; font-weight: bold; color: black; padding-left: 5px;' *ngIf='delivered'>
           <span>{{oldOrder.ReceivedBy}}</span>
         </div>
-        <div class='block' *ngIf='!delivered' style='margin-bottom: 5px;'>
+        <div class='block' *ngIf='!delivered' style='margin-bottom: 5px; border: 2px solid red;'>
           <mat-form-field style='width: 95%; color: black;'>
-            <mat-select placeholder='Payment' [(ngModel)]='oldOrder.PaymentMethod'>
+            <mat-select placeholder='Payment' [(ngModel)]='oldOrder.PaymentMethod' (selectionChange)="changePaymentMethod($event.value)">
               <mat-option *ngFor='let pay of pay' [value]='pay.value'>
                 {{pay.viewValue}}
               </mat-option>
@@ -85,9 +85,9 @@
         <div class='block' style='margin-bottom: 5px;' *ngIf='delivered'>
           <span>{{oldOrder.PaymentMethod}}</span>
         </div>
-        <div class='block' style='margin-bottom: 5px;' *ngIf='!delivered'>
+        <div class='block' style='margin-bottom: 5px; border: 2px solid red;' *ngIf='!delivered'>
           <mat-form-field style='width: 95%; color: black;'>
-            <input type='number' min='0' onfocus="this.value=''" matInput placeholder='Amount' [(ngModel)]='oldOrder.PaymentAmount'>
+            <input type='number' min='0' onfocus="this.value=''" matInput placeholder='Amount' [(ngModel)]='oldOrder.PaymentAmount' (keyup)="changePaymentAmount($event)">
             <span *ngIf='delivered'>{{oldOrder.PaymentAmount}}</span>
           </mat-form-field>
         </div>
@@ -97,5 +97,6 @@
         </div>
       </div>
     </ul>
+    <div *ngIf='driver.Orders.count === 0' ><h2>No Orders Found</h2></div>
   </ul>
 </div>

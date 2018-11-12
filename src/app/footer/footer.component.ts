@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Version } from '@angular/compiler';
 
 @Component({
   selector: 'app-footer',
@@ -10,6 +11,10 @@ export class FooterComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  showVersion() {
+    alert("ZEDS Version 1.0.14");
   }
 
 }
