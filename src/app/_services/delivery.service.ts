@@ -3,10 +3,11 @@ import { BaseService } from './base.service';
 import { DataService } from '../data.service';
 import { Delivery, IDelivery } from '../_models/delivery';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Alert } from 'selenium-webdriver';
+import { Alert, error } from 'selenium-webdriver';
 import { NotifierService } from 'angular-notifier';
 import { Globals } from '../globals';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IStudent } from '../_models/delivery';
 
 
 @Injectable({
@@ -22,7 +23,7 @@ export class DeliveryService extends BaseService {
   public notifier: NotifierService;
   constructor(private data: DataService, private http: HttpClient,
     notifier: NotifierService, private route: ActivatedRoute,
-    private router: Router, private globals: Globals,) {
+    private router: Router, private globals: Globals, ) {
     super();
     this.notifier = notifier;
   }
@@ -36,7 +37,7 @@ export class DeliveryService extends BaseService {
 
   // V2
   // Ckeck for incomplete deliveries to prevent refresh of Json String
- getIncompleteDeliveries() {
+  getIncompleteDeliveries() {
     return this.connection.select<IDelivery>({
       from: 'Deliveries',
       // where: {
@@ -47,12 +48,12 @@ export class DeliveryService extends BaseService {
   }
 
   // V2
-  getJson() {
+  getJsonFromDB() {
     return this.connection.select<IDelivery>({
-      from: 'Deliveries',
-      where: {
-        id: 0
-      }
+      from: 'Deliveries'
+      // where: {
+      //   id: 0
+      // }
     });
   }
 
@@ -110,14 +111,14 @@ export class DeliveryService extends BaseService {
   }
 
 
-   deleteDelivery(docId: number) {
-     return this.connection.remove({
-       from: 'Deliveries',
-       where: {
-         documentId: docId
-       }
-     });
-   }
+  deleteDelivery(docId: number) {
+    return this.connection.remove({
+      from: 'Deliveries',
+      where: {
+        documentId: docId
+      }
+    });
+  }
 
   // ## update Product for Edit purposes
   // Get Product
@@ -154,25 +155,25 @@ export class DeliveryService extends BaseService {
 
   // tslint:disable-next-line:max-line-length
   // V2 .. Step 3
-  preUpdateDelivery( type, productNo,
+  preUpdateDelivery(type, productNo,
     docId, lineId, delivered,
     QuantityRejected, RejectionReason, SignatureSVG,
     ReceivedBy, PaymentMethod, PaymentAmount, Updated,
     json) {
-      let jsonTemp = json;
+    let jsonTemp = json;
     // Update the Json String
     if (type === 'product' && productNo === 0) {
       jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
-          RejectionReason, SignatureSVG, ReceivedBy,
+        RejectionReason, SignatureSVG, ReceivedBy,
         PaymentMethod, PaymentAmount, Updated, jsonTemp
       );
-  //    this.productAdd(lineId,docId, lineId, RejectionReason, ReceivedBy)
+      //    this.productAdd(lineId,docId, lineId, RejectionReason, ReceivedBy)
     } else if (type === 'order' && productNo === 1) {
       jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
         RejectionReason, SignatureSVG, ReceivedBy,
         PaymentMethod, PaymentAmount, Updated, jsonTemp
       );
-     // Delete order if exist
+      // Delete order if exist
     }
     const updatedValue: IDelivery = {
       id: Number(lineId), documentId: Number(docId),
@@ -188,7 +189,7 @@ export class DeliveryService extends BaseService {
           const index = this.tempDeliveries.findIndex(
             delivery => delivery.id === 0
           );
-           this.tempDeliveries[index] = this.tempDelivery;
+          this.tempDeliveries[index] = this.tempDelivery;
         }
       })
       .catch(error => {
@@ -239,14 +240,14 @@ export class DeliveryService extends BaseService {
   ) {
     const open = indexedDB.open('ZEDS_db', 1);
 
-    open.onupgradeneeded = function() {
+    open.onupgradeneeded = function () {
       const db = open.result;
       const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
       // const store = db.createObjectStore('Students', { keyPath: 'id' });
       // const index = store.createIndex('LineIndex', ['lineID']);
     };
 
-    open.onsuccess = function() {
+    open.onsuccess = function () {
       // Start a new transaction
       const db = open.result;
       const tx = db.transaction('Deliveries', 'readwrite');
@@ -271,7 +272,7 @@ export class DeliveryService extends BaseService {
         json: json
       });
       // Close the db when the transaction is done
-      tx.oncomplete = function() {
+      tx.oncomplete = function () {
         db.close();
       };
     };
@@ -378,12 +379,12 @@ export class DeliveryService extends BaseService {
     // this.checkAddJson(dataList);
     const drivers = dataList.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
-   //   if (drivers[d].Name === driverName) {
-        const user = drivers[d].Name;
-        const orderList = drivers[d]['Orders'];
-        for (let o = 0; o < orderList.length; o++) {
-          const products = orderList[o]['Lines'];
-          if (drivers[o].DocumentId === Number(documentId)) {
+      //   if (drivers[d].Name === driverName) {
+      const user = drivers[d].Name;
+      const orderList = drivers[d]['Orders'];
+      for (let o = 0; o < orderList.length; o++) {
+        const products = orderList[o]['Lines'];
+        if (drivers[o].DocumentId === Number(documentId)) {
           const DocumentId = orderList[o].DocumentId;
           // Check for existing document ID
           this.getOrder(DocumentId).then(deliveries => {
@@ -402,8 +403,8 @@ export class DeliveryService extends BaseService {
             }
           });
         }
-        }
-  //    }
+      }
+      //    }
     }
   }
 
@@ -413,7 +414,7 @@ export class DeliveryService extends BaseService {
   // V2
   upDateJson(type, docId, lineId, delivered,
     QuantityRejected, RejectionReason, SignatureSVG,
-    ReceivedBy, PaymentMethod, PaymentAmount, Updated, jsonTemp ) {
+    ReceivedBy, PaymentMethod, PaymentAmount, Updated, jsonTemp) {
     const drivers = jsonTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       const orderList = drivers[d]['Orders'];
@@ -437,7 +438,7 @@ export class DeliveryService extends BaseService {
                 break;
               }
             }
-          } else {break;}
+          } else { break; }
         }
       }
     }
@@ -470,28 +471,28 @@ export class DeliveryService extends BaseService {
   }
   postJson(dataString) {
     console.log(dataString);
-    return this.http.post(this.globals.connectionString, dataString)
-     // return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values', dataString)
-     //return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
-       .subscribe(
-         val => {
-      //     this.showNotification('success', 'Delivery Posted to Main Server');
-           this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
-           this.checkJson();
-           
-       //    this.router.navigate(['/route-Orders/', this.globals.driver]);
-     //      this.router.navigate(['/']);
-           //    Clear Indexed DB - Gete new info and populate
-//             this.deleteDelivery(docId)
-         },
-         response => {
-   //        alert('Server Update error ' && response);
-   //        this.showNotification('success', 'Delivery Successfully Updated');
-   //        this.router.navigate(['/']);
-         },
-         () => {
-         }
-       );
+    //return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values', dataString)
+    return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
+      .subscribe(
+        val => {
+          //     this.showNotification('success', 'Delivery Posted to Main Server');
+          this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
+          this.checkJson();
+
+          //    this.router.navigate(['/route-Orders/', this.globals.driver]);
+          //      this.router.navigate(['/']);
+          //    Clear Indexed DB - Gete new info and populate
+          //             this.deleteDelivery(docId)
+        },
+        response => {
+          //        alert('Server Update error ' && response);
+          //        this.showNotification('success', 'Delivery Successfully Updated');
+          //        this.router.navigate(['/']);
+        },
+        () => {
+          console.log('error');
+        }
+      );
   }
 
   public showNotification(type: string, message: string): void {
@@ -499,9 +500,25 @@ export class DeliveryService extends BaseService {
   }
 
   checkJson() {
-      this.dbAdd(
-        0, '', '', 0, 0,
-        '', '', 0, 0, this.orderDetails$
-      );      
+    this.dbAdd(
+      0, '', '', 0, 0,
+      '', '', 0, 0, this.orderDetails$
+    );
   }
+
+  getStudents() {
+    return this.connection.select<IStudent>({
+      from: 'Students'
+    });
+  }
+
+  getStudent(studentId: number) {
+    return this.connection.select<IStudent>({
+      from: 'Students',
+      where: {
+        id: studentId
+      }
+    });
+  }
+
 }

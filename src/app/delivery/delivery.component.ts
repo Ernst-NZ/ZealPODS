@@ -105,7 +105,7 @@ export class DeliveryComponent implements OnInit, AfterContentChecked {
 
   // ## Get Json
   getJson() {
-    this.service.getJson().
+    this.service.getJsonFromDB().
       then(deliveries => {
         this.deliveries = deliveries;
       }).catch(error => {

@@ -9,10 +9,9 @@ export class AuthenticationService {
     constructor(private http: HttpClient, private globals: Globals) { }
 
     login(username: string, password: string) {
-        console.log(this.globals.connectionString && '/token')
         // tslint:disable-next-line:max-line-length
-            return this.http.post<any>(this.globals.connectionToken, 'username=' + username + '&password=' + password + '&grant_type=password')
-                //return this.http.post<any>('https://test1.zealsystems.co.nz/token', 'username=' + username + '&password=' + password + '&grant_type=password')        
+    //        return this.http.post<any>(this.globals.connectionToken, 'username=' + username + '&password=' + password + '&grant_type=password')
+                return this.http.post<any>('https://test1.zealsystems.co.nz/token', 'username=' + username + '&password=' + password + '&grant_type=password')        
                 .map(JSONObject => {
                     // login successful if there's a jwt token in the response
                     if (JSONObject) {

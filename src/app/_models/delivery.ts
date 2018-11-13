@@ -26,3 +26,20 @@ export class Delivery implements IDelivery {
   json: object;
 }
 // ## End
+
+export class IStudent {
+  id?: number;
+  name: string;
+  gender: string;
+  country: string;
+  city: string;
+}
+
+export class DeliveryS implements IStudent {
+  id = 0;
+  name = '';
+  gender = 'm';
+  country = '';
+  city = '';
+}
+

@@ -19,9 +19,9 @@ export class DataService {
 
   getAllRoutes() {
   //  return this.http.get(this.globals.connectionString && '/api/values/1');
-    return this.http.get(this.globals.connectionString);
+  //  return this.http.get(this.globals.connectionString);
    //  return this.http.get('https://deliveryapi.completefoodservices.com.au:8095/api/values/1');
-   // return this.http.get('https://test1.zealsystems.co.nz/api/values/1') ;
+    return this.http.get('https://test1.zealsystems.co.nz/api/values/1') ;
 
   }
 

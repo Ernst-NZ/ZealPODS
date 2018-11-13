@@ -65,7 +65,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   // ## Get Json
   getJson() {
     this.service
-      .getJson()
+      .getJsonFromDB()
       .then(deliveries => {
         this.deliveries = deliveries;
       })

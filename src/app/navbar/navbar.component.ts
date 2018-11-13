@@ -49,7 +49,7 @@ refresh() {
 }
   // ## Get Json
   getJson() {
-    this.service.getJson()
+    this.service.getJsonFromDB()
       .then(deliveries => {
         this.deliveries = deliveries;
         if (deliveries.length > 0) {

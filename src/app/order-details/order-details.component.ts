@@ -169,7 +169,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   // ## Get Json
   // v2
   getJson() {
-    this.service.getJson()
+    this.service.getJsonFromDB()
       .then(deliveries => {
         this.deliveries = deliveries;
         if (deliveries.length > 0) {

@@ -79,24 +79,34 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
 
 
   ngOnInit() {
-    console.log("getting routes...");
+    console.log("Getting Routes...");
     this.loading = true
     this.data.getAllRoutes()
-    
-    .subscribe(
-      data => {
-        (this.allRoutes$ = data, this.loading = false)
-      },
-    error => {
-      console.log('Error: ' + error),this.showNotification('error',error)});
+
+      .subscribe(
+        data => {
+          console.log("Successfully Got Routes");
+          (this.allRoutes$ = data, this.loading = false)
+        },
+        error => {
+          console.log("Error Getting Routes" + error),
+            this.showNotification('error', error);
+          console.log("Getting Cached Results...");
+          this.getJson();
+          console.log("Finished Getting Cached Results");
+          this.allRoutes$ = this.deliveries[0];
+          console.log(this.allRoutes$);
+          console.log("Finished Setting Cached Results to allRoutes object");
+        });
     // console.log("Finished getting routes")
-    // console.log("Getting JSON...");
-    this.getJson();
+
     // console.log("Finished getting JSON")       
     this.globals.incomplete = false;
   }
 
   ngAfterContentChecked() {
+    console.log("ngAfterContentChecked");
+    console.log(this.allRoutes$);
     if (typeof this.allRoutes$ !== 'undefined' && this.addDB === false) {
       if (this.deliveries.length > 0 && this.addDB === false) {
         this.addDB = true;
@@ -105,6 +115,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
           this.addDB = true;
         }
       }
+      console.log("checking Json");
       this.checkJson();
       this.addDB = true;
     }
@@ -113,38 +124,96 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
 
   // ## Get Json
   getJson() {
-    this.service.getJson()
+    this.service.getJsonFromDB()
       .then(deliveries => {
         this.deliveries = deliveries;
+        console.log("getJson: deliveries" + this.deliveries)
         if (deliveries.length > 0) {
           this.tempDelivery = deliveries[0];
-        } else { this.emptyDatabase = true }
+        } else {
+          console.log('getJson: Emptying DB');
+          this.emptyDatabase = true
+        }
       })
       .catch(error => {
-        console.error(error);
+        console.error("getJson: Error: " + error);
         alert(error.message);
       });
   }
 
   checkJson() {
+
+    // If there's a pending order and the JSON hasn't been updated
+    //   post back to server
+    //     on success
+    //       do get orders
+    //         on success
+    //           'update indexDB
+    //            this.service.dbAdd(
+    //            0, '', '', 0, 0,
+    //            '', '', 0, 0, this.allRoutes$
+    //         on error - do nothing
+    //     on error (offline)
+    //       do nothing
+
     if (this.pendingSync === true && this.addJson === false) {
+      console.log("driver-routes pendingSync = true && addJson = false");
       this.service.postJson(this.allRoutes$);
       this.service.dbAdd(
         0, '', '', 0, 0,
-        '', '', 0, 0, this.allRoutes$
-      );
-      this.addJson = true;
-
-    } else {
+        '', '', 0, 0, this.allRoutes$);
+    } if (this.pendingSync === false && this.addJson === false) {
+      console.log("driver-routes pendingSync = False && addJson = false");
+      console.log(this.allRoutes$);
       this.service.dbAdd(
         0, '', '', 0, 0,
         '', '', 0, 0, this.allRoutes$
       );
+    } else {
+      console.log("driver-routes pendingSync=" && this.pendingSync && " addJson " && this.addJson);
+      //get fresh version from server as nothing has been updated.
+      // console.log("getting fresh data");
+      // console.log(this.pendingSync);
+      // console.log(this.addJson);
+      // console.log(this.allRoutes$);
+
+      // this.service.dbAdd(
+      //   0, '', '', 0, 0,
+      //   '', '', 0, 0, this.allRoutes$
+      // );
       this.addJson = true;
     }
   }
 
   public showNotification(type: string, message: string): void {
     this.notifier.notify(type, message);
+  }
+
+  addEntry() {
+    this.service.dbAdd(
+      1, '', '', 1, 1,
+      '', '', 0, 0, "xxxxx"
+    );
+  }
+
+  getEntry () {
+    alert("cccccc")
+    this.getOrder(1);
+  }
+
+  getOrder(documentId) {
+    alert("555555")
+    this.service.getOrder(documentId).then(deliveries => {
+      this.deliveries = deliveries;
+      if (deliveries.length > 0) {
+        this.oldDelivery = deliveries[0];
+        console.log(deliveries[0]);
+      }
+    })
+      .catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
+      console.log(this.deliveries.length)
   }
 }

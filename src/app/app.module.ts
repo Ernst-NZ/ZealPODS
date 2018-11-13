@@ -37,6 +37,7 @@ import { SignatureComponent } from './signature/signature.component';
 import { RejectproductsComponent } from './rejectproducts/rejectproducts.component';
 import { DeliveryComponent } from './delivery/delivery.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { XxxComponent } from './xxx/xxx.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -94,6 +95,7 @@ const customNotifierOptions: NotifierOptions = {
     SignatureComponent,
     RejectproductsComponent,
     DeliveryComponent,
+    XxxComponent,
   ],
   imports: [
     BrowserModule,

@@ -100,7 +100,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
 
   // ## Get Json
   getJson() {
-    this.service.getJson()
+    this.service.getJsonFromDB()
       .then(deliveries => {
         this.deliveries = deliveries;
         if (deliveries.length > 0) {
