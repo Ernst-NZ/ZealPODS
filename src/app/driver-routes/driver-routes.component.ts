@@ -94,7 +94,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
       if (typeof this.allRoutes$ !== 'undefined' && this.getFromDB === false && this.addDB === false) {
         console.log('Get old data from index DB')
     //    this.getJson('currentData');
-
+    // We are online get old or current data from Index DB
         this.service.getJsonFromDB()
           .then(deliveries => {
             this.deliveries = deliveries;
@@ -105,8 +105,16 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
               console.log('getJson: Emptying DB');
               this.emptyDatabase = true;
               if (this.currentDB.delivered === 'true') {
+    // We have Data and there are pending orders - do post
+    // As part of the post function the Index DB will be updated            
                 this.service.postJson(this.currentDB.json);
+    //  ############################################################            
+    //  We need to do something here to update the Index db with the latest info
+    //  We need to get the latest info after the update above has been done            
+
+    //  ############################################################
               } else {
+    //  We dont need to update add the new script to the Index DB            
                 console.log('Add current data to index DB');
                 this.service.dbAdd(
                   0, '', '', 0, 0,
