@@ -39,7 +39,7 @@ import { timeout } from '../../../node_modules/rxjs/operators';
 })
 export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   allRoutes$: object;
-  currentDB$: object;
+  currentData$: object;
   addDB = false;
   addJson = false;
   loading = true;
@@ -96,7 +96,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
       this.addDB = true;
       this.allRoutes$ = this.currentDB.json;
       console.log(this.allRoutes$);
-      console.log(this.currentDB$);
+      console.log(this.currentDB.json);
     // No need to check the Json string as we are off line
     } else {
     // If we are on line we need to check if there are any pending orders
@@ -161,9 +161,9 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
         console.log('getJson: deliveries' + this.deliveries);
         if (deliveries.length > 0) {
           this.currentDB = deliveries[0];
-          this.currentDB$ = deliveries[0].json;
-    //      this.allRoutes$ = deliveries[0].json;
-        } else {
+          this.currentData$ = deliveries[0];
+          this.allRoutes$ = deliveries[0].json;
+         } else {
           console.log('getJson: Emptying DB');
           this.emptyDatabase = true; }
       })
