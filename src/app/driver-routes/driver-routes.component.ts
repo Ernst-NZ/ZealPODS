@@ -39,7 +39,7 @@ import { timeout } from '../../../node_modules/rxjs/operators';
 })
 export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   allRoutes$: object;
-  allRoutesx$: object;
+  currentDB$: object;
   addDB = false;
   addJson = false;
   loading = true;
@@ -50,133 +50,107 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   private service: DeliveryService;
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
-  tempDelivery: IDelivery = new Delivery();
+  currentDB: IDelivery = new Delivery();
   public notifier: NotifierService;
   constructor(private data: DataService, service: DeliveryService, private globals: Globals, notifier: NotifierService) {
     this.service = service;
     this.notifier = notifier;
   }
 
-  // ngOnInit() {
-  //   this.getJson();
-  //   this.globals.incomplete = false;
-  //   if (this.emptyDatabase && this.addDB === false) {
-  //     this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
-  //   }
-  // }
 
-  // ngAfterContentChecked() {
-  //   if (typeof this.allRoutes$ !== 'undefined' && this.addDB === false) {
-  //     if (this.deliveries.length > 0 && this.addDB === false) {
-  //       this.addDB = true;
-  //       if (this.tempDelivery.delivered === 'true') {
-  //         this.pendingSync = true;
-  //         this.addDB = true;
-  //       }
-  //     }
-  //     this.checkJson();
-  //     this.addDB = true;
-  //   }
-  // }
-
-  // Karl on 13
   ngOnInit() {
-    console.log('Getting Routes...');
-    this.loading = true;
+    // get current BD content will be set to veriable currentDB
+   this.loading = true;
+   console.log('Getting Cached Results...');
+      this.getJson();
+    // Try and get data from server
+    // Add data tot AllRoutes
+    console.log('Getting Server Routes...');
     this.data.getAllRoutes()
     .subscribe(
       data => {
            console.log('Successfully Got Routes');
         (
          this.allRoutes$ = data,
-         this.loading = false,
-         this.getFromDB = false
-                  );
+         this.loading = false
+         );
       },
      error => {
            console.log('Cannot Get Fresh, getting Cached Data');
-           this.loading = false,
+           // Cannot connect to server set flag to get data from DB
            this.getFromDB = true;
-//           this.allRoutesx$ = this.data.getCachedData2();
+           this.loading = false;
       });
-    // console.log('Finished getting routes')
-
-    // console.log('Finished getting JSON')
     this.globals.incomplete = false;
+
   }
+
 
   ngAfterContentChecked() {
     console.log('ngAfterContentChecked');
-    console.log(this.allRoutes$);
+    // If OFF line - get data from IndexDB
+    // Use GetJason from onint as data
+    // Add current data to allRoutes
+
     if (this.getFromDB === true && this.addDB === false) {
-      this.addDB = false;
-      this.getFromDB = false;
-      console.log('Getting Cached Results...');
-      this.getJson();
-      this.addDB = false;
+      this.addDB = true;
+      this.allRoutes$ = this.currentDB.json;
       console.log(this.allRoutes$);
-      this.checkJson();
-    }
+      console.log(this.currentDB$);
+    // No need to check the Json string as we are off line
+    } else {
+    // If we are on line we need to check if there are any pending orders
+    // will only be possible if we are connnected to the server and updates are pending
+
+      if (this.currentDB.delivered === 'true' && this.getFromDB === false && this.addDB === false) {
+        console.log('Update is needed');
+        this.addDB = true;
+          this.service.postJson(this.currentDB.json);
+        }
+    // After we have posted the data to te server we can now add the new data to the indexdb
     if (typeof this.allRoutes$ !== 'undefined' && this.getFromDB === false && this.addDB === false) {
-           if (this.deliveries.length > 0 && this.addDB === false) {
-             this.addDB = true;
-             if (this.tempDelivery.delivered === 'true') {
-               this.pendingSync = true;
-               this.addDB = true;
-             }
-           }
-           console.log('checking Json');
-           this.checkJson();
-           this.addDB = true;
-         }
+      console.log(this.allRoutes$);
+        this.addDB = true;
+        console.log('add current data to index DB');
+       this.service.dbAdd(
+          0, '', '', 0, 0,
+          '', '', 0, 0, this.allRoutes$
+        );
+     }
+    }
+
   }
-
-
-
-
-
-  // ngOnInit() {
-  //   console.log('Getting Routes...');
-  //   this.loading = true;
-  //   this.data.getAllRoutes()
-
-  //   .subscribe(
-  //     data => {
-  //       console.log('Successfully Got Routes');
-  //       (this.allRoutes$ = data, this.loading = false);
-  //     },
-  //   error => {
-  //     console.log('Error Getting Routes' + error),
-  //     this.showNotification('error', error);
-  //     console.log('Getting Cached Results...');
-  //     this.getJson();
-  //     console.log('Finished Getting Cached Results');
-  //     this.allRoutes$ = this.deliveries[0];
-  //     console.log(this.allRoutes$);
-  //     console.log('Finished Setting Cached Results to allRoutes object');
-  //   });
-  //   // console.log('Finished getting routes')
-
-  //   // console.log('Finished getting JSON')
-  //   this.globals.incomplete = false;
-  // }
 
   // ngAfterContentChecked() {
   //   console.log('ngAfterContentChecked');
   //   console.log(this.allRoutes$);
-  //   if (typeof this.allRoutes$ !== 'undefined' && this.addDB === false) {
-  //     if (this.deliveries.length > 0 && this.addDB === false) {
-  //       this.addDB = true;
-  //       if (this.tempDelivery.delivered === 'true') {
-  //         this.pendingSync = true;
-  //         this.addDB = true;
-  //       }
-  //     }
-  //     console.log('checking Json');
+  //   // If OFF line - get data from IndexDB
+  //   // Use GetJason from onint as data
+
+  //   if (this.getFromDB === true && this.addDB === false) {
+  //     this.addDB = false;
+  //     console.log('Getting Cached Results...');
+  //     this.getJson();
+  //     this.addDB = false;
+  //     console.log(this.allRoutes$);
+  //     this.allRoutes$ = this.currentDB.json;
   //     this.checkJson();
-  //     this.addDB = true;
   //   }
+  //   if (typeof this.allRoutes$ !== 'undefined' && this.getFromDB === false && this.addDB === false) {
+  //          if (this.deliveries.length > 0 && this.addDB === false) {
+  //            this.addDB = true;
+  //            if (this.currentDB.delivered === 'true') {
+  //              this.pendingSync = true;
+  //              this.addDB = true;
+  //            }
+  //          }
+  //          console.log('checking Json');
+  //          this.checkJson();
+  //          this.addDB = true;
+  //        }
   // }
+
+
 
 
   // ## Get Json
@@ -186,8 +160,9 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
         this.deliveries = deliveries;
         console.log('getJson: deliveries' + this.deliveries);
         if (deliveries.length > 0) {
-          this.tempDelivery = deliveries[0];
-          this.allRoutes$ = deliveries[0].json;
+          this.currentDB = deliveries[0];
+          this.currentDB$ = deliveries[0].json;
+    //      this.allRoutes$ = deliveries[0].json;
         } else {
           console.log('getJson: Emptying DB');
           this.emptyDatabase = true; }
@@ -213,9 +188,10 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
     //     on error (offline)
     //       do nothing
 
-    if (this.pendingSync === true && this.addJson === false) {
+    if (this.pendingSync === true && this.addJson === false && this.getFromDB === false) {
       console.log('driver-routes pendingSync = true && addJson = false');
       this.service.postJson(this.allRoutes$);
+
       this.service.dbAdd(
         0, '', '', 0, 0,
         '', '', 0, 0, this.allRoutes$);
