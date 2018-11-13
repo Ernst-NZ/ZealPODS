@@ -5,8 +5,6 @@ import { DeliveryService } from '../_services/delivery.service';
 import { Delivery, IDelivery } from '../_models/delivery';
 import { Globals } from '../globals';
 import { NotifierService } from 'angular-notifier';
-import { isFulfilled } from '../../../node_modules/@types/q';
-import { timeout } from '../../../node_modules/rxjs/operators';
 
 @Component({
   selector: 'app-driver-routes',
@@ -50,85 +48,117 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   private service: DeliveryService;
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
-  tempDelivery: IDelivery = new Delivery();
+  currentDB: IDelivery = new Delivery();
   public notifier: NotifierService;
   constructor(private data: DataService, service: DeliveryService, private globals: Globals, notifier: NotifierService) {
     this.service = service;
     this.notifier = notifier;
   }
 
-  // ngOnInit() {
-  //   this.getJson();
-  //   this.globals.incomplete = false;
-  //   if (this.emptyDatabase && this.addDB === false) {
-  //     this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
-  //   }
-  // }
-
-  // ngAfterContentChecked() {
-  //   if (typeof this.allRoutes$ !== 'undefined' && this.addDB === false) {
-  //     if (this.deliveries.length > 0 && this.addDB === false) {
-  //       this.addDB = true;
-  //       if (this.tempDelivery.delivered === 'true') {
-  //         this.pendingSync = true;
-  //         this.addDB = true;
-  //       }
-  //     }
-  //     this.checkJson();
-  //     this.addDB = true;
-  //   }
-  // }
-
-  // Karl on 13
   ngOnInit() {
     console.log('Getting Routes...');
+    // Try and get data from server
+    // Add data tot AllRoutes$
     this.loading = true;
     this.data.getAllRoutes()
-    .subscribe(
-      data => {
-           console.log('Successfully Got Routes');
-        (
-         this.allRoutes$ = data,
-         this.loading = false,
-         this.getFromDB = false
-                  );
-      },
-     error => {
-           console.log('Cannot Get Fresh, getting Cached Data');
-           this.loading = false,
-           this.getFromDB = true;
-//           this.allRoutesx$ = this.data.getCachedData2();
-      });
-    // console.log('Finished getting routes')
-
-    // console.log('Finished getting JSON')
+      .subscribe(
+        data => {
+          console.log('Successfully Got Routes');
+          (
+            this.allRoutes$ = data,
+            this.loading = false
+          );
+        },
+        error => {
+          console.log('Cannot Get Fresh, getting Cached Data');
+          // Cannot connect to server set flag to get data from DB
+          this.loading = false,
+            this.getFromDB = true;
+        });
     this.globals.incomplete = false;
   }
 
   ngAfterContentChecked() {
-    console.log('ngAfterContentChecked');
-    console.log(this.allRoutes$);
+    // If OFF line - get data from IndexDB
+    // Add current data to allRoutes$      
     if (this.getFromDB === true && this.addDB === false) {
-      this.addDB = false;
-      this.getFromDB = false;
+      console.log('ngAfterContentChecked');
+      console.log('getFromDB === true && this.addDB === false')
+      this.addDB = true;
       console.log('Getting Cached Results...');
-      this.getJson();
-      this.addDB = false;
-      console.log(this.allRoutes$);
-      this.checkJson();
+      this.getJson('oldData');
+      // No need to check the Json string as we are off line
+    } else {
+      // If we are on line we need to check if there are any pending orders
+      // will only be possible if we are connnected to the server and updates are pending    
+      if (typeof this.allRoutes$ !== 'undefined' && this.getFromDB === false && this.addDB === false) {
+        console.log('Get old data from index DB')
+    //    this.getJson('currentData');
+
+        this.service.getJsonFromDB()
+          .then(deliveries => {
+            this.deliveries = deliveries;
+            console.log('getJson: deliveries' + this.deliveries);
+            if (deliveries.length > 0) {
+              console.log('###############################################################')
+              this.currentDB = deliveries[0];
+              console.log('getJson: Emptying DB');
+              this.emptyDatabase = true;
+              if (this.currentDB.delivered === 'true') {
+                this.service.postJson(this.currentDB.json);
+              } else {
+                console.log('Add current data to index DB');
+                this.service.dbAdd(
+                  0, '', '', 0, 0,
+                  '', '', 0, 0, this.allRoutes$
+                );
+              }
+            }
+          })
+          .catch(error => {
+            console.error('getJson: Error: ' + error);
+            alert(error.message);
+          });
+
+
+
+
+
+
+
+
+        this.addDB = true;
+        console.log(this.allRoutes$);        
+        // Check if there are any pending orders
+        // console.log(this.waitingforData)
+        // if (typeof this.currentDB !== 'undefined' && this.currentDB.delivered === 'true' && this.waitingforData === false ) {
+        //   console.log(this.waitingforData)
+        //   console.log('Update needed - do Update & get fresh data')
+        //   this.service.postJson(this.currentDB.json);
+        //   this.waitingforData = false;
+        //   // When we are posting the json we need to update the IndexDB after the post
+        //   // Update of DB should be part of the posting sub
+        // } 
+        // if (typeof this.currentDB !== 'undefined' && this.waitingforData === false) {
+        //   // If no Pending Orders add data to Index DB
+        //   this.addDB = true;
+        //   console.log('Add current data to index DB');
+        //   this.service.dbAdd(
+        //     0, '', '', 0, 0,
+        //     '', '', 0, 0, this.allRoutes$
+        //   );
+
+        // }
+
+
+
+
+        // console.log('checking Json');
+        // this.checkJson();
+        // this.addDB = true;
+      }
     }
-    if (typeof this.allRoutes$ !== 'undefined' && this.getFromDB === false && this.addDB === false) {
-           if (this.deliveries.length > 0 && this.addDB === false) {
-             this.addDB = true;
-             if (this.tempDelivery.delivered === 'true') {
-               this.pendingSync = true;
-               this.addDB = true;
-             }
-           }
-           console.log('checking Json');
-           this.checkJson();
-           this.addDB = true;
-         }
+
   }
 
 
@@ -167,7 +197,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   //   if (typeof this.allRoutes$ !== 'undefined' && this.addDB === false) {
   //     if (this.deliveries.length > 0 && this.addDB === false) {
   //       this.addDB = true;
-  //       if (this.tempDelivery.delivered === 'true') {
+  //       if (this.currentDB.delivered === 'true') {
   //         this.pendingSync = true;
   //         this.addDB = true;
   //       }
@@ -180,17 +210,21 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
 
 
   // ## Get Json
-  getJson() {
+  getJson(reason) {
     this.service.getJsonFromDB()
       .then(deliveries => {
         this.deliveries = deliveries;
         console.log('getJson: deliveries' + this.deliveries);
         if (deliveries.length > 0) {
-          this.tempDelivery = deliveries[0];
-          this.allRoutes$ = deliveries[0].json;
+          this.currentDB = deliveries[0];
+          if (reason === 'oldData') {
+            this.allRoutes$ = deliveries[0].json;
+            console.log(this.allRoutes$);
+          }
         } else {
           console.log('getJson: Emptying DB');
-          this.emptyDatabase = true; }
+          this.emptyDatabase = true;
+        }
       })
       .catch(error => {
         console.error('getJson: Error: ' + error);
@@ -223,11 +257,11 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
       console.log('driver-routes pendingSync = False && addJson = false');
       console.log(this.allRoutes$);
       this.service.dbAdd(
-          0, '', '', 0, 0,
-          '', '', 0, 0, this.allRoutes$
-        );
-      } else {
-        console.log('driver-routes pendingSync=' && this.pendingSync && ' addJson ' && this.addJson);
+        0, '', '', 0, 0,
+        '', '', 0, 0, this.allRoutes$
+      );
+    } else {
+      console.log('driver-routes pendingSync=' && this.pendingSync && ' addJson ' && this.addJson);
       // get fresh version from server as nothing has been updated.
       // console.log('getting fresh data');
       // console.log(this.pendingSync);

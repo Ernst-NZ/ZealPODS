@@ -471,18 +471,16 @@ export class DeliveryService extends BaseService {
   postJson(dataString) {
     console.log(dataString);
      //return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values', dataString)
-     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
+     return this.http.post('https://test1.zealsystems.co.nz/api/values/1', dataString)
        .subscribe(
          val => {
       //     this.showNotification('success', 'Delivery Posted to Main Server');
            this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
-           this.checkJson();
-
-       //    this.router.navigate(['/route-Orders/', this.globals.driver]);
-     //      this.router.navigate(['/']);
-           //    Clear Indexed DB - Gete new info and populate
-//             this.deleteDelivery(docId)
-         },
+           this.dbAdd(
+             0, '', '', 0, 0,
+             '', '', 0, 0, this.orderDetails$
+           );
+       },
          response => {
    //        alert('Server Update error ' && response);
    //        this.showNotification('success', 'Delivery Successfully Updated');
@@ -497,11 +495,5 @@ export class DeliveryService extends BaseService {
   public showNotification(type: string, message: string): void {
     this.notifier.notify(type, message);
   }
-
-  checkJson() {
-      this.dbAdd(
-        0, '', '', 0, 0,
-        '', '', 0, 0, this.orderDetails$
-      );
-  }
+  
 }
