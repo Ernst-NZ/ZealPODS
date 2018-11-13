@@ -39,12 +39,14 @@ import { timeout } from '../../../node_modules/rxjs/operators';
 })
 export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   allRoutes$: object;
+  allRoutesx$: object;
   addDB = false;
   addJson = false;
   loading = true;
   pendingSync = false;
   isOnline = false;
   emptyDatabase = false;
+  getFromDB = false;
   private service: DeliveryService;
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
@@ -55,7 +57,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
     this.notifier = notifier;
   }
 
-  // ngOnInit() {    
+  // ngOnInit() {
   //   this.getJson();
   //   this.globals.incomplete = false;
   //   if (this.emptyDatabase && this.addDB === false) {
@@ -77,49 +79,104 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   //   }
   // }
 
-
+  // Karl on 13
   ngOnInit() {
-    console.log("Getting Routes...");
-    this.loading = true
+    console.log('Getting Routes...');
+    this.loading = true;
     this.data.getAllRoutes()
+    .subscribe(
+      data => {
+           console.log('Successfully Got Routes');
+        (
+         this.allRoutes$ = data,
+         this.loading = false,
+         this.getFromDB = false
+                  );
+      },
+     error => {
+           console.log('Cannot Get Fresh, getting Cached Data');
+           this.loading = false,
+           this.getFromDB = true;
+//           this.allRoutesx$ = this.data.getCachedData2();
+      });
+    // console.log('Finished getting routes')
 
-      .subscribe(
-        data => {
-          console.log("Successfully Got Routes");
-          (this.allRoutes$ = data, this.loading = false)
-        },
-        error => {
-          console.log("Error Getting Routes" + error),
-            this.showNotification('error', error);
-          console.log("Getting Cached Results...");
-          this.getJson();
-          console.log("Finished Getting Cached Results");
-          this.allRoutes$ = this.deliveries[0];
-          console.log(this.allRoutes$);
-          console.log("Finished Setting Cached Results to allRoutes object");
-        });
-    // console.log("Finished getting routes")
-
-    // console.log("Finished getting JSON")       
+    // console.log('Finished getting JSON')
     this.globals.incomplete = false;
   }
 
   ngAfterContentChecked() {
-    console.log("ngAfterContentChecked");
+    console.log('ngAfterContentChecked');
     console.log(this.allRoutes$);
-    if (typeof this.allRoutes$ !== 'undefined' && this.addDB === false) {
-      if (this.deliveries.length > 0 && this.addDB === false) {
-        this.addDB = true;
-        if (this.tempDelivery.delivered === 'true') {
-          this.pendingSync = true;
-          this.addDB = true;
-        }
-      }
-      console.log("checking Json");
+    if (this.getFromDB === true && this.addDB === false) {
+      this.addDB = false;
+      this.getFromDB = false;
+      console.log('Getting Cached Results...');
+      this.getJson();
+      this.addDB = false;
+      console.log(this.allRoutes$);
       this.checkJson();
-      this.addDB = true;
     }
+    if (typeof this.allRoutes$ !== 'undefined' && this.getFromDB === false && this.addDB === false) {
+           if (this.deliveries.length > 0 && this.addDB === false) {
+             this.addDB = true;
+             if (this.tempDelivery.delivered === 'true') {
+               this.pendingSync = true;
+               this.addDB = true;
+             }
+           }
+           console.log('checking Json');
+           this.checkJson();
+           this.addDB = true;
+         }
   }
+
+
+
+
+
+  // ngOnInit() {
+  //   console.log('Getting Routes...');
+  //   this.loading = true;
+  //   this.data.getAllRoutes()
+
+  //   .subscribe(
+  //     data => {
+  //       console.log('Successfully Got Routes');
+  //       (this.allRoutes$ = data, this.loading = false);
+  //     },
+  //   error => {
+  //     console.log('Error Getting Routes' + error),
+  //     this.showNotification('error', error);
+  //     console.log('Getting Cached Results...');
+  //     this.getJson();
+  //     console.log('Finished Getting Cached Results');
+  //     this.allRoutes$ = this.deliveries[0];
+  //     console.log(this.allRoutes$);
+  //     console.log('Finished Setting Cached Results to allRoutes object');
+  //   });
+  //   // console.log('Finished getting routes')
+
+  //   // console.log('Finished getting JSON')
+  //   this.globals.incomplete = false;
+  // }
+
+  // ngAfterContentChecked() {
+  //   console.log('ngAfterContentChecked');
+  //   console.log(this.allRoutes$);
+  //   if (typeof this.allRoutes$ !== 'undefined' && this.addDB === false) {
+  //     if (this.deliveries.length > 0 && this.addDB === false) {
+  //       this.addDB = true;
+  //       if (this.tempDelivery.delivered === 'true') {
+  //         this.pendingSync = true;
+  //         this.addDB = true;
+  //       }
+  //     }
+  //     console.log('checking Json');
+  //     this.checkJson();
+  //     this.addDB = true;
+  //   }
+  // }
 
 
   // ## Get Json
@@ -127,16 +184,16 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
     this.service.getJsonFromDB()
       .then(deliveries => {
         this.deliveries = deliveries;
-        console.log("getJson: deliveries" + this.deliveries)
+        console.log('getJson: deliveries' + this.deliveries);
         if (deliveries.length > 0) {
           this.tempDelivery = deliveries[0];
+          this.allRoutes$ = deliveries[0].json;
         } else {
           console.log('getJson: Emptying DB');
-          this.emptyDatabase = true
-        }
+          this.emptyDatabase = true; }
       })
       .catch(error => {
-        console.error("getJson: Error: " + error);
+        console.error('getJson: Error: ' + error);
         alert(error.message);
       });
   }
@@ -157,22 +214,22 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
     //       do nothing
 
     if (this.pendingSync === true && this.addJson === false) {
-      console.log("driver-routes pendingSync = true && addJson = false");
+      console.log('driver-routes pendingSync = true && addJson = false');
       this.service.postJson(this.allRoutes$);
       this.service.dbAdd(
         0, '', '', 0, 0,
         '', '', 0, 0, this.allRoutes$);
     } if (this.pendingSync === false && this.addJson === false) {
-      console.log("driver-routes pendingSync = False && addJson = false");
+      console.log('driver-routes pendingSync = False && addJson = false');
       console.log(this.allRoutes$);
       this.service.dbAdd(
-        0, '', '', 0, 0,
-        '', '', 0, 0, this.allRoutes$
-      );
-    } else {
-      console.log("driver-routes pendingSync=" && this.pendingSync && " addJson " && this.addJson);
-      //get fresh version from server as nothing has been updated.
-      // console.log("getting fresh data");
+          0, '', '', 0, 0,
+          '', '', 0, 0, this.allRoutes$
+        );
+      } else {
+        console.log('driver-routes pendingSync=' && this.pendingSync && ' addJson ' && this.addJson);
+      // get fresh version from server as nothing has been updated.
+      // console.log('getting fresh data');
       // console.log(this.pendingSync);
       // console.log(this.addJson);
       // console.log(this.allRoutes$);
@@ -187,33 +244,5 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
 
   public showNotification(type: string, message: string): void {
     this.notifier.notify(type, message);
-  }
-
-  addEntry() {
-    this.service.dbAdd(
-      1, '', '', 1, 1,
-      '', '', 0, 0, "xxxxx"
-    );
-  }
-
-  getEntry () {
-    alert("cccccc")
-    this.getOrder(1);
-  }
-
-  getOrder(documentId) {
-    alert("555555")
-    this.service.getOrder(documentId).then(deliveries => {
-      this.deliveries = deliveries;
-      if (deliveries.length > 0) {
-        this.oldDelivery = deliveries[0];
-        console.log(deliveries[0]);
-      }
-    })
-      .catch(error => {
-        console.error(error);
-        alert(error.message);
-      });
-      console.log(this.deliveries.length)
   }
 }

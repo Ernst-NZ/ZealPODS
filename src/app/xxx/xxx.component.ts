@@ -21,18 +21,18 @@ export class XxxComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getStudents();
+  //  this.getStudents();
   }
 
-  getStudents() {
-    this.service.getStudents().
-      then(students => {
-        this.students = students;
-      }).catch(error => {
-        console.error(error);
-        alert(error.message);
-      });
-  }
+  // getStudents() {
+  //   this.service.getStudents().
+  //     then(students => {
+  //       this.students = students;
+  //     }).catch(error => {
+  //       console.error(error);
+  //       alert(error.message);
+  //     });
+  // }
 
   // addStudent() {
   //   this.service.addStudent(this.newStudent).
@@ -71,15 +71,15 @@ export class XxxComponent implements OnInit {
   // }
 
   getStudent(studentId) {
-    this.service.getStudent(studentId).
-      then(students => {
-        if (students.length > 0) {
-          this.oldStudent = students[0];
-        }
-      }).catch(error => {
-        console.error(error);
-        alert(error.message);
-      });
+    // this.service.getStudent(studentId).
+    //   then(students => {
+    //     if (students.length > 0) {
+    //       this.oldStudent = students[0];
+    //     }
+    //   }).catch(error => {
+    //     console.error(error);
+    //     alert(error.message);
+    //   });
   }
 
   // updateStudent() {
@@ -106,17 +106,17 @@ export class XxxComponent implements OnInit {
 
   AddTest() {
 
-    const myComics = [
-      {
-        id: 1, title: "Amazing Fantasy #15", published: "1962"
-      }, {
-        id: 2, title: "Detective Comics #27", published: "1939"
-      }, {
-        id: 3, title: "Action Comics #1", published: "1938"
-      }, {
-        id: 4, title: "The Incredible Hulk #180", published: "1974"
-      }
-    ];
+    // const myComics = [
+    //   {
+    //     id: 1, title: "Amazing Fantasy #15", published: "1962"
+    //   }, {
+    //     id: 2, title: "Detective Comics #27", published: "1939"
+    //   }, {
+    //     id: 3, title: "Action Comics #1", published: "1938"
+    //   }, {
+    //     id: 4, title: "The Incredible Hulk #180", published: "1974"
+    //   }
+    // ];
     // if (window.indexedDB) {
     //   var request = indexedDB.open("comicsDB", 1);
 
