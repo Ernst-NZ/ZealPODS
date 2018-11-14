@@ -110,7 +110,22 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
                 this.service.postJson(this.currentDB.json);
     //  ############################################################            
     //  We need to do something here to update the Index db with the latest info
-    //  We need to get the latest info after the update above has been done            
+    //  We need to get the latest info after the update above has been done  
+                this.data.getAllRoutes()
+                  .subscribe(
+                    data => {
+                      console.log('Successfully Got Fresh Routes');
+                      (
+                        this.allRoutes$ = data,
+                        this.loading = false
+                      );
+                    },
+                    error => {
+                      console.log('Cannot Get Fresh, XXXXXXXXXXX');
+                      // Cannot connect to server set flag to get data from DB
+                      // ??????????????????????????????????  
+
+                    });          
 
     //  ############################################################
               } else {
