@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-//import { LogService } from '../_services/log.service';
+import { LogService } from '../_services/log.service';
 
 @Component({
   selector: 'app-log-test',
@@ -8,11 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LogTestComponent implements OnInit {
 
-//  constructor(private logger: LogService) { }
+  constructor(private logger: LogService) { }
 
   ngOnInit() {
   }
-  // testLog(): void {
-  //   this.logger.log("Test the log() Method");
-  // }
+  testLog(): void {
+    this.logger.log("Test the log() Method");
+  }
 }

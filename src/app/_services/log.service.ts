@@ -12,7 +12,12 @@ export enum LogLevel {
     Off = 6
 }
 @Injectable()
-// export class LogService {
+ export class LogService {
+  log(msg: any) {
+    console.log(new Date() + ": "
+      + JSON.stringify(msg));
+  }
+}
 //     publishers: LogPublisher[];
 //     level: LogLevel = LogLevel.All;
 //     logWithDate: boolean = true;
@@ -88,45 +93,45 @@ export enum LogLevel {
 //     }
 // }
 
-export class LogEntry {
-    // Public Properties
-    entryDate: Date = new Date();
-    message: string = "";
-    level: LogLevel = LogLevel.Debug;
-    extraInfo: any[] = [];
-    logWithDate: boolean = true;
+// export class LogEntry {
+//     // Public Properties
+//     entryDate: Date = new Date();
+//     message: string = "";
+//     level: LogLevel = LogLevel.Debug;
+//     extraInfo: any[] = [];
+//     logWithDate: boolean = true;
 
-    buildLogString(): string {
-        let ret: string = "";
+//     buildLogString(): string {
+//         let ret: string = "";
 
-        if (this.logWithDate) {
-            ret = new Date() + " - ";
-        }
-        ret += "Type: " + LogLevel[this.level];
-        ret += " - Message: " + this.message;
-        if (this.extraInfo.length) {
-            ret += " - Extra Info: "
-                + this.formatParams(this.extraInfo);
-        }
+//         if (this.logWithDate) {
+//             ret = new Date() + " - ";
+//         }
+//         ret += "Type: " + LogLevel[this.level];
+//         ret += " - Message: " + this.message;
+//         if (this.extraInfo.length) {
+//             ret += " - Extra Info: "
+//                 + this.formatParams(this.extraInfo);
+//         }
 
-        return ret;
-    }
+//         return ret;
+//     }
 
-    private formatParams(params: any[]): string {
-        let ret: string = params.join(",");
+//     private formatParams(params: any[]): string {
+//         let ret: string = params.join(",");
 
-        // Is there at least one object in the array?
-        if (params.some(p => typeof p == "object")) {
-            ret = "";
-            // Build comma-delimited string
-            for (let item of params) {
-                ret += JSON.stringify(item) + ",";
-            }
-        }
+//         // Is there at least one object in the array?
+//         if (params.some(p => typeof p == "object")) {
+//             ret = "";
+//             // Build comma-delimited string
+//             for (let item of params) {
+//                 ret += JSON.stringify(item) + ",";
+//             }
+//         }
 
-        return ret;
-    }
-}
+//         return ret;
+//     }
+// }
 // export class LogPublishersService {
     
 //     constructor() {
