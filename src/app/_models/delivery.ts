@@ -8,6 +8,7 @@ export class IDelivery {
   ReceivedBy: string;
   PaymentMethod: string;
   PaymentAmount: number;
+  DriverNotes: string;
   updated: string;
   json: object;
 }
@@ -22,24 +23,8 @@ export class Delivery implements IDelivery {
   ReceivedBy: '';
   PaymentMethod: '';
   PaymentAmount: 0;
+  DriverNotes: '';
   updated: 'false';
   json: object;
 }
 // ## End
-
-export class IStudent {
-  id?: number;
-  name: string;
-  gender: string;
-  country: string;
-  city: string;
-}
-
-export class DeliveryS implements IStudent {
-  id = 0;
-  name = '';
-  gender = 'm';
-  country = '';
-  city = '';
-}
-

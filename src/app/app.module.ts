@@ -37,7 +37,13 @@ import { SignatureComponent } from './signature/signature.component';
 import { RejectproductsComponent } from './rejectproducts/rejectproducts.component';
 import { DeliveryComponent } from './delivery/delivery.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
-import { XxxComponent } from './xxx/xxx.component';
+import { ModalComponent } from './_directives/modal.components';
+import { ModalService } from './_services/modal.service';
+import { LogTestComponent } from './log-test/log-test.component';
+//import { LogService }   from './_services/log.service';
+//import { LogPublishersService } from "./_services/log.service";
+// import { LogPublishersService, LogService } from "./_services/log.service";
+
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -95,7 +101,8 @@ const customNotifierOptions: NotifierOptions = {
     SignatureComponent,
     RejectproductsComponent,
     DeliveryComponent,
-    XxxComponent,
+    ModalComponent,
+    LogTestComponent,
   ],
   imports: [
     BrowserModule,
@@ -127,6 +134,9 @@ const customNotifierOptions: NotifierOptions = {
     Globals,
     AlertService,
     AuthenticationService,
+    ModalService,
+    // LogService,
+    // LogPublishersService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

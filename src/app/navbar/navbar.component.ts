@@ -4,7 +4,8 @@ import { Globals } from '../globals';
 import { DataService } from '../data.service';
 import { DeliveryService } from '../_services/delivery.service';
 import { Delivery, IDelivery } from '../_models/delivery';
-
+import { _getComponentHostLElementNode } from '@angular/core/src/render3/instructions';
+import { Console } from '@angular/core/src/console';
 
 @Component({
   selector: 'app-navbar',
@@ -31,22 +32,26 @@ export class NavbarComponent implements OnInit {
 
   }
 
-refresh() {
-  this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
-  this.getJson();
-  if (typeof this.tempDelivery !== 'undefined' && this.addDB === false) {
-    if (this.deliveries.length > 0 && this.addDB === false) {
-      this.addDB = true;
-      if (this.tempDelivery.delivered === 'true') {
-        this.pendingSync = true;
-        this.addDB = true;
-      }
-    }
-    this.checkJson();
-    this.addDB = true;
+  toggleSync() {
+    this.globals.isSyncing = !this.globals.isSyncing;
   }
-  console.log(this.tempDelivery);
-}
+
+// refresh() {
+//   this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
+//   this.getJson();
+//   if (typeof this.tempDelivery !== 'undefined' && this.addDB === false) {
+//     if (this.deliveries.length > 0 && this.addDB === false) {
+//       this.addDB = true;
+//       if (this.tempDelivery.delivered === 'true') {
+//         this.pendingSync = true;
+//         this.addDB = true;
+//       }
+//     }
+//     this.checkJson();
+//     this.addDB = true;
+//   }
+//   console.log(this.tempDelivery);
+// }
   // ## Get Json
   getJson() {
     this.service.getJsonFromDB()
@@ -99,4 +104,4 @@ refresh() {
     }
      }
 
-}
+    }

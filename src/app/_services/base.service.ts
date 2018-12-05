@@ -69,6 +69,10 @@ import { IDataBase, DATA_TYPE, ITable } from 'jsstore';
          dataType: DATA_TYPE.Number
        },
        {
+         name: 'DriverNotes',
+         dataType: DATA_TYPE.String
+       },
+       {
          name: 'json',
          dataType: DATA_TYPE.Object,
        }

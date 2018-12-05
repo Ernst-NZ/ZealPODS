@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~angular-notifier/styles";
-@import '~material-design-icons/iconfont/material-icons.css';
 
 body {
   margin: 0;
@@ -145,7 +144,7 @@ body {
       }
 
       a .phoneNo {
-        color:green;
+         color:green;
         border-radius: 0px 8px 8px 0px;
         background: black;
         width:30px;
@@ -202,7 +201,7 @@ body {
     li {
       background-color: rgb(106, 107, 107);
 
-      a {
+      a:not(.ibr) {
         font-size: 10px;
         border-radius: 8px;
         padding: 0px 20px 0px 20px;
@@ -301,10 +300,10 @@ body {
   color:rgb(199, 214, 238);
 //  max-width: fit-content;
   max-width: 500px;
- .phoneNo {
-   color: green;
-   margin-left:10px;
- }
+//  .phoneNo {
+//    color: green;
+//    margin-left:10px;
+//  }
 }
 
 #myCanvas {
@@ -403,11 +402,9 @@ body {
         display: inline-block;
         background: black;
         position: absolute;
+        padding: 0px 0px 0px 0px;
         top:0;
         right:0;
-        padding-right:0;
-        margin-right:0;
-        margin-left:0;
         height: 100%;
         width: 35px;
 
@@ -419,7 +416,7 @@ body {
         color:black;
       }
         .phoneNo {
-          color: lime;
+          // color: lime;
           margin: 0;
           padding-left: 3px;
           padding-right: 0px;
@@ -443,4 +440,117 @@ body {
   font-weight: normal;
   margin-bottom: 0px;
 
+}
+
+
+
+/* MODAL STYLES
+-------------------------------*/
+jw-modal {
+  /* modals are hidden by default */
+  display: none;
+
+  .jw-modal {
+      /* modal container fixed across whole screen */
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      max-height: 100%;
+      width: calc(100%-80px);
+      height: 90%;
+      
+      
+
+      /* z-index must be higher than .jw-modal-background */
+      z-index: 1000;
+       
+      /* enables scrolling for tall modals */
+      overflow: auto;
+
+      .jw-modal-body {
+          border-radius: 8px;
+          padding: 20px;
+          background: #fff;
+          height: 90%;
+          width: calc(100% - 80px);
+          /* margin exposes part of the modal background */
+          margin: 40px;
+          // margin-top: 60px;
+          // max-height: calc(100vh - 200px);
+          // overflow: auto;
+      }
+  }
+
+  .jw-modal-background {
+      /* modal background fixed across whole screen */
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      /* semi-transparent black  */
+      background-color: #000;
+      opacity: 0.75;
+       
+      /* z-index must be below .jw-modal and above everything else  */
+      z-index: 900;
+  }
+}
+
+body.jw-modal-open {
+  /* body overflow is hidden to hide main scrollbar when modal window is open */
+  overflow: hidden;
+}
+
+#splitLi > div.ibR > p:nth-child(1) > a {
+  padding: 0;
+  :hover {
+    transition: .5s;
+    fill: white;
+    padding-left:0;
+  }
+}
+
+.titleText {
+  display:inline-block;
+  vertical-align:middle;
+}
+
+.closeButton {
+  display:inline-block;
+  vertical-align:middle;
+}
+
+#syncContainer {
+  display: inline-block;
+  padding-top: 0px;
+  padding-left:10px;
+  color: white;  
+
+  #syncIcon {
+    display: inherit;
+    animation: syncRotate 1.5s linear infinite;
+    transform-box: fill-box;
+    
+    
+    // animation-name: syncRotate;
+    // animation-duration: 1s;
+    // /* Things added */
+    // animation-iteration-count: infinite;
+    // transform-box: inherit;
+    // display: inline-block;
+  }
+}
+
+
+@keyframes syncRotate {
+  0% {
+      transform: rotate(360deg);
+  }
+  100% {
+      transform: rotate(0deg);
+  }
 }

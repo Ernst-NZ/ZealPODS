@@ -36,6 +36,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   deliveries: Array<IDelivery> = [];
   oldDelivery: IDelivery = new Delivery();
   loading = false;
+  showOrderMsg = false;
 
   constructor(private route: ActivatedRoute, private data: DataService, private globals: Globals, service: DeliveryService) {
     this.route.params.subscribe(params => this.allRoutes$ = data);
@@ -73,7 +74,9 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
         console.error(error);
         alert(error.message);
       });
-  }
+  }    
+    
+
   private getDimensions(){
     if(innerWidth >= 500) {
       this.globals.cWidth = 490;

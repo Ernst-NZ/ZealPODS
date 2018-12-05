@@ -287,7 +287,7 @@ function Vector(x,y){
 			return 0;
 		} else {
 			// JavaScript floating point math is screwed up.
-			// because of it, the core of the formula can, on occasion, have 
+			// because of it, the core of the formula can, on occasion, have values
 			// over 1.0 and below -1.0.
 			return Math.acos(
 				Math.min(
@@ -349,7 +349,7 @@ function Point(x,y){
  * 	} // stroke ends
  * ]
  *
- * we don't care or store stroke width (it's canvas-size-relative), color, shadow . These can be added / changed on whim post-capture.
+ * we don't care or store stroke width (it's canvas-size-relative), color, shadow values. These can be added / changed on whim post-capture.
  *
  */
 function DataEngine(storageObject, context, startStrokeFn, addToStrokeFn, endStrokeFn){
@@ -808,10 +808,10 @@ function jSignatureClass(parent, options, instanceExtensions) {
 		//================================
 		// mouse down, move, up handlers:
 
-		// shifts - adjustment  in viewport pixels drived from position of canvas on the page
+		// shifts - adjustment values in viewport pixels drived from position of canvas on the page
 		var shiftX
 		, shiftY
-		, setStart = function(){
+		, setStartValues = function(){
 			var tos = $(jSignatureInstance.canvas).offset()
 			shiftX = tos.left * -1
 			shiftY = tos.top * -1
@@ -845,7 +845,7 @@ function jSignatureClass(parent, options, instanceExtensions) {
 		        e.preventDefault();
     			// for performance we cache the offsets
     			// we recalc these only at the beginning the stroke
-    			setStart();
+    			setStartValues();
     			jSignatureInstance.dataEngine.startStroke( getPointFromEvent(e) );
     			timer.kick();
 		    }

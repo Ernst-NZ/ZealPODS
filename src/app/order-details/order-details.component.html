@@ -15,7 +15,28 @@
           Order Id: {{ order.DocumentId }}<br>
           Category1: {{ order.Category1 }}<br>
           Category2: {{ order.Category2 }}<br>
-          Phone: {{order.PhoneNo}}<a class="phoneNo call" [href]="'tel:' + order.PhoneNo"><i class="material-icons">call</i></a></p>
+          Phone: {{order.PhoneNo}}<a class="phoneNo call" [href]="'tel:' + order.PhoneNo">
+            <svg 
+            viewBox="0 0 1408 1408"
+            id="svg3013"
+            version="1.1"
+            inkscape:version="0.48.3.1 r9886"
+            width="24"
+            height="24"
+            fill="lime"
+            sodipodi:docname="phone_font_awesome.svg">
+            <metadata
+                id="metadata3023">
+            </metadata>
+           <defs id="defs3021" />
+           <g class="phoneNo" transform="matrix(1,0,0,-1,159.45763,1293.0169)" id="g3015">
+             <path
+                d="m 1408,296 q 0,-27 -10,-70.5 Q 1388,182 1377,157 1356,107 1255,51 1161,0 1069,0 1042,0 1016.5,3.5 991,7 959,16 927,25 911.5,30.5 896,36 856,51 816,66 807,69 709,104 632,152 504,231 367.5,367.5 231,504 152,632 104,709 69,807 66,816 51,856 36,896 30.5,911.5 25,927 16,959 7,991 3.5,1016.5 0,1042 0,1069 q 0,92 51,186 56,101 106,122 25,11 68.5,21 43.5,10 70.5,10 14,0 21,-3 18,-6 53,-76 11,-19 30,-54 19,-35 35,-63.5 16,-28.5 31,-53.5 3,-4 17.5,-25 14.5,-21 21.5,-35.5 7,-14.5 7,-28.5 0,-20 -28.5,-50 -28.5,-30 -62,-55 -33.5,-25 -62,-53 -28.5,-28 -28.5,-46 0,-9 5,-22.5 5,-13.5 8.5,-20.5 3.5,-7 14,-24 10.5,-17 11.5,-19 76,-137 174,-235 98,-98 235,-174 2,-1 19,-11.5 17,-10.5 24,-14 7,-3.5 20.5,-8.5 13.5,-5 22.5,-5 18,0 46,28.5 28,28.5 53,62 25,33.5 55,62 30,28.5 50,28.5 14,0 28.5,-7 14.5,-7 35.5,-21.5 21,-14.5 25,-17.5 25,-15 53.5,-31 28.5,-16 63.5,-35 35,-19 54,-30 70,-35 76,-53 3,-7 3,-21 z"
+                id="path3017"                          
+                inkscape:connector-curvature="0"/>
+           </g>
+          </svg>
+        </a></p>
 
         <button type="button" class="btn btn-info toggle-panel"  style="width: 150px"(click)='toggleTable()' *ngIf='show'>Hide Products</button>
         <button type="button" class="btn btn-info toggle-panel"  style="width: 150px"(click)='toggleTable()' *ngIf='!show'>View Products</button>
@@ -51,6 +72,9 @@
             </tr>
           </tbody>
         </table>
+        <div style='margin-top: 5px; margin-bottom: 5px'>
+            <button type="button" class="btn btn-info" style="width: 150px" (click)="openModal('addNotes_Modal')" data-target="#addNotes_Modal">Add Notes</button>
+        </div>        
         <br>
         <span style='font-weight: bolder; text-decoration: underline;'>
           Signature </span>
@@ -97,6 +121,33 @@
         </div>
       </div>
     </ul>
-    <div *ngIf='driver.Orders.count === 0' ><h2>No Orders Found</h2></div>
+    
   </ul>
 </div>
+
+<jw-modal id="addNotes_Modal">
+  <div class="jw-modal">
+    <div class="jw-modal-body">
+      <h3 class="titleText">Delivery Notes</h3>
+      <button class="closeButton" style="float: right;" (click)="closeModal('addNotes_Modal');" >Close</button>
+      <br />
+      <textarea [(ngModel)]='DriverNotes' id ='textBox' style="border: 3px solid black; min-width: 100%;max-width: 500px; min-height: 80%" autofocus></textarea>
+      
+    </div>
+  </div>
+  <div class="jw-modal-background"></div>    
+</jw-modal>
+
+
+<!-- <modal id="driverNotes_modal">
+    <div class="modal">
+        <div class="modal-body">
+            <h1>A Custom Modal!</h1>
+            <p>
+                Home page text: <input type="text" [(ngModel)]="bodyText" />
+            </p>
+            <button (click)="closeModal('custom-modal-1');">Close</button>
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal> -->

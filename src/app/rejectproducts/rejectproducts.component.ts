@@ -25,6 +25,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
   model: any = {};
   oldItem: any = {};
   oldOrder: any = {};
+  DriverNotes: string = '';
   dataset: any = {};
   addDB = false;
 
@@ -131,6 +132,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
       this.oldOrder.ReceivedBy,
       this.oldOrder.PaymentMethod,
       this.oldOrder.PaymentAmount,
+      this.DriverNotes,
       'false',
       this.productDetails$);
     // alert('Delivery Successfully updated');

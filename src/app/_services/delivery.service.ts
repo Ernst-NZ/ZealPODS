@@ -157,29 +157,34 @@ export class DeliveryService extends BaseService {
   preUpdateDelivery( type, productNo,
     docId, lineId, delivered,
     QuantityRejected, RejectionReason, SignatureSVG,
-    ReceivedBy, PaymentMethod, PaymentAmount, Updated,
+    ReceivedBy, PaymentMethod, PaymentAmount, DriverNotes,Updated,
     json) {
       let jsonTemp = json;
     // Update the Json String
     if (type === 'product' && productNo === 0) {
       jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
           RejectionReason, SignatureSVG, ReceivedBy,
-        PaymentMethod, PaymentAmount, Updated, jsonTemp
+        PaymentMethod, PaymentAmount, DriverNotes, Updated, jsonTemp
       );
   //    this.productAdd(lineId,docId, lineId, RejectionReason, ReceivedBy)
     } else if (type === 'order' && productNo === 1) {
       jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
         RejectionReason, SignatureSVG, ReceivedBy,
-        PaymentMethod, PaymentAmount, Updated, jsonTemp
+        PaymentMethod, PaymentAmount, DriverNotes,Updated, jsonTemp
       );
      // Delete order if exist
     }
     const updatedValue: IDelivery = {
-      id: Number(lineId), documentId: Number(docId),
+      id: Number(lineId), 
+      documentId: Number(docId),
       delivered: 'true',
-      QuantityRejected: Number(QuantityRejected), RejectionReason: RejectionReason,
-      SignatureSVG: SignatureSVG, ReceivedBy: ReceivedBy,
-      PaymentMethod: PaymentMethod, PaymentAmount: Number(PaymentAmount),
+      QuantityRejected: Number(QuantityRejected), 
+      RejectionReason: RejectionReason,
+      SignatureSVG: SignatureSVG, 
+      ReceivedBy: ReceivedBy,
+      PaymentMethod: PaymentMethod, 
+      PaymentAmount: Number(PaymentAmount), 
+      DriverNotes: DriverNotes,
       updated: Updated, json: jsonTemp
     };
     this.updateDelivery(0, updatedValue)
@@ -413,7 +418,7 @@ export class DeliveryService extends BaseService {
   // V2
   upDateJson(type, docId, lineId, delivered,
     QuantityRejected, RejectionReason, SignatureSVG,
-    ReceivedBy, PaymentMethod, PaymentAmount, Updated, jsonTemp ) {
+    ReceivedBy, PaymentMethod, PaymentAmount, DriverNotes, Updated, jsonTemp ) {
     const drivers = jsonTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       const orderList = drivers[d]['Orders'];
@@ -427,6 +432,7 @@ export class DeliveryService extends BaseService {
           orderList[o].ReceivedBy = ReceivedBy;
           orderList[o].PaymentMethod = PaymentMethod;
           orderList[o].PaymentAmount = PaymentAmount;
+          orderList[o].DriverNotes = DriverNotes;
           orderList[o].Updated = Updated;
           orderList[o].SignatureSVG = SignatureSVG;
           if (type === 'product') {
@@ -449,6 +455,7 @@ export class DeliveryService extends BaseService {
       SignatureSVG: SignatureSVG,
       ReceivedBy: name,
       PaymentMethod: PaymentMethod, PaymentAmount: PaymentAmount,
+      DriverNotes: DriverNotes,
       updated: 'true', json: jsonTemp
     };
     this.updateDelivery(0, updatedValue)
@@ -469,27 +476,36 @@ export class DeliveryService extends BaseService {
     return jsonTemp;
   }
   postJson(dataString) {
-    console.log(dataString);
-     //return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values', dataString)
-     return this.http.post('https://test1.zealsystems.co.nz/api/values', dataString)
+    console.log("posting...");
+     //return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values/1', dataString)
+     this.globals.isSyncing = true;
+     return this.http.post('https://test1.zealsystems.co.nz/api/values/1', dataString)
        .subscribe(
          val => {
       //     this.showNotification('success', 'Delivery Posted to Main Server');
-           this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
-           this.checkJson();
-
-       //    this.router.navigate(['/route-Orders/', this.globals.driver]);
-     //      this.router.navigate(['/']);
-           //    Clear Indexed DB - Gete new info and populate
-//             this.deleteDelivery(docId)
-         },
+           this.data.getAllRoutes()
+           .subscribe(
+             data => (
+               this.orderDetails$ = data,
+               console.log("postJson: Updating DB"),
+               this.dbAdd(
+                0, '', '', 0, 0,
+                '', '', 0, 0, this.orderDetails$),
+                this.globals.isSyncing = false
+             )
+            );           
+           
+           
+       },
          response => {
    //        alert('Server Update error ' && response);
    //        this.showNotification('success', 'Delivery Successfully Updated');
    //        this.router.navigate(['/']);
+          this.globals.isSyncing = false
          },
          () => {
            console.log('error');
+           this.globals.isSyncing = false
          }
        );
   }
@@ -497,11 +513,5 @@ export class DeliveryService extends BaseService {
   public showNotification(type: string, message: string): void {
     this.notifier.notify(type, message);
   }
-
-  checkJson() {
-      this.dbAdd(
-        0, '', '', 0, 0,
-        '', '', 0, 0, this.orderDetails$
-      );
-  }
+  
 }

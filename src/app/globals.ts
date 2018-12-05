@@ -6,6 +6,5 @@ export class Globals {
   incomplete: boolean;
   cWidth: number;
   driver: string;
-  connectionToken: string;
-  connectionString: string;
+  isSyncing: boolean = false;
 }

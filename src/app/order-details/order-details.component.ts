@@ -11,7 +11,9 @@ import { AutofillMonitor } from '../../../node_modules/@angular/cdk/text-field';
 import { NotifierService } from 'angular-notifier';
 import { SignatureComponent } from '../signature/signature.component';
 import { Globals } from '../globals';
+import { ModalService } from '../_services/modal.service';
 import { ARIA_DESCRIBER_PROVIDER_FACTORY } from '@angular/cdk/a11y';
+import { FooterComponent } from '../footer/footer.component';
 
 export interface Payment {
   value: string;
@@ -66,6 +68,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   selectedPaymentAmount: number;
   oldItem: any = {};
   oldOrder: any = {};
+  DriverNotes: string = '';
   dataset: any = {};
   productList: any = {};
   innerWidth: any;
@@ -117,6 +120,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     private router: Router,
     notifier: NotifierService,
     private globals: Globals,
+    private modalService: ModalService
   ) {
     this.route.params.subscribe(
       params => (this.orderDetails$ = params.DocumentId)
@@ -135,9 +139,9 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
   }
 
   ngAfterContentChecked() {
-    if (this.deliveries.length > 0 && this.addDB === false) {
+    if (typeof this.tempDelivery.json !== 'undefined' && this.deliveries.length > 0 && this.addDB === false) {
+      console.log('order-details: ngAfter');
       this.addDB = true;
-      this.driver = 'Not allocated';
       this.dataset = this.tempDelivery.json;
       const drivers = this.dataset['orderGroups'];
       this.orderDetails$ = this.tempDelivery.json;
@@ -163,6 +167,9 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
         }
 
       }
+    } else {
+      console.log('tempDelivery = below: ');
+      console.log(this.tempDelivery);
     }
   }
 
@@ -222,7 +229,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
           newDate,
           this.oldOrder.ReceivedBy,
           this.oldOrder.PaymentMethod,
-          this.oldOrder.PaymentAmount);
+          this.oldOrder.PaymentAmount,
+          this.DriverNotes);
       }
     //  alert('Delivery Successfully Updated');
       this.showNotification('success', 'Delivery Successfully Updated');
@@ -246,7 +254,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     newDate,
     ReceivedBy,
     PaymentMethod,
-    PaymentAmount) {
+    PaymentAmount,
+    DriverNotes) {
     this.loading = true;
     this.service.preUpdateDelivery('order', this.i,
       this.docID,
@@ -257,7 +266,8 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
       SignatureSVG,
       ReceivedBy,
       PaymentMethod,
-      PaymentAmount,
+      PaymentAmount,     
+      DriverNotes, 
       'true',
       this.orderDetails$);
     this.loading = false;
@@ -325,4 +335,12 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
     this.notifier.notify(type, message);
   }
 
+  openModal(id: string) {
+    this.modalService.open(id);
+}
+
+closeModal(id: string) {
+
+    this.modalService.close(id);
+}
 }

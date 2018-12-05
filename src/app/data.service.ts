@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Globals } from './globals';
 import { headersToString } from 'selenium-webdriver/http';
-import {RequestOptions } from '@angular/http';
-import {Headers } from '@angular/http';
+import {Headers } from '@angular/http'
 import { HttpClientModule } from '@angular/common/http';
 
 @Injectable({
@@ -12,15 +10,13 @@ import { HttpClientModule } from '@angular/common/http';
 export class DataService {
 
   searchText: String = '';
-  myToken: String = '';
+  myToken: String = ''; 
 
-  constructor(private http: HttpClient,
-    private globals: Globals) { }
+
+  constructor(private http: HttpClient) { }
 
   getAllRoutes() {
-  //  return this.http.get(this.globals.connectionString && '/api/values/1');
-  //  return this.http.get(this.globals.connectionString);
-   //  return this.http.get('https://deliveryapi.completefoodservices.com.au:8095/api/values/1');
+    //return this.http.get('https://deliveryapi.completefoodservices.com.au:8095/api/values/1');
     return this.http.get('https://test1.zealsystems.co.nz/api/values/1') ;
 
   }
@@ -30,61 +26,44 @@ export class DataService {
   // }
 
 // #####################################################################
-  getAllRoutes1() {
-
-    // let jsonString = 'Bearer ' + localStorage.getItem('JSONToken');
-    // console.log('jsonString: ' + jsonString);
-
-    // 'Content-Type': 'application/json',
-    // const httpOptions = {headers: new HttpHeaders({
-    //   'Accept': 'application/json, text/plain, */*',
-    //   'Access-Control-Allow-Origin':'*'})};
-
-    //   console.log(httpOptions);
-    //   console.log(HttpHeaders);
-    //   // console.log(httpOptions.headers.get('Authorization'));
-    //   console.log('Authorization: ' + httpOptions.headers.get('Authorization'));
-    // return this.http.get('http://test1.zealsystems.co.nz/api/values/1');
-
-   // return this.http.get('https://deliveryapi.completefoodservices.com.au:8095/api/values/1');
-  }
 
 
+  
 
   // ###  111  #############
   postJson2(dataString) {
-    console.log('Data Before Post 35');
+    console.log('Data Before Post 35')
 
-    console.log('Test 1 Line 41');
-    console.log(dataString);
-    return this.http.post('https://test1.zealsystems.co.nz/api/values/', dataString, {
+    console.log("Test 1 Line 41")
+    console.log(dataString)
+    return this.http.post('http://locallhost:57702/api/values/', dataString, {
       headers: new HttpHeaders({
         'content-type': 'application/json'
       })
-    });
+    })   
   }
-
 
   // ######## 44  JQuery  #######
   // postJson4() {
   //   var person = {
-  //     name: $('#id-name').val(),
-  //     address: $('#id-address').val(),
-  //     phone: $('#id-phone').val()
+  //     name: $("#id-name").val(),
+  //     address: $("#id-address").val(),
+  //     phone: $("#id-phone").val()
   //   }
 
   //   $('#target').html('sending..');
-  //   console.log('44 Jquery');
+  //   console.log("44 Jquery");
   //   console.log(JSON.stringify(person));
   //   $.ajax({
   //     url: 'https://test1.zealsystems.co.nz/api/values',
   //     type: 'post',
   //     //dataType: 'json',
   //     //contentType: 'application/json',
+  //     //    Authorization: 'Bearer aRA39yf4N8J-DhTNCVRXptKywROwFCi6meGgAhafP9SGy96ReXmnwZYNTkqA_-vHcYOtNLgk0wCKTw1gkFfWj8S8A6j073XCcHeqlW7R-ahC3jOQ70iRcINbOsVsUWHqQ-YRi5u6bUZz9ECWruJ6vsIymMqBj9Lvk839h-9-F3iKQjOvXBmIA1j3ymGpO-FeuiXeQ3OnGxuUjWCCg6faVARQplX00GjoEgW1fgOJkvOxqgGlV5zWFUxfYh-oMlRfLSx7z4ZSm-OCKEmI5CIV1zzFodwp6n_mMrWy5AeOD0cu2mdDHBlqEp1E72s16Wi2liVW0dCcmoozZyJ0lhEy4SD-3_tkjW3-ShlZdCZ1niaIL5D6NBXeN1YeLFiEPGwYnmTV2j6f6PM9jUKCR9EWDODJejgVV8iDyAGFHuNDaO5IInQSzLyDCPmRq3QNeCTRuFV4tB0CJ1_Okj8wxkFdRg0jqU3o9oFq5_szZ47sV3tz-U2lIb0OFXl4kz-oWDpz'
   //     //    ,
   //     data: JSON.stringify(person)
   //   }).done(function () {
-  //     alert('second success');
+  //     alert("second success");
   //   })
   //     .fail(function (e) {
   //       console.log(e)
@@ -102,15 +81,15 @@ export class DataService {
     //   .fail(function (data) {
     //     console.log('failed');
     //   });
-    // console.log('45 Jquery');
+    // console.log("45 Jquery");
  // }
 
 
 
   // ### 222 #############
   postJson(dataString) {
-    console.log('Data Before Post 35');
-    console.log('Test 2 Line 91');
+    console.log('Data Before Post 35')
+    console.log("Test 2 Line 91")
     this.myToken = localStorage.getItem('JSONToken');
     console.log(this.myToken);
   }
@@ -118,125 +97,37 @@ export class DataService {
     //   const httpOptions = {
     //     headers: new HttpHeaders({
     //       'Content-Type': 'application/json'
+    //       , 'Authorization': 'Bearer VIn055LKCjzQLT-2yWUNZbc4ecy18PMQkEWy4LWTCF68hZovZt2LSPHoPAvJzSRCicucSolYMuCj9GCS5MaTavb0LCUSoAT2lLjqcfd7cOK6fZW3fJGPZwkv7apaJLJZ6nSpm4IpzOf-WceewqtiS94nXFRhQN0m-49-1K6WZ10-Z7-AAJy2s2R4wb4OTpUTqHlCfVEJh3hzk-1zY5G8bNzTCUpX_hBqLx-dI7Ig1HhJhhKf3KNIYfAOWYyxSImCpOoA2cecvUAkA8jBa8XM8aQJlsX6FnKuvf4DL4bSZfXJddGivfkYA2O3ovYnfygdO-iWiVuYhuhixdSYnOYBWHwkg-RKMbrPYZvT3AhbYr82Ej9CCPw1OE-NTMe7-yvxz_T58wmntxvM0qNOc9tXpKbfQien8f4ZseR82YVj7TZbDz1TKVoE8TewmDpfM3qjSbyCb-jDLu7-U4yGz901xA8aAYo_x7OxQ4_2KEdyFGPhA3QlaubkmTW6xRN5n3Y7'
     //       , 'Access-Control-Allow-Origin': '*'
+    //       //    , 'Authorization': 'Bearer aRA39yf4N8J-DhTNCVRXptKywROwFCi6meGgAhafP9SGy96ReXmnwZYNTkqA_-vHcYOtNLgk0wCKTw1gkFfWj8S8A6j073XCcHeqlW7R-ahC3jOQ70iRcINbOsVsUWHqQ-YRi5u6bUZz9ECWruJ6vsIymMqBj9Lvk839h-9-F3iKQjOvXBmIA1j3ymGpO-FeuiXeQ3OnGxuUjWCCg6faVARQplX00GjoEgW1fgOJkvOxqgGlV5zWFUxfYh-oMlRfLSx7z4ZSm-OCKEmI5CIV1zzFodwp6n_mMrWy5AeOD0cu2mdDHBlqEp1E72s16Wi2liVW0dCcmoozZyJ0lhEy4SD-3_tkjW3-ShlZdCZ1niaIL5D6NBXeN1YeLFiEPGwYnmTV2j6f6PM9jUKCR9EWDODJejgVV8iDyAGFHuNDaO5IInQSzLyDCPmRq3QNeCTRuFV4tB0CJ1_Okj8wxkFdRg0jqU3o9oFq5_szZ47sV3tz-U2lIb0OFXl4kz-oWDpz'
     //       //    , 'Access-Control-Allow-Origin': '*'
-
+          
     //     });
     //   };
-
+      
     // }
 
     //   const httpOptions = {
     //     headers: new HttpHeaders({
     //       'Content-Type': 'application/json'
+    //       , 'Authorization': 'Bearer VIn055LKCjzQLT-2yWUNZbc4ecy18PMQkEWy4LWTCF68hZovZt2LSPHoPAvJzSRCicucSolYMuCj9GCS5MaTavb0LCUSoAT2lLjqcfd7cOK6fZW3fJGPZwkv7apaJLJZ6nSpm4IpzOf-WceewqtiS94nXFRhQN0m-49-1K6WZ10-Z7-AAJy2s2R4wb4OTpUTqHlCfVEJh3hzk-1zY5G8bNzTCUpX_hBqLx-dI7Ig1HhJhhKf3KNIYfAOWYyxSImCpOoA2cecvUAkA8jBa8XM8aQJlsX6FnKuvf4DL4bSZfXJddGivfkYA2O3ovYnfygdO-iWiVuYhuhixdSYnOYBWHwkg-RKMbrPYZvT3AhbYr82Ej9CCPw1OE-NTMe7-yvxz_T58wmntxvM0qNOc9tXpKbfQien8f4ZseR82YVj7TZbDz1TKVoE8TewmDpfM3qjSbyCb-jDLu7-U4yGz901xA8aAYo_x7OxQ4_2KEdyFGPhA3QlaubkmTW6xRN5n3Y7'
     //       , 'Access-Control-Allow-Origin': '*'
+    //       //    , 'Authorization': 'Bearer aRA39yf4N8J-DhTNCVRXptKywROwFCi6meGgAhafP9SGy96ReXmnwZYNTkqA_-vHcYOtNLgk0wCKTw1gkFfWj8S8A6j073XCcHeqlW7R-ahC3jOQ70iRcINbOsVsUWHqQ-YRi5u6bUZz9ECWruJ6vsIymMqBj9Lvk839h-9-F3iKQjOvXBmIA1j3ymGpO-FeuiXeQ3OnGxuUjWCCg6faVARQplX00GjoEgW1fgOJkvOxqgGlV5zWFUxfYh-oMlRfLSx7z4ZSm-OCKEmI5CIV1zzFodwp6n_mMrWy5AeOD0cu2mdDHBlqEp1E72s16Wi2liVW0dCcmoozZyJ0lhEy4SD-3_tkjW3-ShlZdCZ1niaIL5D6NBXeN1YeLFiEPGwYnmTV2j6f6PM9jUKCR9EWDODJejgVV8iDyAGFHuNDaO5IInQSzLyDCPmRq3QNeCTRuFV4tB0CJ1_Okj8wxkFdRg0jqU3o9oFq5_szZ47sV3tz-U2lIb0OFXl4kz-oWDpz'
     //       //    , 'Access-Control-Allow-Origin': '*'
     //     })
     //   };
     // }
-
+    
 
 
       // ### 33 #############
       postJson3(dataString) {
-        console.log('Test 3 Line 122');
+        console.log("Test 3 Line 122")
         const headers = new HttpHeaders()
-          .set('Content-Type', 'application/json');
+          .set("Content-Type", "application/json");
 
-
+    
         }
 
 // ########################################################################
-
-
-getCachedData1() {
-  const open = indexedDB.open('ZEDS_db', 1);
-  let gotJsonString;
-
-
-  open.onupgradeneeded = function() {
-    const db = open.result;
-    const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
-    // const store = db.createObjectStore('Students', { keyPath: 'id' });
-    // const index = store.createIndex('LineIndex', ['lineID']);
-  };
-
-  open.onsuccess = function() {
-    // Start a new transaction
-    const db = open.result;
-    const tx = db.transaction('Deliveries', 'readwrite');
-    const store = tx.objectStore('Deliveries');
-    console.log('here');
-    //   const tx = db.transaction('Students', 'readwrite');
-    //   const store = tx.objectStore('Students');
-    //    var index = store.index('NameIndex');
-    gotJsonString = store.get(0);
-    gotJsonString.onsuccess = function() {
-      console.log('results below: ');
-      console.log(gotJsonString.result);
-      console.log('ready to return');
-      return gotJsonString.result;
-    };
-
-    // Close the db when the transaction is done
-    tx.oncomplete = function() {
-      db.close();
-    };
-    return gotJsonString.results;
-};
-}
-
-getCachedData2() {
-
-return {
-  'User': 'xxx@##########.co.nz',
-  'LastSyncronisation': '2018-11-13T17:01:11.5443649+13:00',
-  'orderGroups': [
-    {
-      'Name': 'JIMMY_AM',
-      'DeliveryDate': '2018-11-13T00:00:00+13:00',
-      'Orders': [
-        {
-          'DocumentId': 423,
-          'CustomerCode': 'COLLIER',
-          'CustomerName': 'Collier & Sons Limited',
-          'DeliveryAddress1': '',
-          'DeliveryAddress2': '',
-          'DeliveryAddress3': '',
-          'DeliveryAddress4': '',
-          'PostCode': '',
-          'PhoneNo': '04-556 7890',
-          'Subtitle': '',
-          'PackingSlipNo': '',
-          'OrderNo': '146',
-          'DocumentDate': '2018-11-12T00:00:00',
-          'Category1': '',
-          'Category2': 'JIMMY_AM',
-          'Lines': [
-            {
-              'LineId': 2463,
-              'ProductCode': 'OVALMIRROR',
-              'Description': 'Oval Mirror framed in Rimu',
-              'CostPrice': 42,
-              'SellPrice': 68,
-              'QuantityOrdered': 1,
-              'Accepted': true,
-              'RejectionReason': '',
-              'QuantityRejected': 0
-            }
-          ],
-          'ExclusiveAmount': 6910.03,
-          'SignatureSVG': '',
-          'Delivered': false,
-          'DeliveryTime': '2018-11-13T00:00:00+13:00',
-          'ReceivedBy': '',
-          'PaymentMethod': '',
-          'PaymentAmount': 0,
-          'Updated': false
-        }
-      ]
-    }
-  ]
-};
-}
 }
