@@ -39,10 +39,6 @@ import { DeliveryComponent } from './delivery/delivery.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { ModalComponent } from './_directives/modal.components';
 import { ModalService } from './_services/modal.service';
-import { LogTestComponent } from './log-test/log-test.component';
-import { LogService }   from './_services/log.service';
-//import { LogPublishersService } from "./_services/log.service";
-// import { LogPublishersService, LogService } from "./_services/log.service";
 
 
 const customNotifierOptions: NotifierOptions = {
@@ -102,7 +98,6 @@ const customNotifierOptions: NotifierOptions = {
     RejectproductsComponent,
     DeliveryComponent,
     ModalComponent,
-    LogTestComponent,
   ],
   imports: [
     BrowserModule,
@@ -135,8 +130,6 @@ const customNotifierOptions: NotifierOptions = {
     AlertService,
     AuthenticationService,
     ModalService,
-    LogService,
-    // LogPublishersService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

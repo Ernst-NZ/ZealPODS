@@ -8,21 +8,25 @@ import { NotifierService } from 'angular-notifier';
 import { Globals } from '../globals';
 import { ActivatedRoute, Router } from '@angular/router';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class DeliveryService extends BaseService {
   orderDetails$: Object;
+  allRoutes$: object;
   updateStatus: String;
   addJson = false;
   addDB = false;
+  loading = false;
   tempDeliveries: Array<IDelivery> = [];
+  sync: Array<IDelivery> = [];
+  deliveries: Array<IDelivery> = [];
+  currentDB: IDelivery = new Delivery();
   tempDelivery: IDelivery = new Delivery();
   public notifier: NotifierService;
   constructor(private data: DataService, private http: HttpClient,
     notifier: NotifierService, private route: ActivatedRoute,
-    private router: Router, private globals: Globals,) {
+    private router: Router, private globals: Globals, ) {
     super();
     this.notifier = notifier;
   }
@@ -36,13 +40,13 @@ export class DeliveryService extends BaseService {
 
   // V2
   // Ckeck for incomplete deliveries to prevent refresh of Json String
- getIncompleteDeliveries() {
+  getIncompleteDeliveries() {
     return this.connection.select<IDelivery>({
       from: 'Deliveries',
-      // where: {
-      //   delivered: 'product'
-      //   // , updated: 'false'
-      // }
+      where: {
+        delivered: 'true'
+        // , updated: 'false'
+      }
     });
   }
 
@@ -110,14 +114,14 @@ export class DeliveryService extends BaseService {
   }
 
 
-   deleteDelivery(docId: number) {
-     return this.connection.remove({
-       from: 'Deliveries',
-       where: {
-         documentId: docId
-       }
-     });
-   }
+  deleteDelivery(docId: number) {
+    return this.connection.remove({
+      from: 'Deliveries',
+      where: {
+        documentId: docId
+      }
+    });
+  }
 
   // ## update Product for Edit purposes
   // Get Product
@@ -154,36 +158,36 @@ export class DeliveryService extends BaseService {
 
   // tslint:disable-next-line:max-line-length
   // V2 .. Step 3
-  preUpdateDelivery( type, productNo,
+  preUpdateDelivery(type, productNo,
     docId, lineId, delivered,
     QuantityRejected, RejectionReason, SignatureSVG,
-    ReceivedBy, PaymentMethod, PaymentAmount, DriverNotes,Updated,
+    ReceivedBy, PaymentMethod, PaymentAmount, DriverNotes, Updated,
     json) {
-      let jsonTemp = json;
+    let jsonTemp = json;
     // Update the Json String
     if (type === 'product' && productNo === 0) {
       jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
-          RejectionReason, SignatureSVG, ReceivedBy,
+        RejectionReason, SignatureSVG, ReceivedBy,
         PaymentMethod, PaymentAmount, DriverNotes, Updated, jsonTemp
       );
-  //    this.productAdd(lineId,docId, lineId, RejectionReason, ReceivedBy)
+      //    this.productAdd(lineId,docId, lineId, RejectionReason, ReceivedBy)
     } else if (type === 'order' && productNo === 1) {
       jsonTemp = this.upDateJson(type, docId, lineId, delivered, QuantityRejected,
         RejectionReason, SignatureSVG, ReceivedBy,
-        PaymentMethod, PaymentAmount, DriverNotes,Updated, jsonTemp
+        PaymentMethod, PaymentAmount, DriverNotes, Updated, jsonTemp
       );
-     // Delete order if exist
+      // Delete order if exist
     }
     const updatedValue: IDelivery = {
-      id: Number(lineId), 
+      id: Number(lineId),
       documentId: Number(docId),
       delivered: 'true',
-      QuantityRejected: Number(QuantityRejected), 
+      QuantityRejected: Number(QuantityRejected),
       RejectionReason: RejectionReason,
-      SignatureSVG: SignatureSVG, 
+      SignatureSVG: SignatureSVG,
       ReceivedBy: ReceivedBy,
-      PaymentMethod: PaymentMethod, 
-      PaymentAmount: Number(PaymentAmount), 
+      PaymentMethod: PaymentMethod,
+      PaymentAmount: Number(PaymentAmount),
       DriverNotes: DriverNotes,
       updated: Updated, json: jsonTemp
     };
@@ -193,7 +197,7 @@ export class DeliveryService extends BaseService {
           const index = this.tempDeliveries.findIndex(
             delivery => delivery.id === 0
           );
-           this.tempDeliveries[index] = this.tempDelivery;
+          this.tempDeliveries[index] = this.tempDelivery;
         }
       })
       .catch(error => {
@@ -240,18 +244,19 @@ export class DeliveryService extends BaseService {
     productCode,
     sellPrice,
     QuantityOrdered,
+    delivered,
     json
   ) {
     const open = indexedDB.open('ZEDS_db', 1);
 
-    open.onupgradeneeded = function() {
+    open.onupgradeneeded = function () {
       const db = open.result;
       const store = db.createObjectStore('DeliveryStore', { keyPath: 'id' });
       // const store = db.createObjectStore('Students', { keyPath: 'id' });
       // const index = store.createIndex('LineIndex', ['lineID']);
     };
 
-    open.onsuccess = function() {
+    open.onsuccess = function () {
       // Start a new transaction
       const db = open.result;
       const tx = db.transaction('Deliveries', 'readwrite');
@@ -271,12 +276,12 @@ export class DeliveryService extends BaseService {
         sellPrice: '',
         QuantityOrdered: 0,
         QuantityRejected: 0,
-        delivered: 'false',
+        delivered: delivered,
         updated: 'false',
         json: json
       });
       // Close the db when the transaction is done
-      tx.oncomplete = function() {
+      tx.oncomplete = function () {
         db.close();
       };
     };
@@ -323,7 +328,7 @@ export class DeliveryService extends BaseService {
         sellPrice: sellPrice,
         QuantityOrdered: QuantityOrdered,
         QuantityRejected: 0,
-        delivered: 'false',
+        delivered: 'true',
         updated: 'false',
         json: ''
       });
@@ -368,7 +373,7 @@ export class DeliveryService extends BaseService {
         documentId: Number(documentID),
         lineId: Number(lineID),
         QuantityRejected: Number(QuantityRejected),
-        delivered: 'false',
+        delivered: 'true',
         deliveredTo: deliveredTo,
         updated: 'false'
       });
@@ -383,12 +388,12 @@ export class DeliveryService extends BaseService {
     // this.checkAddJson(dataList);
     const drivers = dataList.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
-   //   if (drivers[d].Name === driverName) {
-        const user = drivers[d].Name;
-        const orderList = drivers[d]['Orders'];
-        for (let o = 0; o < orderList.length; o++) {
-          const products = orderList[o]['Lines'];
-          if (drivers[o].DocumentId === Number(documentId)) {
+      //   if (drivers[d].Name === driverName) {
+      const user = drivers[d].Name;
+      const orderList = drivers[d]['Orders'];
+      for (let o = 0; o < orderList.length; o++) {
+        const products = orderList[o]['Lines'];
+        if (drivers[o].DocumentId === Number(documentId)) {
           const DocumentId = orderList[o].DocumentId;
           // Check for existing document ID
           this.getOrder(DocumentId).then(deliveries => {
@@ -407,8 +412,8 @@ export class DeliveryService extends BaseService {
             }
           });
         }
-        }
-  //    }
+      }
+      //    }
     }
   }
 
@@ -418,7 +423,7 @@ export class DeliveryService extends BaseService {
   // V2
   upDateJson(type, docId, lineId, delivered,
     QuantityRejected, RejectionReason, SignatureSVG,
-    ReceivedBy, PaymentMethod, PaymentAmount, DriverNotes, Updated, jsonTemp ) {
+    ReceivedBy, PaymentMethod, PaymentAmount, DriverNotes, Updated, jsonTemp) {
     const drivers = jsonTemp.orderGroups;
     for (let d = 0; d < drivers.length; d++) {
       const orderList = drivers[d]['Orders'];
@@ -443,7 +448,7 @@ export class DeliveryService extends BaseService {
                 break;
               }
             }
-          } else {break;}
+          } else { break; }
         }
       }
     }
@@ -475,43 +480,109 @@ export class DeliveryService extends BaseService {
       });
     return jsonTemp;
   }
+  // Get data from server
+  getAllRoutes() {
+    //return this.http.get('https://deliveryapi.completefoodservices.com.au:8095/api/values/1');
+    return this.http.get('https://test1.zealsystems.co.nz/api/values/1');
+  }
+
+  GetNewOrders() {
+    this.loading = true;
+    this.getAllRoutes()
+      .subscribe(
+        data => {
+          console.log('Successfully Got Routes');
+          (
+            this.allRoutes$ = data,
+            this.loading = false,
+            this.dbAdd(
+              0, '', '', 0, 0,
+              '', '', 0, 0, 'false', this.allRoutes$),
+            this.globals.isSyncing = false
+          );
+        },
+        error => {
+          console.log('Cannot Get Fresh, Getting Cached Data');
+          // Cannot connect to server set flag to get data from DB
+          this.loading = false;
+        });
+    this.router.navigate(['/']);
+  }
+
+  getcurrenDB() {
+    this.getJsonFromDB()
+      .then(deliveries => {
+        this.deliveries = deliveries;
+        console.log('getJson: deliveries');
+        if (deliveries.length > 0) {
+          console.log('###############################################################');
+          this.currentDB = deliveries[0];
+          console.log('getJson: Emptying DB');
+          if (this.currentDB.delivered === 'true') {
+            // We have Data and there are pending orders - do post
+            // As part of the post function the Index DB will be updated
+            this.postJson(this.currentDB.json);
+          }
+        }
+      }, error => { })
+    this.router.navigate(['/']);
+  }
+
+  // Post data to server
   postJson(dataString) {
-    console.log("posting...");
-     //return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values/1', dataString)
-     this.globals.isSyncing = true;
-     return this.http.post('https://test1.zealsystems.co.nz/api/values/1', dataString)
-       .subscribe(
-         val => {
-      //     this.showNotification('success', 'Delivery Posted to Main Server');
-           this.data.getAllRoutes()
-           .subscribe(
-             data => (
-               this.orderDetails$ = data,
-               console.log("postJson: Updating DB"),
-               this.dbAdd(
-                0, '', '', 0, 0,
-                '', '', 0, 0, this.orderDetails$),
+    alert("Posting from delivery service ")
+    console.log("posting from delivery service ...");
+    this.globals.isSyncing = true;
+    // return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values/1', dataString)
+    return this.http.post('https://test1.zealsystems.co.nz/api/values/1', dataString)
+      .subscribe(
+        val => {
+          //     this.showNotification('success', 'Delivery Posted to Main Server');
+          this.getAllRoutes()
+            .subscribe(
+              data => (
+                this.orderDetails$ = data,
+                console.log("postJson: Updating DB"),
+                this.dbAdd(
+                  0, '', '', 0, 0,
+                  '', '', 0, 0, 'false', this.orderDetails$),
                 this.globals.isSyncing = false
-             )
-            );           
-           
-           
-       },
-         response => {
-   //        alert('Server Update error ' && response);
-   //        this.showNotification('success', 'Delivery Successfully Updated');
-   //        this.router.navigate(['/']);
+              )
+            );
+        },
+        response => {
+          //        alert('Server Update error ' && response);
+          //        this.showNotification('success', 'Delivery Successfully Updated');
+          //        this.router.navigate(['/']);
           this.globals.isSyncing = false
-         },
-         () => {
-           console.log('error');
-           this.globals.isSyncing = false
-         }
-       );
+        },
+        () => {
+          console.log('error');
+          this.globals.isSyncing = false
+        }
+      );
   }
 
   public showNotification(type: string, message: string): void {
     this.notifier.notify(type, message);
   }
-  
+
+  checkForSync() {
+    console.log("Check for sync")
+    this.getIncompleteDeliveries()
+      .then(sync => {
+        this.sync = sync;
+        if (sync.length > 0) {
+          this.globals.pendingSync = true;
+          console.log("Service - sync Pending")
+        } else {
+          console.log("Service - all up to date")
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        alert(error.message);
+      });
+  }
+
 }

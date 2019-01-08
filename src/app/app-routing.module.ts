@@ -12,7 +12,6 @@ import { AuthGuard } from './_guards/auth.guard';
 import { SignatureComponent } from './signature/signature.component';
 import { RejectproductsComponent } from './rejectproducts/rejectproducts.component';
 import { DeliveryComponent } from './delivery/delivery.component';
-import { LogTestComponent } from './log-test/log-test.component';
 
 const routes: Routes = [
   { path: '', component: DriverRoutesComponent, canActivate: [AuthGuard] },
@@ -26,10 +25,6 @@ const routes: Routes = [
   //   path: 'posts',
   //   component: PostsComponent
   // },
-  {
-    path: 'log-test',
-    component: LogTestComponent
-  },
   {
     path: 'driver-routes',
     component: DriverRoutesComponent,

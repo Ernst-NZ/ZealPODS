@@ -8,7 +8,7 @@ import { Globals } from '../globals';
 })
 export class FooterComponent implements OnInit{
   
-  constructor(private globals: Globals) {    
+  constructor(public globals: Globals) {    
   }
 
   isSyncing = this.globals.isSyncing;
@@ -18,7 +18,7 @@ export class FooterComponent implements OnInit{
   
 
   showVersion() {
-    alert("ZEDS Version 1.0.48z1");
+    alert("ZEDS Version 1.0.49");
   }
 
 }

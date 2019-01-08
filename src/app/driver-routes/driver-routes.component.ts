@@ -63,45 +63,47 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
 
     
     this.loading = true;
-    this.data.getAllRoutes()
-      .subscribe(
-        data => {
-          console.log('Successfully Got Routes');
-          (
-            this.allRoutes$ = data,
-            this.loading = false
-          );
-          },
-        error => {
-          console.log('Cannot Get Fresh, Getting Cached Data');
-          // Cannot connect to server set flag to get data from DB
-          this.loading = false,
-          this.getFromDB = true;
-        });
+    this.getFromDB = true;
+    // this.service.getAllRoutes()
+    //   .subscribe(
+    //     data => {
+    //       console.log('Successfully Got Routes');
+    //       (
+    //         this.allRoutes$ = data,
+    //         this.loading = false
+    //       );
+    //       },
+    //     error => {
+    //       console.log('Cannot Get Fresh, Getting Cached Data');
+    //       // Cannot connect to server set flag to get data from DB
+    //       this.loading = false,
+    //       this.getFromDB = true;
+    //     });    
     this.globals.incomplete = false;
   }
 
-  postJsonLocally(dataString) {
-    console.log(dataString);
-    this.globals.isSyncing = true;
-     //return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values/1', dataString)
-     return this.http.post('https://test1.zealsystems.co.nz/api/values/1', dataString)
-       .subscribe(
-         val => {
-           this.data.getAllRoutes()
-           .subscribe(
-             data => (
-               this.allRoutes$ = data,
-               console.log("postJsonLocally: Updating DB"),
-               this.loading = false,
-               this.service.dbAdd(
-                0, '', '', 0, 0,
-                '', '', 0, 0, this.allRoutes$),
-                this.globals.isSyncing = false
-             )
-           )          
-       });
-  }
+  // Use Global function at delivery service
+  //   postJsonLocally(dataString) {
+  //   console.log(dataString);
+  //   this.globals.isSyncing = true;
+  //    return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values/1', dataString)
+  //    //return this.http.post('https://test1.zealsystems.co.nz/api/values/1', dataString)
+  //      .subscribe(
+  //        val => {
+  //          this.data.getAllRoutes()
+  //          .subscribe(
+  //            data => (
+  //              this.allRoutes$ = data,
+  //              console.log("postJsonLocally: Updating DB"),
+  //              this.loading = false,
+  //              this.service.dbAdd(
+  //               0, '', '', 0, 0,
+  //               '', '', 0, 0, this.allRoutes$),
+  //               this.globals.isSyncing = false
+  //            )
+  //          )          
+  //      });
+  // }
 
   ngAfterContentChecked() {
     // If OFF line - get data from IndexDB
@@ -132,7 +134,8 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
               if (this.currentDB.delivered === 'true') {
     // We have Data and there are pending orders - do post
     // As part of the post function the Index DB will be updated            
-                this.postJsonLocally(this.currentDB.json);
+
+    //            this.postJsonLocally(this.currentDB.json);
                                 
     //  ############################################################            
     //  We need to do something here to update the Index db with the latest info
@@ -160,17 +163,17 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
               } else {
     //  We dont need to update add the new script to the Index DB            
                 console.log('Add current data to index DB');
-                this.service.dbAdd(
-                  0, '', '', 0, 0,
-                  '', '', 0, 0, this.allRoutes$
-                );
+                // this.service.dbAdd(
+                //   0, '', '', 0, 0,
+                //   '', '', 0, 0, 'false2', this.allRoutes$
+                // );
               }
             } else {
               console.log('Add current data to index DB since no IndexDB exists yet');
-              this.service.dbAdd(
-                0, '', '', 0, 0,
-                '', '', 0, 0, this.allRoutes$
-              );
+              // this.service.dbAdd(
+              //   0, '', '', 0, 0,
+              //   '', '', 0, 0, 'false3', this.allRoutes$
+              // );
             }
           })
           .catch(error => {
@@ -180,13 +183,9 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
 
 
 
-
-
-
-
-
         this.addDB = true;
-        console.log(this.allRoutes$);        
+        console.log(this.allRoutes$);
+        this.loading = false;        
         // Check if there are any pending orders
         // console.log(this.waitingforData)
         // if (typeof this.currentDB !== 'undefined' && this.currentDB.delivered === 'true' && this.waitingforData === false ) {
@@ -215,12 +214,9 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
         // this.checkJson();
         // this.addDB = true;
       }
-    }
-
+      this.loading = false;
+    }    
   }
-
-
-
 
 
   // ngOnInit() {
@@ -305,33 +301,33 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
     //     on error (offline)
     //       do nothing
 
-    if (this.pendingSync === true && this.addJson === false) {
-      console.log('driver-routes pendingSync = true && addJson = false');
-      this.service.postJson(this.allRoutes$);
-      this.service.dbAdd(
-        0, '', '', 0, 0,
-        '', '', 0, 0, this.allRoutes$);
-    } if (this.pendingSync === false && this.addJson === false) {
-      console.log('driver-routes pendingSync = False && addJson = false');
-      console.log(this.allRoutes$);
-      this.service.dbAdd(
-        0, '', '', 0, 0,
-        '', '', 0, 0, this.allRoutes$
-      );
-    } else {
-      console.log('driver-routes pendingSync=' && this.pendingSync && ' addJson ' && this.addJson);
-      // get fresh version from server as nothing has been updated.
-      // console.log('getting fresh data');
-      // console.log(this.pendingSync);
-      // console.log(this.addJson);
-      // console.log(this.allRoutes$);
+    // if (this.pendingSync === true && this.addJson === false) {
+    //   console.log('driver-routes pendingSync = true && addJson = false');
+    //   this.service.postJson(this.allRoutes$);
+    //   this.service.dbAdd(
+    //     0, '', '', 0, 0,
+    //     '', '', 0, 0, true, this.allRoutes$);
+    // } if (this.pendingSync === false && this.addJson === false) {
+    //   console.log('driver-routes pendingSync = False && addJson = false');
+    //   console.log(this.allRoutes$);
+    //   this.service.dbAdd(
+    //     0, '', '', 0, 0,
+    //     '', '', 0, 0, true, this.allRoutes$
+    //   );
+    // } else {
+    //   console.log('driver-routes pendingSync=' && this.pendingSync && ' addJson ' && this.addJson);
+    //   // get fresh version from server as nothing has been updated.
+    //   // console.log('getting fresh data');
+    //   // console.log(this.pendingSync);
+    //   // console.log(this.addJson);
+    //   // console.log(this.allRoutes$);
 
-      // this.service.dbAdd(
-      //   0, '', '', 0, 0,
-      //   '', '', 0, 0, this.allRoutes$
-      // );
-      this.addJson = true;
-    }
+    //   // this.service.dbAdd(
+    //   //   0, '', '', 0, 0,
+    //   //   '', '', 0, 0, this.allRoutes$
+    //   // );
+    //   this.addJson = true;
+    // }
   }
 
   public showNotification(type: string, message: string): void {

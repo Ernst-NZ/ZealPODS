@@ -15,11 +15,11 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  getAllRoutes() {
-    //return this.http.get('https://deliveryapi.completefoodservices.com.au:8095/api/values/1');
-    return this.http.get('https://test1.zealsystems.co.nz/api/values/1') ;
-
-  }
+  // getAllRoutes() {
+  //   alert("Should not get getall this from data service")
+  //   //return this.http.get('https://deliveryapi.completefoodservices.com.au:8095/api/values/1');
+  //   return this.http.get('https://test1.zealsystems.co.nz/api/values/1') ;
+  // }
 
   // getTestApiResult() {
   //   return this.http.get('https://localhost:5000/api/genras/');
@@ -31,17 +31,17 @@ export class DataService {
   
 
   // ###  111  #############
-  postJson2(dataString) {
-    console.log('Data Before Post 35')
+  // postJson2(dataString) {
+  //   console.log('Data Before Post 35')
 
-    console.log("Test 1 Line 41")
-    console.log(dataString)
-    return this.http.post('http://locallhost:57702/api/values/', dataString, {
-      headers: new HttpHeaders({
-        'content-type': 'application/json'
-      })
-    })   
-  }
+  //   console.log("Test 1 Line 41")
+  //   console.log(dataString)
+  //   return this.http.post('http://locallhost:57702/api/values/', dataString, {
+  //     headers: new HttpHeaders({
+  //       'content-type': 'application/json'
+  //     })
+  //   })   
+  // }
 
   // ######## 44  JQuery  #######
   // postJson4() {
