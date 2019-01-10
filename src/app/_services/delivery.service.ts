@@ -204,11 +204,11 @@ export class DeliveryService extends BaseService {
         console.error(error);
         alert(error.message);
       });
-    if (this.addJson === false && type === 'order') {
-      this.postJson(jsonTemp);
-      this.addJson = true;
-      return;
-    }
+    // if (this.addJson === false && type === 'order') {
+    //   this.postJson(jsonTemp);
+    //   this.addJson = true;
+    //   return;
+    // }
   }
 
   // #####
@@ -463,6 +463,7 @@ export class DeliveryService extends BaseService {
       DriverNotes: DriverNotes,
       updated: 'true', json: jsonTemp
     };
+    this.globals.pendingSync = true;
     this.updateDelivery(0, updatedValue)
       .then(rowsUpdated => {
         if (rowsUpdated > 0) {
@@ -480,6 +481,7 @@ export class DeliveryService extends BaseService {
       });
     return jsonTemp;
   }
+
   // Get data from server
   getAllRoutes() {
     //return this.http.get('https://deliveryapi.completefoodservices.com.au:8095/api/values/1');
@@ -488,25 +490,33 @@ export class DeliveryService extends BaseService {
 
   GetNewOrders() {
     this.loading = true;
+    this.globals.isSyncing = true;
     this.getAllRoutes()
       .subscribe(
         data => {
-          console.log('Successfully Got Routes');
+          console.log('Successfully Got Routes');          
           (
             this.allRoutes$ = data,
             this.loading = false,
             this.dbAdd(
               0, '', '', 0, 0,
-              '', '', 0, 0, 'false', this.allRoutes$),
-            this.globals.isSyncing = false
-          );
+              '', '', 0, 0, 'false', this.allRoutes$)
+          );         
+          this.loading = false;
+          this.globals.isSyncing = false;
+          this.showNotification('success', 'Succsessful Sync from Main Server');
+          console.log("Check URL from")
+          this.checkURL()
+          // this.router.navigate(['/driver-routes/']);          
+          // this.router.navigate(['/']);
         },
         error => {
           console.log('Cannot Get Fresh, Getting Cached Data');
           // Cannot connect to server set flag to get data from DB
           this.loading = false;
+          this.globals.isSyncing = false;
         });
-    this.router.navigate(['/']);
+    
   }
 
   getcurrenDB() {
@@ -523,21 +533,20 @@ export class DeliveryService extends BaseService {
             // As part of the post function the Index DB will be updated
             this.postJson(this.currentDB.json);
           }
+        } else {
+          this.GetNewOrders();
         }
       }, error => { })
-    this.router.navigate(['/']);
   }
 
   // Post data to server
   postJson(dataString) {
-    alert("Posting from delivery service ")
-    console.log("posting from delivery service ...");
     this.globals.isSyncing = true;
+   console.log("posting from delivery service ...");
     // return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values/1', dataString)
     return this.http.post('https://test1.zealsystems.co.nz/api/values/1', dataString)
       .subscribe(
-        val => {
-          //     this.showNotification('success', 'Delivery Posted to Main Server');
+        val => {          
           this.getAllRoutes()
             .subscribe(
               data => (
@@ -545,26 +554,44 @@ export class DeliveryService extends BaseService {
                 console.log("postJson: Updating DB"),
                 this.dbAdd(
                   0, '', '', 0, 0,
-                  '', '', 0, 0, 'false', this.orderDetails$),
-                this.globals.isSyncing = false
+                  '', '', 0, 0, 'false', this.orderDetails$)
               )
-            );
+            );          
+          this.globals.pendingSync = false
+          this.showNotification('success', 'Succsessful Sync to Main Server');
+          console.log("Check URL To")
+          this.globals.isSyncing = false;
+          this.checkURL()
         },
         response => {
           //        alert('Server Update error ' && response);
           //        this.showNotification('success', 'Delivery Successfully Updated');
           //        this.router.navigate(['/']);
-          this.globals.isSyncing = false
+          this.globals.isSyncing = false;
         },
         () => {
           console.log('error');
-          this.globals.isSyncing = false
-        }
-      );
+          this.globals.isSyncing = false;
+        }        
+      );      
   }
 
   public showNotification(type: string, message: string): void {
     this.notifier.notify(type, message);
+  }
+
+  checkURL() {
+    console.log(this.router.url)
+    if (this.router.url === '/') {
+      console.log("Check URL on Home Page")
+    //  window.location.reload();
+      this.router.navigate(['/driver-routes/']);
+    } 
+    if (this.router.url === '/driver-routes') {
+      console.log("Check URL on Route page")
+      this.router.navigate(['/']);
+    }
+
   }
 
   checkForSync() {
@@ -574,9 +601,10 @@ export class DeliveryService extends BaseService {
         this.sync = sync;
         if (sync.length > 0) {
           this.globals.pendingSync = true;
-          console.log("Service - sync Pending")
+          console.log("Service - sync Pending");
         } else {
-          console.log("Service - all up to date")
+          console.log("Service - all up to date");
+          this.globals.pendingSync = false;
         }
       })
       .catch(error => {

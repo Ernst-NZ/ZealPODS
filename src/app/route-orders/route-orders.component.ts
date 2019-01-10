@@ -47,6 +47,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     this.loading = true;
+    this.service.checkForSync();  
  //   this.data.getAllRoutes().subscribe(data => this.allRoutes$ = data);
     this.getJson();
     const getOrder = (this.route.snapshot.paramMap.get('routeName'));

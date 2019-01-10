@@ -66,6 +66,7 @@ export class RejectproductsComponent implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     //  this.data.getAllRoutes().subscribe(data => (this.productDetails$ = data));
+    this.service.checkForSync();  
     const getLine = (this.route.snapshot.paramMap.get('LineId'));
     this.i = getLine.lastIndexOf(',');
     this.docID = getLine.substring(0, this.i);

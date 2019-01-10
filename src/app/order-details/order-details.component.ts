@@ -131,6 +131,7 @@ export class OrderDetailsComponent implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     //  this.data.getAllRoutes().subscribe(data => (this.orderDetails$ = data));
+    this.service.checkForSync();  
     const getOrder = this.route.snapshot.paramMap.get('DocumentId');
     this.docID = getOrder;
     this.getJson();

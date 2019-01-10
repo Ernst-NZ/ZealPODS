@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit {
   sync: Array<IDelivery> = [];  
   tempDelivery: IDelivery = new Delivery();
   addDB = false;
-  pendingSync = false;
+  pendingSync = this.globals.pendingSync;
   addJson = false;
   currentUrl: String;
   status: String;
@@ -100,15 +100,23 @@ export class NavbarComponent implements OnInit {
     if (this.globals.incomplete === true) {
       if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
         if (this.globals.pendingSync) {
+          console.log("get Current DB and Post")
           this.service.getcurrenDB();  
         } else {
+          console.log("Just get new orders")
           this.service.GetNewOrders();
         }
-        this.router.navigate(['/']);
+        // this.router.navigate(['/']);
       }
     } else {
-      this.service.GetNewOrders();
-      this.router.navigate(['/']);
+      if (this.globals.pendingSync) {
+        console.log("get Current DB and Post")
+        this.service.getcurrenDB();
+      } else {
+        console.log("Just get new orders")
+        this.service.GetNewOrders();
+      }
+      // this.router.navigate(['/']);
     }
   }
 

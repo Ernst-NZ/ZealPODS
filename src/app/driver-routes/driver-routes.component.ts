@@ -42,7 +42,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   addDB = false;
   addJson = false;
   loading = true;
-  pendingSync = false;
+  // pendingSync = false;
   isOnline = false;
   emptyDatabase = false;
   getFromDB = false;
@@ -57,6 +57,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
+    this.service.checkForSync();  
     console.log('Getting Routes...');
     // Try and get data from server
     // Add data tot AllRoutes$
@@ -64,6 +65,7 @@ export class DriverRoutesComponent implements OnInit, AfterContentChecked {
     
     this.loading = true;
     this.getFromDB = true;
+    this.addDB = false;
     // this.service.getAllRoutes()
     //   .subscribe(
     //     data => {
