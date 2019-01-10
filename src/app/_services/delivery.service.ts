@@ -38,14 +38,12 @@ export class DeliveryService extends BaseService {
     });
   }
 
-  // V2
   // Ckeck for incomplete deliveries to prevent refresh of Json String
   getIncompleteDeliveries() {
     return this.connection.select<IDelivery>({
       from: 'Deliveries',
       where: {
         delivered: 'true'
-        // , updated: 'false'
       }
     });
   }
@@ -137,24 +135,6 @@ export class DeliveryService extends BaseService {
         alert(error.message);
       });
   }
-
-  serviceTest() {
-    const re = /-/gi;
-    const str = '2018-09-20T00:00:00+12:00';
-    const xx = str.substring(4, 10);
-    const newstr = xx.replace(re, '');
-    alert(newstr);
-    console.log(newstr);
-    console.log('start');
-    console.log(this.tempDelivery);
-    console.log('before get Product');
-    //    this.test2();
-    this.getProduct(1965);
-    console.log('after get Product');
-    console.log(this.tempDelivery);
-    console.log('done');
-  }
-
 
   // tslint:disable-next-line:max-line-length
   // V2 .. Step 3
@@ -261,10 +241,6 @@ export class DeliveryService extends BaseService {
       const db = open.result;
       const tx = db.transaction('Deliveries', 'readwrite');
       const store = tx.objectStore('Deliveries');
-      //   const tx = db.transaction('Students', 'readwrite');
-      //   const store = tx.objectStore('Students');
-      //    var index = store.index('NameIndex');
-
       store.put({
         id: id,
         lastSync: '',
