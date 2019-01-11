@@ -96,15 +96,47 @@ export class NavbarComponent implements OnInit {
   //   }
   // }
 
+//   goToHome() {
+//     if (this.globals.incomplete === true) {
+//       if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
+//       }
+//     }
+//   }
+
+//   homePage() {
+//     this.router.navigate(['/']);
+//   }
+
+//   goToRoutes() {
+//     if (this.globals.incomplete === true) {
+//       if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
+//         this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
+//       }
+//     }
+//   }
+
+// }
+
+
+
   goToHome() {
     if (this.globals.incomplete === true) {
-      if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
+      if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {        
+        this.router.navigate(['/']);
       }
+    } else {      
+      this.router.navigate(['/']);
     }
   }
 
   homePage() {
-    this.router.navigate(['/']);
+    if (this.globals.incomplete === true) {
+      if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
+        this.router.navigate(['/']);
+      }
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
   goToRoutes() {
@@ -112,6 +144,8 @@ export class NavbarComponent implements OnInit {
       if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
         this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
       }
+    } else {
+      this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
     }
   }
 
