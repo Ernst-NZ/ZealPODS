@@ -7,5 +7,5 @@ export class Globals {
   cWidth: number;
   driver: string;
   isSyncing: boolean = false;
-  pendingSync: boolean = false;
+  pendingSync: boolean = false;  
 }

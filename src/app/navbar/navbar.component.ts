@@ -1,4 +1,4 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Globals } from '../globals';
 import { DataService } from '../data.service';
@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit {
   private service: DeliveryService;
   allRoutes$: object;
   deliveries: Array<IDelivery> = [];
-  sync: Array<IDelivery> = [];  
+  sync: Array<IDelivery> = [];
   tempDelivery: IDelivery = new Delivery();
   addDB = false;
   pendingSync = this.globals.pendingSync;
@@ -26,7 +26,7 @@ export class NavbarComponent implements OnInit {
   currentUrl: String;
   status: String;
 
-   
+
   constructor(private router: Router, public globals: Globals,
     service: DeliveryService, private data: DataService) {
     router.events.subscribe((_: NavigationEnd) => this.currentUrl = _.url);
@@ -34,9 +34,9 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.service.checkForSync();   
-     if(this.globals.pendingSync) {
-      this.status = "Sync !";  
+    this.service.checkForSync();
+    if (this.globals.pendingSync) {
+      this.status = "Sync !";
     } else {
       this.status = "Sync";
     }
@@ -48,23 +48,23 @@ export class NavbarComponent implements OnInit {
   }
 
 
-// refresh() {
-//   this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
-//   this.getJson();
-//   if (typeof this.tempDelivery !== 'undefined' && this.addDB === false) {
-//     if (this.deliveries.length > 0 && this.addDB === false) {
-//       this.addDB = true;
-//       if (this.tempDelivery.delivered === 'true') {
-//         this.pendingSync = true;
-//         this.addDB = true;
-//       }
-//     }
-//     this.checkJson();
-//     this.addDB = true;
-//   }
-//   console.log(this.tempDelivery);
-// }
-//  ## Get Json
+  // refresh() {
+  //   this.data.getAllRoutes().subscribe(data => (this.allRoutes$ = data));
+  //   this.getJson();
+  //   if (typeof this.tempDelivery !== 'undefined' && this.addDB === false) {
+  //     if (this.deliveries.length > 0 && this.addDB === false) {
+  //       this.addDB = true;
+  //       if (this.tempDelivery.delivered === 'true') {
+  //         this.pendingSync = true;
+  //         this.addDB = true;
+  //       }
+  //     }
+  //     this.checkJson();
+  //     this.addDB = true;
+  //   }
+  //   console.log(this.tempDelivery);
+  // }
+  //  ## Get Json
   // getJson() {
   //   this.service.getJsonFromDB()
   //     .then(deliveries => {
@@ -96,27 +96,10 @@ export class NavbarComponent implements OnInit {
   //   }
   // }
 
-  goToHome() {    
+  goToHome() {
     if (this.globals.incomplete === true) {
       if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
-        if (this.globals.pendingSync) {
-          console.log("get Current DB and Post")
-          this.service.getcurrenDB();  
-        } else {
-          console.log("Just get new orders")
-          this.service.GetNewOrders();
-        }
-        // this.router.navigate(['/']);
       }
-    } else {
-      if (this.globals.pendingSync) {
-        console.log("get Current DB and Post")
-        this.service.getcurrenDB();
-      } else {
-        console.log("Just get new orders")
-        this.service.GetNewOrders();
-      }
-      // this.router.navigate(['/']);
     }
   }
 
@@ -129,9 +112,7 @@ export class NavbarComponent implements OnInit {
       if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
         this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
       }
-    } else {
-      this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
     }
-     }
+  }
 
-    }
+}

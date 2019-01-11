@@ -6,7 +6,7 @@ import { Globals } from '../globals';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss']
 })
-export class FooterComponent implements OnInit{
+export class FooterComponent implements OnInit{  
   
   constructor(public globals: Globals) {    
   }
@@ -18,7 +18,7 @@ export class FooterComponent implements OnInit{
   
 
   showVersion() {
-    alert("ZEDS Version 1.0.49");
+    alert("ZEDS Version 1.0.50");
   }
 
 }
