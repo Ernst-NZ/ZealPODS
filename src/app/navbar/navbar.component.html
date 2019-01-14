@@ -16,8 +16,8 @@
   <div class="collapse navbar-collapse" id="navbarMenu">
     <ul class="navbar-nav  ml-auto">
       <li style='cursor: pointer;' data-toggle="collapse" data-target=".navbar-collapse.show" class="nav-item"><a style='cursor: pointer;'class="nav-link" (click)='goToHome()'>Routes</a></li>
-      <li style='cursor: pointer;' [hidden]="!this.globals.pendingSync" data-toggle="collapse" data-target=".navbar-collapse.show" class="nav-item"><a class="nav-link" (click)='goToHome()'><b>Sync ! </b></a></li>
-      <li style='cursor: pointer;' [hidden]="this.globals.pendingSync" data-toggle="collapse" data-target=".navbar-collapse.show" class="nav-item"><a class="nav-link" (click)='goToHome()'>Sync</a></li>
+      <li style='cursor: pointer;' [hidden]="!this.globals.pendingSync" data-toggle="collapse" data-target=".navbar-collapse.show" class="nav-item"><a class="nav-link" (click)='doSyncWithPost()'><b>Sync ! </b></a></li>
+      <li style='cursor: pointer;' [hidden]="this.globals.pendingSync" data-toggle="collapse" data-target=".navbar-collapse.show" class="nav-item"><a class="nav-link" (click)='doSyncOnly()'>Sync</a></li>
       <li data-toggle="collapse" data-target=".navbar-collapse.show" class="nav-item"><a class="nav-link" [routerLink]="['/login']">Logout...</a></li>
     </ul>
   </div>

@@ -96,11 +96,23 @@ export class NavbarComponent implements OnInit {
   //   }
   // }
 
+
+  doSyncWithPost() {
+    this.service.getcurrenDB();
+  }
+
+  doSyncOnly() {
+    this.service.GetNewOrders();
+  }
+
   goToHome() {
     if (this.globals.incomplete === true) {
       if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
-      }
-    }
+      } else { this.router.navigate(['/']);}
+     } else {
+      this.router.navigate(['/']);
+     }
+
   }
 
   homePage() {
@@ -111,7 +123,11 @@ export class NavbarComponent implements OnInit {
     if (this.globals.incomplete === true) {
       if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
         this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
+      } else {
+        this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
       }
+    } else {
+      this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
     }
   }
 
