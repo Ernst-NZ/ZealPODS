@@ -18,7 +18,7 @@ export class FooterComponent implements OnInit{
   
 
   showVersion() {
-    alert("ZEDS Version 1.0.50");
+    alert("ZEDS Version 1.0.56");
   }
 
 }

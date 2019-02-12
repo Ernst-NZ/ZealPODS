@@ -39,6 +39,7 @@ import { DeliveryComponent } from './delivery/delivery.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { ModalComponent } from './_directives/modal.components';
 import { ModalService } from './_services/modal.service';
+import { LogComponent } from './log/log.component';
 
 
 const customNotifierOptions: NotifierOptions = {
@@ -98,6 +99,7 @@ const customNotifierOptions: NotifierOptions = {
     RejectproductsComponent,
     DeliveryComponent,
     ModalComponent,
+    LogComponent,
   ],
   imports: [
     BrowserModule,

@@ -460,8 +460,9 @@ export class DeliveryService extends BaseService {
 
   // Get data from server
   getAllRoutes() {
+    return this.http.get(this.globals.SelectedURL + '/api/values/1');
     //return this.http.get('https://deliveryapi.completefoodservices.com.au:8095/api/values/1');
-    return this.http.get('https://test1.zealsystems.co.nz/api/values/1');
+    //return this.http.get('https://test1.zealsystems.co.nz/api/values/1');
   }
 
   GetNewOrders() {
@@ -511,6 +512,7 @@ export class DeliveryService extends BaseService {
           }
         } else {
           this.GetNewOrders();
+          
         }
       }, error => { })
   }
@@ -519,8 +521,9 @@ export class DeliveryService extends BaseService {
   postJson(dataString) {
     this.globals.isSyncing = true;
    console.log("posting from delivery service ...");
-    // return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values/1', dataString)
-    return this.http.post('https://test1.zealsystems.co.nz/api/values/1', dataString)
+     return this.http.post(this.globals.SelectedURL + '/api/values/1', dataString)
+    //return this.http.post('https://deliveryapi.completefoodservices.com.au:8095/api/values/1', dataString)
+    //return this.http.post('https://test1.zealsystems.co.nz/api/values/1', dataString)
       .subscribe(
         val => {          
           this.getAllRoutes()
@@ -530,8 +533,9 @@ export class DeliveryService extends BaseService {
                 console.log("postJson: Updating DB"),
                 this.dbAdd(
                   0, '', '', 0, 0,
-                  '', '', 0, 0, 'false', this.orderDetails$)
-              )
+                  '', '', 0, 0, 'false', this.orderDetails$),
+                  this.setSyncIcon("Stationary")
+              )              
             );          
           this.globals.pendingSync = false
           this.showNotification('success', 'Succsessful Sync to Main Server');
@@ -557,6 +561,7 @@ export class DeliveryService extends BaseService {
   }
 
   checkURL() {
+    console.log("Checking URL");
     console.log(this.router.url)
     if (this.router.url === '/') {
       console.log("Check URL on Home Page")
@@ -567,7 +572,32 @@ export class DeliveryService extends BaseService {
       console.log("Check URL on Route page")
       this.router.navigate(['/']);
     }
+    console.log("After CheckURL");
+    this.setSyncIcon("Stationary");
 
+  }
+
+  setSyncIcon(iconType: String) {
+    console.log("iconType: " + iconType)
+    if (iconType === "Pending") {
+      this.globals.RotatingIcon = false;
+      this.globals.StationaryIcon = false;
+      this.globals.PendingIcon = true;
+      console.log("Pending Icon Set");
+      
+    } else if(iconType === "Stationary") {
+      this.globals.RotatingIcon = false;
+      this.globals.StationaryIcon = true;
+      this.globals.PendingIcon = false;
+      console.log("Stationary Icon Set");
+    } else if(iconType === "Rotating") {
+      this.globals.RotatingIcon = true;
+      this.globals.StationaryIcon = false;
+      this.globals.PendingIcon = false;
+      console.log("Rotating Icon Set");
+    } else {
+      console.log("Sync Icon Not Set" + iconType)
+    }
   }
 
   checkForSync() {
@@ -578,9 +608,16 @@ export class DeliveryService extends BaseService {
         if (sync.length > 0) {
           this.globals.pendingSync = true;
           console.log("Service - sync Pending");
+          if(this.globals.isSyncing) {
+            this.setSyncIcon("Rotating");
+          }else {
+            this.setSyncIcon("Pending"); 
+          }          
         } else {
           console.log("Service - all up to date");
           this.globals.pendingSync = false;
+
+          this.setSyncIcon("Stationary");             
         }
       })
       .catch(error => {

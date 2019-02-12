@@ -12,6 +12,8 @@
 <div class="theList" *ngIf = "allRoutes$">
   <ul [@listStagger]="allRoutes$" style="list-style-type:none">
     <div *ngFor="let route of allRoutes$.orderGroups">
+      
+      
       <ul style="list-style-type:none">
         <li>
           <a routerLink="/route-Orders/{{route.Name}}">{{ route.Name }}
@@ -22,3 +24,8 @@
   </div>
   </ul>
 </div>
+<!-- <div *ngIf = "!allRoutes$" class="headerText" style="font-size: 1em; text-align:center">
+  <span>
+    No routes to display. <br><br>Please click the sync icon to refresh.
+  </span>
+</div> -->

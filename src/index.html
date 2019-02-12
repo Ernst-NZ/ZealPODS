@@ -140,4 +140,16 @@
   </app-root>
   <!-- <script src="../node_modules/jquery/dist/jquery.min.js"></script> -->
 </body>
+
+<Script>
+    var message;
+    var realConsoleLog = console.log;
+            console.log = function () {
+            message = message + " | " + [].join.call(arguments, " ");
+            // Display the message somewhere... (jQuery example)
+            $(".output").text(message);
+            realConsoleLog.apply(console, arguments);
+        };
+    </Script>
+
 </html>

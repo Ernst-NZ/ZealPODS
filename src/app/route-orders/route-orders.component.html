@@ -7,6 +7,8 @@
       <div *ngFor="let order of orderGroup$.Orders">
         <div *ngIf="orderGroup$.Name === selectedRoute">
           <li *ngIf='order.Updated !== "true"'>
+              
+            <!-- this.hasOrder = true -->
             <ul style="list-style-type:none">
               <section id="splitLi">
                 <div class="ibL">
@@ -62,6 +64,12 @@
     </div>
   </ul>
 </div>
+
+<!-- <div *ngIf = "orderGroup$" class="headerText" style="font-size: 1em; text-align:center">
+  <span>
+    No orders to display. <br><br>Please click the sync icon to refresh.
+  </span>
+</div> -->
 
 <!-- <li  *ngIf = 'order.Updated !== "true"'>
   <ul style="list-style-type:none">

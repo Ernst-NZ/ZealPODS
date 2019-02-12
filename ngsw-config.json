@@ -33,9 +33,7 @@
     "dataGroups": [   
     {
       "name": "orders",
-      "urls": [
-        "https://test1.zealsystems.co.nz/api/values/1"
-      ],
+      "urls": [],
       "cacheConfig": {
         "maxSize": 5,
         "maxAge": "24h",

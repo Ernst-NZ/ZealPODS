@@ -37,6 +37,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
   oldDelivery: IDelivery = new Delivery();
   loading = false;
   showOrderMsg = false;
+  hasOrder = false;
 
   constructor(private route: ActivatedRoute, private data: DataService, private globals: Globals, service: DeliveryService) {
     this.route.params.subscribe(params => this.allRoutes$ = data);
@@ -47,6 +48,7 @@ export class RouteOrdersComponent implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     this.loading = true;
+    this.hasOrder = false;
     this.service.checkForSync();  
  //   this.data.getAllRoutes().subscribe(data => this.allRoutes$ = data);
     this.getJson();

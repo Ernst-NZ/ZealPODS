@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Globals } from '../globals';
 import { DataService } from '../data.service';
@@ -35,17 +35,26 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.service.checkForSync();
+    
     if (this.globals.pendingSync) {
       this.status = "Sync !";
     } else {
       this.status = "Sync";
+
+      // this.RotatingIcon = false;
+      // this.PendingIcon = false;
+      // this.StationaryIcon = true;          
     }
+
+    
 
   }
 
   toggleSync() {
     this.globals.isSyncing = !this.globals.isSyncing;
   }
+
+
 
 
   // refresh() {
@@ -96,57 +105,47 @@ export class NavbarComponent implements OnInit {
   //   }
   // }
 
-//   goToHome() {
-//     if (this.globals.incomplete === true) {
-//       if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
-//       }
-//     }
-//   }
 
-//   homePage() {
-//     this.router.navigate(['/']);
-//   }
+  doSyncWithPost() {
+    this.service.getcurrenDB();
+    this.service.setSyncIcon("Rotating");
+  }
 
-//   goToRoutes() {
-//     if (this.globals.incomplete === true) {
-//       if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
-//         this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
-//       }
-//     }
-//   }
-
-// }
-
-
+  doSyncOnly() {
+    this.service.GetNewOrders();
+    this.service.setSyncIcon("Rotating");
+  }
 
   goToHome() {
     if (this.globals.incomplete === true) {
-      if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {        
-        this.router.navigate(['/']);
-      }
-    } else {      
+      if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
+      } else { this.router.navigate(['/']);}
+     } else {
       this.router.navigate(['/']);
-    }
+     }
+
   }
 
   homePage() {
-    if (this.globals.incomplete === true) {
-      if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
-        this.router.navigate(['/']);
-      }
-    } else {
-      this.router.navigate(['/']);
-    }
+    this.router.navigate(['/']);
   }
 
   goToRoutes() {
     if (this.globals.incomplete === true) {
       if (confirm('You have unsaved changes. Are you sure you want to exit this delivery?')) {
         this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
+      } else {
+        this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
       }
     } else {
       this.router.navigate(['/route-Orders/', this.globals.selectedRoute]);
     }
   }
+
+  showlog() {
+    this.router.navigate(['/log/', this.globals.selectedRoute]);
+  }
+
+    
 
 }

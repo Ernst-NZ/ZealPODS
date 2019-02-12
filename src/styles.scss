@@ -543,6 +543,18 @@ body.jw-modal-open {
     // transform-box: inherit;
     // display: inline-block;
   }
+  #syncIconNoAnim {
+    display: inherit;
+    transform-box: fill-box;
+    
+    
+    // animation-name: syncRotate;
+    // animation-duration: 1s;
+    // /* Things added */
+    // animation-iteration-count: infinite;
+    // transform-box: inherit;
+    // display: inline-block;
+  }
 }
 
 

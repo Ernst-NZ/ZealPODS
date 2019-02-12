@@ -12,10 +12,12 @@ import { AuthGuard } from './_guards/auth.guard';
 import { SignatureComponent } from './signature/signature.component';
 import { RejectproductsComponent } from './rejectproducts/rejectproducts.component';
 import { DeliveryComponent } from './delivery/delivery.component';
+import { LogComponent } from './log/log.component';
 
 const routes: Routes = [
   { path: '', component: DriverRoutesComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
+  { path: 'log', component: LogComponent },
   // { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
   // {
   //   path: 'details/:id',
