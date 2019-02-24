@@ -7,7 +7,7 @@
       <div *ngFor="let order of orderGroup$.Orders">
         <div *ngIf="orderGroup$.Name === selectedRoute">
           <li *ngIf='order.Updated !== "true"'>
-
+              
             <!-- this.hasOrder = true -->
             <ul style="list-style-type:none">
               <section id="splitLi">
@@ -20,45 +20,42 @@
                   </a>
                 </div>
                 <div class="ibR">
-                  <p><a [href]="'tel:' + order.PhoneNo" title="{{order.PhoneNo}}" class="phoneNo">
-                      <svg viewBox="0 0 1408 1408" id="svg3013" version="1.1" inkscape:version="0.48.3.1 r9886" width="28"
-                        height="28" fill="lime" sodipodi:docname="phone_font_awesome.svg">
-                        <metadata id="metadata3023">
-                        </metadata>
-                        <defs id="defs3021" />
-                        <g class="phoneNo" transform="matrix(1,0,0,-1,159.45763,1293.0169)" id="g3015">
-                          <path d="m 1408,296 q 0,-27 -10,-70.5 Q 1388,182 1377,157 1356,107 1255,51 1161,0 1069,0 1042,0 1016.5,3.5 991,7 959,16 927,25 911.5,30.5 896,36 856,51 816,66 807,69 709,104 632,152 504,231 367.5,367.5 231,504 152,632 104,709 69,807 66,816 51,856 36,896 30.5,911.5 25,927 16,959 7,991 3.5,1016.5 0,1042 0,1069 q 0,92 51,186 56,101 106,122 25,11 68.5,21 43.5,10 70.5,10 14,0 21,-3 18,-6 53,-76 11,-19 30,-54 19,-35 35,-63.5 16,-28.5 31,-53.5 3,-4 17.5,-25 14.5,-21 21.5,-35.5 7,-14.5 7,-28.5 0,-20 -28.5,-50 -28.5,-30 -62,-55 -33.5,-25 -62,-53 -28.5,-28 -28.5,-46 0,-9 5,-22.5 5,-13.5 8.5,-20.5 3.5,-7 14,-24 10.5,-17 11.5,-19 76,-137 174,-235 98,-98 235,-174 2,-1 19,-11.5 17,-10.5 24,-14 7,-3.5 20.5,-8.5 13.5,-5 22.5,-5 18,0 46,28.5 28,28.5 53,62 25,33.5 55,62 30,28.5 50,28.5 14,0 28.5,-7 14.5,-7 35.5,-21.5 21,-14.5 25,-17.5 25,-15 53.5,-31 28.5,-16 63.5,-35 35,-19 54,-30 70,-35 76,-53 3,-7 3,-21 z"
-                            id="path3017" inkscape:connector-curvature="0" />
-                        </g>
-                      </svg>
+                  <p><a [href]="'tel:' + order.PhoneNo" title="{{order.PhoneNo}}" class="phoneNo"> 
+                      <svg
+                      viewBox="0 0 1408 1408"
+                      id="svg3013"
+                      version="1.1"
+                      inkscape:version="0.48.3.1 r9886"
+                      width="28"
+                      height="28"
+                      fill="lime"
+                      sodipodi:docname="phone_font_awesome.svg">
+                      <metadata
+                          id="metadata3023">
+                      </metadata>
+                     <defs id="defs3021" />
+                     <g class="phoneNo" transform="matrix(1,0,0,-1,159.45763,1293.0169)" id="g3015">
+                       <path
+                          d="m 1408,296 q 0,-27 -10,-70.5 Q 1388,182 1377,157 1356,107 1255,51 1161,0 1069,0 1042,0 1016.5,3.5 991,7 959,16 927,25 911.5,30.5 896,36 856,51 816,66 807,69 709,104 632,152 504,231 367.5,367.5 231,504 152,632 104,709 69,807 66,816 51,856 36,896 30.5,911.5 25,927 16,959 7,991 3.5,1016.5 0,1042 0,1069 q 0,92 51,186 56,101 106,122 25,11 68.5,21 43.5,10 70.5,10 14,0 21,-3 18,-6 53,-76 11,-19 30,-54 19,-35 35,-63.5 16,-28.5 31,-53.5 3,-4 17.5,-25 14.5,-21 21.5,-35.5 7,-14.5 7,-28.5 0,-20 -28.5,-50 -28.5,-30 -62,-55 -33.5,-25 -62,-53 -28.5,-28 -28.5,-46 0,-9 5,-22.5 5,-13.5 8.5,-20.5 3.5,-7 14,-24 10.5,-17 11.5,-19 76,-137 174,-235 98,-98 235,-174 2,-1 19,-11.5 17,-10.5 24,-14 7,-3.5 20.5,-8.5 13.5,-5 22.5,-5 18,0 46,28.5 28,28.5 53,62 25,33.5 55,62 30,28.5 50,28.5 14,0 28.5,-7 14.5,-7 35.5,-21.5 21,-14.5 25,-17.5 25,-15 53.5,-31 28.5,-16 63.5,-35 35,-19 54,-30 70,-35 76,-53 3,-7 3,-21 z"
+                          id="path3017"                          
+                          inkscape:connector-curvature="0"/>
+                     </g>
+                   </svg>  
 
                     </a>
-                  </p>
-                  <!-- <p><a class="nav" routerLink="/delivery/{{order.DeliveryAddress1 }}"><i class="material-icons">navigation</i></a></p> -->
-                  <p><a class="phoneNo" href="https://www.google.com/maps/place/{{order.DeliveryAddress1 }}">
-                      <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="21.2" height="28" viewBox="0 0 848 1280"
-                        preserveAspectRatio="xMidYMid meet">
-                        <g transform="translate(0.000000,1280) scale(0.100000,-0.100000)" fill="#ff0000" stroke="none">
-                          <path d="M3935 12790 c-860 -64 -1638 -346 -2279 -827 -334 -251 -709 -621
-                            -943 -931 -406 -539 -624 -1118 -695 -1847 -19 -199 -16 -700 5 -863 75 -567
-                            272 -1057 740 -1837 235 -391 381 -614 1177 -1805 498 -744 581 -872 738
-                            -1141 420 -719 756 -1422 992 -2074 114 -317 171 -504 325 -1075 36 -135 75
-                            -264 86 -287 49 -101 153 -134 237 -73 78 57 115 146 247 597 250 854 395
-                            1244 689 1848 352 723 750 1382 1591 2635 624 930 973 1506 1259 2078 168 335
-                            255 565 300 794 92 461 99 1152 16 1579 -112 579 -379 1140 -788 1656 -117
-                            148 -448 476 -611 606 -669 534 -1458 857 -2321 953 -165 18 -601 26 -765 14z" />
-                        </g>
-                      </svg>
-
-                    </a></p>
-                  <!-- <i *ngIf = 'order.Delivered === "true"' Subtitle class="sync material-icons">sync</i></a></p> -->
+                    <!-- <p><a class="nav" routerLink="/delivery/{{order.DeliveryAddress1 }}"><i class="material-icons">navigation</i></a></p> -->
+                    <p><a class="nav" routerLink="/delivery/{{order.DeliveryAddress1 }} ,
+                                        {{ order.DeliveryAddress2 }} ,
+                                        {{ order.DeliveryAddress3 }} ,
+                                        {{ order.DeliveryAddress4}}">
+                        <!-- <i class="material-icons">navigation</i> -->
+                      </a></p>
+                    <!-- <i *ngIf = 'order.Delivered === "true"' Subtitle class="sync material-icons">sync</i></a></p> -->
                 </div>
               </section>
             </ul>
           </li>
-          <div *ngIf='showOrderMsg' style="color: white;">
-            <h2>No Orders Found</h2>
-          </div>
+          <div *ngIf='showOrderMsg' style="color: white;"><h2>No Orders Found</h2></div>                   
         </div>
       </div>
     </div>

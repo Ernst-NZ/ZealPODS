@@ -1,0 +1,6 @@
+{
+  "appId": "com.zealsystems.Zeds",
+  "appName": "ZEDS Sign on Glass",
+  "bundledWebRuntime": false,
+  "webDir": "www"
+}

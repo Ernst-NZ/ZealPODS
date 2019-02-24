@@ -25,6 +25,8 @@
     "@angular/pwa": "^0.6.8",
     "@angular/router": "^6.1.9",
     "@angular/service-worker": "^6.1.9",
+    "@capacitor/cli": "^1.0.0-beta.17",
+    "@capacitor/core": "^1.0.0-beta.17",
     "@ng-bootstrap/ng-bootstrap": "^2.2.2",
     "@ng-bootstrap/schematics": "^2.0.0-alpha.1",
     "agm-direction": "^0.7.3",
