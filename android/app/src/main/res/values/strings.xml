@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ZEDS Sign on Glass</string>
+    <string name="title_activity_main">ZEDS Sign on Glass</string>
+    <string name="package_name">com.zealsystems.Zeds</string>
+    <string name="fileprovider_authority">com.zealsystems.Zeds.fileprovider</string>
+    <string name="custom_url_scheme">com.zealsystems.Zeds</string>
+</resources>
